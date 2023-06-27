@@ -6,10 +6,6 @@ export default class DocumentStore {
     }
   }
 
-  setState(nextState) {
-    this.state = nextState;
-  }
-
   setTitle(value) {
     this.state.title = value;
   }
