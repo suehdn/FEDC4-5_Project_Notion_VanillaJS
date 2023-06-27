@@ -8,6 +8,7 @@ export default class DocumentContent {
 
     this.initEvents();
     this.render();
+    // this.$target.innerHTML = `<div>우하하</div><h1><div><span>이렇게 긴곳인데 찾을수있겠어요?</span></div></h2>`;
   }
 
   setState(nextState) {
@@ -16,9 +17,19 @@ export default class DocumentContent {
   }
 
   initEvents() {
-    const update = () => {};
+    let isComposing = false;
+    
+    this.$target.addEventListener('compositionstart', (e) => {
+      isComposing = true;
+    });
+
+    this.$target.addEventListener('compositionend', (e) => {
+      isComposing = false;
+      this.onChange(e.target.innerHTML);
+    });
 
     this.$target.addEventListener('input', (e) => {
+      if (isComposing) return;
       this.onChange(e.target.innerHTML);
     });
   }
@@ -29,10 +40,9 @@ export default class DocumentContent {
 
     const content = state.split('\n').join('<br>');
     const cursor = saveCursorPointer(this.$target);
-
-    // this.$target.innerHTML = `<div>우하하</div><h1><div><span>이렇게 긴곳인데 찾을수있겠어요?</span></div></h2>`;
     this.$target.innerHTML = content;
-
     restoreCursorPointer(this.$target, cursor);
+
+    console.log(content);
   }
 }
