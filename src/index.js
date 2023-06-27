@@ -1,4 +1,4 @@
-const $app = document.getElementById("app");
+import App from './components/App.js';
 
-console.log($app);
-console.log("우하하 프로그램 실행");
+const $app = document.getElementById('app');
+new App({ $target: $app });
