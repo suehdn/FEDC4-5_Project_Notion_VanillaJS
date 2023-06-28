@@ -1,4 +1,4 @@
-const baseUrl = process.env.BASE_URL
-const userName = process.env.USER_NAME
+const baseUrl = "https://kdt-frontend.programmers.co.kr"
+const userName = "oaoong"
 
 export { baseUrl, userName }
