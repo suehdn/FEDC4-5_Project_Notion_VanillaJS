@@ -1,3 +1,5 @@
-export default function NavBar() {
-  return "hi"
+export default function NavBar({ $target, initialState = [] }) {
+  this.render = () => {}
+
+  this.render()
 }
