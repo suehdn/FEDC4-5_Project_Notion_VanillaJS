@@ -5,8 +5,10 @@ import MainContent from "./common/mainContent"
 export default function App({ $target, initialState = [] }) {
   $target.innerHTML = `
     <div class="nav-bar"></div>
-    <div class="side-bar"></div>
-    <div class="main-content"></div>
+    <div class="main-container">
+      <div class="side-bar"></div>
+      <div class="main-content"></div>
+    </div>
   `
 
   this.render = () => {
