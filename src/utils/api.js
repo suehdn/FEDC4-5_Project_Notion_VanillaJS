@@ -1,4 +1,4 @@
-import { baseUrl, userName } from "./apiConfig"
+import { baseUrl, userName } from "../config/apiConfig"
 
 export const apiClient = (url, method, body) => {
   return (
