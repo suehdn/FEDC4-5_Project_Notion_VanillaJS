@@ -1,9 +1,14 @@
 export default class DocumentStore {
   constructor() {
     this.state = {
+      documentId: 0,
       title: '',
       content: '',
     }
+  }
+
+  setDocumentId(id) {
+    this.state.documentId = id;
   }
 
   setTitle(value) {
