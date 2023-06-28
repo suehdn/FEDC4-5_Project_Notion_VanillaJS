@@ -1,6 +1,6 @@
 import { addDocument, modifyDocument, removeDocument } from '../apis/api.js';
 import Sidebar from '../components/Sidebar/Sidebar.js';
-import DocumentContent from '../components/Document/DocumentContent.js';
+import ContentEditor from '../components/Editor/ContentEditor.js';
 import EditorStore from '../stores/editorStore.js';
 import DocumentStore from '../stores/documentStore.js';
 import html from './DocumentPage.html';
@@ -32,8 +32,8 @@ export default class DocumentPage {
       },
     });
 
-    this.documentContent = new DocumentContent({
-      $target: this.$target.querySelector('.document-content'),
+    this.contentEditor = new ContentEditor({
+      $target: this.$target.querySelector('.content-editor'),
       onChange: (value) => {
         this.editorStore.setContent(value);
         this.render();
@@ -46,10 +46,10 @@ export default class DocumentPage {
   async render() {
     await this.documentStore.fetchDocuments();
 
-    //TODO: DocumentTitle, DocumentContent, Sidebar의 내용을 새롭게 렌더링하는 코드가 들어가야 합니다.
-    const { documentContent, editorStore, sidebar, documentStore } = this;
+    //TODO: DocumentTitle, ContentEditor, Sidebar의 내용을 새롭게 렌더링하는 코드가 들어가야 합니다.
+    const { contentEditor, editorStore, sidebar, documentStore } = this;
 
-    documentContent.setState(editorStore.state.content);
+    contentEditor.setState(editorStore.state.content);
     sidebar.setState(documentStore.state);
   }
 

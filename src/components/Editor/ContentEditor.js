@@ -1,6 +1,6 @@
 import { saveCursorPointer, restoreCursorPointer } from '../../utils/cursor.js';
 
-export default class DocumentContent {
+export default class ContentEditor {
   constructor({ $target, initialState, onChange }) {
     this.$target = $target;
     this.state = initialState;
@@ -38,9 +38,9 @@ export default class DocumentContent {
     const { state } = this;
     if (!state) return;
 
-    const content = state.split('\n').join('<br>');
-    const cursor = saveCursorPointer(this.$target);
-    this.$target.innerHTML = content;
-    restoreCursorPointer(this.$target, cursor);
+    // const content = state.split('\n').join('<br>');
+    // const cursor = saveCursorPointer(this.$target);
+    // this.$target.innerHTML = content;
+    // restoreCursorPointer(this.$target, cursor);
   }
 }
