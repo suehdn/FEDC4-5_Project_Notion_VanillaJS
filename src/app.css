@@ -4,6 +4,13 @@
   border: 1px solid #000;
 }
 
+.nav-bar a {
+  text-decoration: none;
+  font-size: 32px;
+  font-weight: bold;
+  color: #000;
+}
+
 .main-container {
   display: flex;
   flex-direction: row;
