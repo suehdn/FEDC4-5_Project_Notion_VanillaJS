@@ -1,3 +1,4 @@
+import { addDocument, modifyDocument, deleteDocument } from '../apis/api.js';
 import Sidebar from '../components/Sidebar/Sidebar.js';
 import DocumentContent from '../components/Document/DocumentContent.js';
 import DocumentStore from '../stores/documentStore.js';
@@ -24,7 +25,9 @@ export default class DocumentPage {
 
     this.sideBar = new Sidebar({
       $target: this.$target.querySelector('.sidebar'),
-    })
+    });
+
+    // this.apiTest();
   }
 
   render() {
@@ -32,5 +35,33 @@ export default class DocumentPage {
     const { documentContent, documentStore } = this;
 
     documentContent.setState(documentStore.state.content);
+  }
+
+  apiTest() {
+    let testButton = document.createElement('button');
+    testButton.innerText = '추가';
+    testButton.addEventListener('click', () => {
+      let temp = 69786;
+      addDocument('세 번째 깊이1', temp);
+      addDocument('세 번째 깊이2', temp);
+      addDocument('세 번째 깊이3', temp);
+    });
+    this.$target.appendChild(testButton);
+
+    testButton = document.createElement('button');
+    testButton.innerText = '수정';
+    testButton.addEventListener('click', () => {
+      modifyDocument({ title: '수정완료', content: '내용입니다' }, 69767);
+    });
+    this.$target.appendChild(testButton);
+
+    testButton = document.createElement('button');
+    testButton.innerText = '삭제';
+    testButton.addEventListener('click', () => {
+      deleteDocument(69783);
+      deleteDocument(69784);
+      deleteDocument(69785);
+    });
+    this.$target.appendChild(testButton);
   }
 }
