@@ -1,6 +1,3 @@
-import dotenv from "dotenv"
-dotenv.config()
-
 const baseUrl = process.env.BASE_URL
 const userName = process.env.USER_NAME
 
