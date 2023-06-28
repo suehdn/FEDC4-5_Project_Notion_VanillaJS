@@ -22,16 +22,8 @@ export default class Sidebar {
       const id = Number(e.target.closest('li')?.getAttribute('data-id'));
       if (isNaN(id)) return;
 
-      switch (role) {
-        case 'append':
-          this.onAppend(id);
-          break;
-        case 'remove':
-          this.onRemove(id);
-          break;
-        default:
-          break;
-      }
+      if (role === 'append') this.onAppend(id);
+      else if (role === 'remove') this.onRemove(id);
     });
   }
 
@@ -41,14 +33,15 @@ export default class Sidebar {
     const listTemplate = (list) => `<ul>${list.map(listItemTemplate).join('')}</ul>`;
 
     const listItemTemplate = ({ id, title, documents, createdAt, updateAt }) => `
-    <li data-id="${id}">
-      <div>
-        <span>${title}</span>
-        <button data-role="remove" type="button">X</button>
-        <button data-role="append" type="button">+</button>
-      </div>
-      ${documents.length > 0 ? listTemplate(documents) : ''}
-    </li>`;
+      <li data-id="${id}">
+        <div>
+          <span>${title}</span>
+          <button data-role="remove" type="button">X</button>
+          <button data-role="append" type="button">+</button>
+        </div>
+        ${documents.length > 0 ? listTemplate(documents) : ''}
+      </li>
+    `;
 
     $target.innerHTML = `${listTemplate(state)}`;
   }
