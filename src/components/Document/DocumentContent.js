@@ -1,4 +1,4 @@
-import { saveCursorPointer, restoreCursorPointer } from "../../utils/cursor.js";
+import { saveCursorPointer, restoreCursorPointer } from '../../utils/cursor.js';
 
 export default class DocumentContent {
   constructor({ $target, initialState, onChange }) {
@@ -8,7 +8,7 @@ export default class DocumentContent {
 
     this.initEvents();
     this.render();
-    // this.$target.innerHTML = `<div>우하하</div><h1><div><span>이렇게 긴곳인데 찾을수있겠어요?</span></div></h2>`;
+    // this.$target.innerHTML = `ㅎㅎ <div>메롱</div> <div><h1><span>첫번째노드는이녀석입니다</span><span>깊은 곳</span></h1></div>`;
   }
 
   setState(nextState) {
@@ -18,7 +18,7 @@ export default class DocumentContent {
 
   initEvents() {
     let isComposing = false;
-    
+
     this.$target.addEventListener('compositionstart', (e) => {
       isComposing = true;
     });
@@ -42,7 +42,5 @@ export default class DocumentContent {
     const cursor = saveCursorPointer(this.$target);
     this.$target.innerHTML = content;
     restoreCursorPointer(this.$target, cursor);
-
-    console.log(content);
   }
 }
