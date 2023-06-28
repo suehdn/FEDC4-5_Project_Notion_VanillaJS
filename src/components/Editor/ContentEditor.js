@@ -17,19 +17,19 @@ export default class ContentEditor {
   }
 
   initEvents() {
-    let isComposing = false;
+    // let isComposing = false;
 
-    this.$target.addEventListener('compositionstart', (e) => {
-      isComposing = true;
-    });
+    // this.$target.addEventListener('compositionstart', (e) => {
+    //   isComposing = true;
+    // });
 
-    this.$target.addEventListener('compositionend', (e) => {
-      isComposing = false;
-      this.onChange(e.target.innerHTML);
-    });
+    // this.$target.addEventListener('compositionend', (e) => {
+    //   isComposing = false;
+    //   this.onChange(e.target.innerHTML);
+    // });
 
     this.$target.addEventListener('input', (e) => {
-      if (isComposing) return;
+      // if (isComposing) return;
       this.onChange(e.target.innerHTML);
     });
   }
@@ -40,7 +40,7 @@ export default class ContentEditor {
 
     // const content = state.split('\n').join('<br>');
     // const cursor = saveCursorPointer(this.$target);
-    // this.$target.innerHTML = content;
+    // this.$target.innerHTML = state;
     // restoreCursorPointer(this.$target, cursor);
   }
 }

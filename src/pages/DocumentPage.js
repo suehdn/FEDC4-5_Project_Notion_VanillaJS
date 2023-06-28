@@ -24,10 +24,12 @@ export default class DocumentPage {
       initialState: this.documentStore.state,
       onAppend: async (id) => {
         await this.documentStore.addDocument('새로운 문서', id);
+        await this.documentStore.fetchDocuments();
         this.render();
       },
       onRemove: async (id) => {
         await this.documentStore.removeDocument(id);
+        await this.documentStore.fetchDocuments();
         this.render();
       },
     });
@@ -44,12 +46,10 @@ export default class DocumentPage {
   }
 
   async render() {
-    await this.documentStore.fetchDocuments();
-
     //TODO: DocumentTitle, ContentEditor, Sidebar의 내용을 새롭게 렌더링하는 코드가 들어가야 합니다.
     const { contentEditor, editorStore, sidebar, documentStore } = this;
 
-    contentEditor.setState(editorStore.state.content);
+    // contentEditor.setState(editorStore.state.content);
     sidebar.setState(documentStore.state);
   }
 
