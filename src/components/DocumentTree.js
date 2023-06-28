@@ -11,7 +11,10 @@ export default function DocumentTree({ targetElement, childDocuments }) {
           return `
           <div class="document-tree" data-id="${id}" style="margin-left: ${15}px">
             <span class="document-blob">
-              <span class="document-toggle">-</span> ${title}
+              <span class="document-toggle">v</span>
+              ${title === '' ? '제목없음' : title}
+              <span class="new-document-btn">+</span>
+              <span class="delete-document-btn">삭제</span>
             </span>
           </div>`;
         })
