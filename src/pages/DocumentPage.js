@@ -1,7 +1,8 @@
-import { addDocument, modifyDocument, deleteDocument } from '../apis/api.js';
+import { getDocuments, addDocument, modifyDocument, deleteDocument } from '../apis/api.js';
 import Sidebar from '../components/Sidebar/Sidebar.js';
 import DocumentContent from '../components/Document/DocumentContent.js';
 import DocumentStore from '../stores/documentStore.js';
+import SidebarStore from '../stores/sidebarStore.js';
 import html from './DocumentPage.html';
 import './DocumentPage.css';
 
@@ -11,10 +12,19 @@ export default class DocumentPage {
     this.$target.innerHTML = html;
 
     this.documentStore = new DocumentStore();
+    this.sidebarStore = new SidebarStore();
     this.initComponents();
   }
 
-  initComponents() {
+  async initComponents() {
+    const documents = await getDocuments();
+    this.sidebarStore.setState(documents);
+
+    this.sidebar = new Sidebar({
+      $target: this.$target.querySelector('.sidebar'),
+      initialState: this.sidebarStore.state,
+    });
+
     this.documentContent = new DocumentContent({
       $target: this.$target.querySelector('.document-content'),
       onChange: (value) => {
@@ -23,18 +33,15 @@ export default class DocumentPage {
       },
     });
 
-    this.sideBar = new Sidebar({
-      $target: this.$target.querySelector('.sidebar'),
-    });
-
     // this.apiTest();
   }
 
   render() {
     //TODO: DocumentTitle, DocumentContent, Sidebar의 내용을 새롭게 렌더링하는 코드가 들어가야 합니다.
-    const { documentContent, documentStore } = this;
+    const { documentContent, documentStore, sidebar, sidebarStore } = this;
 
     documentContent.setState(documentStore.state.content);
+    sidebar.setState(sidebarStore.state);
   }
 
   apiTest() {
