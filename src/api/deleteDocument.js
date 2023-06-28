@@ -1,4 +1,4 @@
-import { request } from '../utils/request';
+import { request } from '../domain/request';
 
 export async function deleteDocument(documentId) {
   const document = await request(`documents/${documentId}`, {

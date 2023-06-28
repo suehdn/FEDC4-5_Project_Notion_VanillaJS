@@ -1,14 +1,15 @@
+import { route } from './domain/route';
+
 export default function App({ targetElement }) {
   this.init = () => {
     this.targetElement = targetElement;
+    this.setEvent();
+    route();
   };
 
-  this.render = () => {
-    targetElement.innerHTML = `
-      <span>hi</span>
-    `;
+  this.setEvent = () => {
+    window.addEventListener('popstate', route);
   };
 
   this.init();
-  this.render();
 }
