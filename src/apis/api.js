@@ -15,4 +15,4 @@ export const modifyDocument = ({ title, content }, documentId) =>
     body: JSON.stringify({ title, content }),
   });
 
-export const deleteDocument = (documentId) => request(`/documents/${documentId}`, { method: 'DELETE' });
+export const removeDocument = (documentId) => request(`/documents/${documentId}`, { method: 'DELETE' });

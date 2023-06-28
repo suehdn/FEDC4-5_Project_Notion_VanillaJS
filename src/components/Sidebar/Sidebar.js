@@ -1,7 +1,10 @@
 export default class Sidebar {
-  constructor({ $target, initialState }) {
+  constructor({ $target, initialState, onAppend, onRemove }) {
     this.$target = $target;
     this.state = initialState;
+    this.onAppend = onAppend;
+    this.onRemove = onRemove;
+
     this.render();
     this.initEvents();
   }
@@ -21,10 +24,10 @@ export default class Sidebar {
 
       switch (role) {
         case 'append':
-          console.log(`${id} 에다가 추가하시오`);
+          this.onAppend(id);
           break;
         case 'remove':
-          console.log(`${id} 를 삭제하시오`);
+          this.onRemove(id);
           break;
         default:
           break;

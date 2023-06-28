@@ -1,21 +1,24 @@
+import { getDocuments, addDocument, removeDocument } from '../apis/api.js';
+
 export default class DocumentStore {
   constructor() {
-    this.state = {
-      documentId: 0,
-      title: '',
-      content: '',
-    }
+    this.state = [];
   }
 
-  setDocumentId(id) {
-    this.state.documentId = id;
+  setState(nextState) {
+    this.state = nextState;
   }
 
-  setTitle(value) {
-    this.state.title = value;
+  async fetchDocuments() {
+    const documents = await getDocuments();
+    this.setState(documents);
   }
 
-  setContent(value) {
-    this.state.content = value;
+  async addDocument(title, parent = null) {
+    await addDocument(title, parent);
+  }
+
+  async removeDocument(documentId) {
+    await removeDocument(documentId);
   }
 }

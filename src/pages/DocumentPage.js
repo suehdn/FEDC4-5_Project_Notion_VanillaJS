@@ -1,8 +1,8 @@
-import { getDocuments, addDocument, modifyDocument, deleteDocument } from '../apis/api.js';
+import { addDocument, modifyDocument, removeDocument } from '../apis/api.js';
 import Sidebar from '../components/Sidebar/Sidebar.js';
 import DocumentContent from '../components/Document/DocumentContent.js';
+import EditorStore from '../stores/editorStore.js';
 import DocumentStore from '../stores/documentStore.js';
-import SidebarStore from '../stores/sidebarStore.js';
 import html from './DocumentPage.html';
 import './DocumentPage.css';
 
@@ -11,24 +11,31 @@ export default class DocumentPage {
     this.$target = $target;
     this.$target.innerHTML = html;
 
+    this.editorStore = new EditorStore();
     this.documentStore = new DocumentStore();
-    this.sidebarStore = new SidebarStore();
     this.initComponents();
   }
 
   async initComponents() {
-    const documents = await getDocuments();
-    this.sidebarStore.setState(documents);
+    await this.documentStore.fetchDocuments();
 
     this.sidebar = new Sidebar({
       $target: this.$target.querySelector('.sidebar'),
-      initialState: this.sidebarStore.state,
+      initialState: this.documentStore.state,
+      onAppend: async (id) => {
+        await this.documentStore.addDocument('새로운 문서', id);
+        this.render();
+      },
+      onRemove: async (id) => {
+        await this.documentStore.removeDocument(id);
+        this.render();
+      },
     });
 
     this.documentContent = new DocumentContent({
       $target: this.$target.querySelector('.document-content'),
       onChange: (value) => {
-        this.documentStore.setContent(value);
+        this.editorStore.setContent(value);
         this.render();
       },
     });
@@ -36,12 +43,14 @@ export default class DocumentPage {
     // this.apiTest();
   }
 
-  render() {
-    //TODO: DocumentTitle, DocumentContent, Sidebar의 내용을 새롭게 렌더링하는 코드가 들어가야 합니다.
-    const { documentContent, documentStore, sidebar, sidebarStore } = this;
+  async render() {
+    await this.documentStore.fetchDocuments();
 
-    documentContent.setState(documentStore.state.content);
-    sidebar.setState(sidebarStore.state);
+    //TODO: DocumentTitle, DocumentContent, Sidebar의 내용을 새롭게 렌더링하는 코드가 들어가야 합니다.
+    const { documentContent, editorStore, sidebar, documentStore } = this;
+
+    documentContent.setState(editorStore.state.content);
+    sidebar.setState(documentStore.state);
   }
 
   apiTest() {
@@ -65,9 +74,9 @@ export default class DocumentPage {
     testButton = document.createElement('button');
     testButton.innerText = '삭제';
     testButton.addEventListener('click', () => {
-      deleteDocument(69783);
-      deleteDocument(69784);
-      deleteDocument(69785);
+      removeDocument(69783);
+      removeDocument(69784);
+      removeDocument(69785);
     });
     this.$target.appendChild(testButton);
   }
