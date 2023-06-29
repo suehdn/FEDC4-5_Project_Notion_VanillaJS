@@ -1,5 +1,6 @@
 import { addDocument, modifyDocument, removeDocument } from '../apis/api.js';
 import { DOCUMENT } from '../constants/storageKeys.js';
+import { navigate } from '../utils/navigate.js';
 import storage from '../utils/storage.js';
 import Sidebar from '../components/Sidebar/Sidebar.js';
 import DocumentEditor from '../components/Editor/DocumentEditor.js';
@@ -28,8 +29,18 @@ export default class DocumentPage {
     this.initComponents();
   }
 
-  setState(nextState) {
+  async setState(nextState) {
+    if (this.state.documentId !== nextState.documentId) await this.documentStore.fetchDocuments();
+
     this.state = nextState;
+    this.editorStore.setDocumentId(nextState.documentId);
+    this.editorStore.setDocument(
+      storage.getItem(DOCUMENT(nextState.documentId), {
+        title: '',
+        content: '',
+      })
+    );
+
     this.render();
   }
 
@@ -39,16 +50,17 @@ export default class DocumentPage {
     this.sidebar = new Sidebar({
       $target: this.$target.querySelector('.sidebar'),
       initialState: this.documentStore.state,
-      onAppend: async id => {
+      onAppend: async (id) => {
         await this.documentStore.addDocument('새로운 문서', id);
         await this.documentStore.fetchDocuments();
         this.render();
       },
-      onRemove: async id => {
+      onRemove: async (id) => {
         await this.documentStore.removeDocument(id);
         await this.documentStore.fetchDocuments();
         this.render();
       },
+      onNavigate: (id) => navigate(`/documents/${id}`),
     });
 
     this.documentEditor = new DocumentEditor({
@@ -61,43 +73,16 @@ export default class DocumentPage {
         });
       },
     });
-
-    // this.apiTest();
   }
 
-  async render() {
-    //TODO: DocumentTitle, ContentEditor, Sidebar의 내용을 새롭게 렌더링하는 코드가 들어가야 합니다.
+  render() {
+    //TODO: DocumentEditor, Sidebar의 내용을 새롭게 렌더링하는 코드가 들어가야 합니다.
     const { documentEditor, editorStore, sidebar, documentStore } = this;
 
     documentEditor.setState(editorStore.state.document);
     sidebar.setState(documentStore.state);
-  }
 
-  apiTest() {
-    let testButton = document.createElement('button');
-    testButton.innerText = '추가';
-    testButton.addEventListener('click', () => {
-      let temp = 69786;
-      addDocument('세 번째 깊이1', temp);
-      addDocument('세 번째 깊이2', temp);
-      addDocument('세 번째 깊이3', temp);
-    });
-    this.$target.appendChild(testButton);
-
-    testButton = document.createElement('button');
-    testButton.innerText = '수정';
-    testButton.addEventListener('click', () => {
-      modifyDocument({ title: '수정완료', content: '내용입니다' }, 69767);
-    });
-    this.$target.appendChild(testButton);
-
-    testButton = document.createElement('button');
-    testButton.innerText = '삭제';
-    testButton.addEventListener('click', () => {
-      removeDocument(69783);
-      removeDocument(69784);
-      removeDocument(69785);
-    });
-    this.$target.appendChild(testButton);
+    if (editorStore.state.documentId === 0) documentEditor.setHidden(true);
+    else documentEditor.setHidden(false);
   }
 }

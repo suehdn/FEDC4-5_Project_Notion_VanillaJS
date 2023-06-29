@@ -1,7 +1,8 @@
 export default class Sidebar {
-  constructor({ $target, initialState, onAppend, onRemove }) {
+  constructor({ $target, initialState, onNavigate, onAppend, onRemove }) {
     this.$target = $target;
     this.state = initialState;
+    this.onNavigate = onNavigate;
     this.onAppend = onAppend;
     this.onRemove = onRemove;
 
@@ -15,14 +16,15 @@ export default class Sidebar {
   }
 
   initEvents() {
-    this.$target.addEventListener('click', (e) => {
+    this.$target.addEventListener('click', e => {
       const role = e.target.dataset.role;
       if (!role) return;
 
       const id = Number(e.target.closest('li')?.getAttribute('data-id'));
       if (isNaN(id)) return;
 
-      if (role === 'append') this.onAppend(id);
+      if (role === 'navigate') this.onNavigate(id);
+      else if (role === 'append') this.onAppend(id);
       else if (role === 'remove') this.onRemove(id);
     });
   }
@@ -30,12 +32,12 @@ export default class Sidebar {
   render() {
     const { $target, state } = this;
 
-    const listTemplate = (list) => `<ul>${list.map(listItemTemplate).join('')}</ul>`;
+    const listTemplate = list => `<ul>${list.map(listItemTemplate).join('')}</ul>`;
 
     const listItemTemplate = ({ id, title, documents, createdAt, updateAt }) => `
       <li data-id="${id}">
         <div>
-          <span>${title}</span>
+          <span data-role="navigate">${title}</span>
           <button data-role="remove" type="button">X</button>
           <button data-role="append" type="button">+</button>
         </div>

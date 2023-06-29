@@ -7,7 +7,6 @@ export default class EditorStore {
 
   setDocumentId(id) {
     this.state.documentId = id;
-    this._update();
   }
 
   setDocument(document) {
@@ -17,6 +16,8 @@ export default class EditorStore {
 
   _update() {
     const { state } = this;
+    const { title, content } = state.document;
+    if (title === '' && content === '') return;
 
     storage.setItem(DOCUMENT(state.documentId), state.document);
 

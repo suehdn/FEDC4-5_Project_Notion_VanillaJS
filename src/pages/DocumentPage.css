@@ -2,6 +2,10 @@
   display: flex;
 }
 
+.hidden {
+  display: none;
+}
+
 .title-editor {
   font-size: 2rem;
   font-weight: bold;

@@ -14,6 +14,11 @@ export default class DocumentEditor {
     // this.$content.innerHTML = `ㅎㅎ <div>메롱</div> <div><h1><span>첫번째노드는이녀석입니다</span><span>깊은 곳</span></h1></div>`;
   }
 
+  setHidden(hidden) {
+    if (hidden) this.$target.classList.add('hidden');
+    else this.$target.classList.remove('hidden');
+  }
+
   setState(nextState) {
     this.state = nextState;
     this.render();
@@ -31,11 +36,11 @@ export default class DocumentEditor {
     //   this.onChange(e.target.innerHTML);
     // });
 
-    this.$title.addEventListener('keydown', e => {
+    this.$title.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') return e.preventDefault(); // 엔터 입력시 개행 방지
     });
 
-    this.$title.addEventListener('keyup', e => {
+    this.$title.addEventListener('keyup', (e) => {
       if (e.key === 'Enter') {
         // 엔터 입력시 커서를 content로 이동
         e.preventDefault();
@@ -44,7 +49,7 @@ export default class DocumentEditor {
       }
     });
 
-    this.$target.addEventListener('input', e => {
+    this.$target.addEventListener('input', (e) => {
       const role = e.target.dataset.role;
       if (!role || !['title', 'content'].includes(role)) return;
       // if (isComposing) return;
