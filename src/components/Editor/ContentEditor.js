@@ -38,9 +38,9 @@ export default class ContentEditor {
     const { state } = this;
     if (!state) return;
 
-    // const content = state.split('\n').join('<br>');
+    const content = state.content.split('\n').join('<br>');
     // const cursor = saveCursorPointer(this.$target);
-    // this.$target.innerHTML = state;
+    this.$target.innerHTML = content;
     // restoreCursorPointer(this.$target, cursor);
   }
 }

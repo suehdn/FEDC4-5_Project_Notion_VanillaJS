@@ -1,4 +1,6 @@
 import { addDocument, modifyDocument, removeDocument } from '../apis/api.js';
+import { DOCUMENT } from '../constants/storageKeys.js';
+import storage from '../utils/storage.js';
 import Sidebar from '../components/Sidebar/Sidebar.js';
 import ContentEditor from '../components/Editor/ContentEditor.js';
 import EditorStore from '../stores/editorStore.js';
@@ -7,13 +9,30 @@ import html from './DocumentPage.html';
 import './DocumentPage.css';
 
 export default class DocumentPage {
-  constructor({ $target }) {
+  constructor({ $target, initialState }) {
     this.$target = $target;
     this.$target.innerHTML = html;
 
-    this.editorStore = new EditorStore();
+    this.state = initialState;
+
+    this.editorStore = new EditorStore({
+      initialState: {
+        documentId: this.state.documentId,
+        ...storage.getItem(DOCUMENT(this.state.documentId), {
+          title: '',
+          content: '',
+        }),
+      },
+    });
+
+    console.log(this.editorStore.state);
     this.documentStore = new DocumentStore();
     this.initComponents();
+  }
+
+  setState(nextState) {
+    this.state = nextState;
+    this.render();
   }
 
   async initComponents() {
@@ -22,12 +41,12 @@ export default class DocumentPage {
     this.sidebar = new Sidebar({
       $target: this.$target.querySelector('.sidebar'),
       initialState: this.documentStore.state,
-      onAppend: async (id) => {
+      onAppend: async id => {
         await this.documentStore.addDocument('새로운 문서', id);
         await this.documentStore.fetchDocuments();
         this.render();
       },
-      onRemove: async (id) => {
+      onRemove: async id => {
         await this.documentStore.removeDocument(id);
         await this.documentStore.fetchDocuments();
         this.render();
@@ -36,7 +55,10 @@ export default class DocumentPage {
 
     this.contentEditor = new ContentEditor({
       $target: this.$target.querySelector('.content-editor'),
-      onChange: (value) => {
+      initialState: {
+        content: this.editorStore.state.content,
+      },
+      onChange: value => {
         this.editorStore.setContent(value);
         this.render();
       },

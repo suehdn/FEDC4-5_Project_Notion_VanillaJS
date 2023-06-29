@@ -1,12 +1,8 @@
 import storage from '../utils/storage.js';
 import { DOCUMENT } from '../constants/storageKeys.js';
 export default class EditorStore {
-  constructor() {
-    this.state = {
-      documentId: 0,
-      title: '',
-      content: '',
-    };
+  constructor({ initialState }) {
+    this.state = initialState;
   }
 
   setDocumentId(id) {
