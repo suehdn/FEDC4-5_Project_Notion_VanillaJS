@@ -1,4 +1,4 @@
-import { getDocuments, getDocument, postDocument, deleteDocument } from '../api';
+import { getDocuments, postDocument, deleteDocument } from '../api';
 import { pushRoute } from '../domain/pushRoute';
 import { replaceRoute } from '../domain/replaceRoute';
 import DocumentTree from './DocumentTree';
@@ -10,27 +10,40 @@ export default function DocumentTreeRoot({ targetElement }) {
     this.render();
   };
 
+  this.state = {
+    invisibleTreeSet: new Set(),
+    foldedTreeSet: new Set(),
+  };
+
+  this.setState = (nextState) => {
+    this.state = { ...nextState };
+    this.render();
+  };
+
   this.setEvent = () => {
     targetElement.addEventListener('click', (e) => {
       if (!e.target.closest('.document-toggle')) return;
 
-      const toggleBtn = e.target;
       const treeElement = e.target.parentNode.parentNode;
-
-      if (toggleBtn.textContent === 'v') {
-        toggleBtn.textContent = '>';
+      const foldedTreeId = Number(treeElement.dataset.id);
+      const foldedTreeSet = new Set(this.state.foldedTreeSet.values());
+      if (foldedTreeSet.has(foldedTreeId)) {
+        foldedTreeSet.delete(foldedTreeId);
       } else {
-        toggleBtn.textContent = 'v';
+        foldedTreeSet.add(foldedTreeId);
       }
 
+      const invisibleTreeSet = new Set(this.state.invisibleTreeSet.values());
       Array.from(treeElement.children).forEach((node) => {
         if (node.classList.contains('document-blob')) return;
-        if (node.style.display === 'none') {
-          node.style.display = 'block';
+        const invisibleTreeId = Number(node.dataset.id);
+        if (invisibleTreeSet.has(invisibleTreeId)) {
+          invisibleTreeSet.delete(invisibleTreeId);
         } else {
-          node.style.display = 'none';
+          invisibleTreeSet.add(invisibleTreeId);
         }
       });
+      this.setState({ ...this.state, invisibleTreeSet, foldedTreeSet });
     });
 
     targetElement.addEventListener('click', (e) => {
@@ -43,10 +56,23 @@ export default function DocumentTreeRoot({ targetElement }) {
       if (!e.target.closest('.new-document-btn')) return;
       const documentTree = e.target.parentNode.parentNode;
       const newDocument = await postDocument({ title: '', parent: documentTree.dataset.id });
+
+      if (this.state.foldedTreeSet.has(Number(documentTree.dataset.id))) {
+        const toggleBtn = documentTree.querySelector('.document-toggle');
+        toggleBtn.dispatchEvent(
+          new Event('click', {
+            bubbles: true,
+          }),
+        );
+      }
+
       new DocumentTree({
         targetElement: documentTree,
         childDocuments: [{ ...newDocument, documents: [] }],
+        invisibleTreeSet: this.state.invisibleTreeSet,
+        foldedTreeSet: this.state.foldedTreeSet,
       });
+
       pushRoute(`/documents/${newDocument.id}`);
     });
 
@@ -70,6 +96,8 @@ export default function DocumentTreeRoot({ targetElement }) {
     new DocumentTree({
       targetElement,
       childDocuments: documents,
+      invisibleTreeSet: this.state.invisibleTreeSet,
+      foldedTreeSet: this.state.foldedTreeSet,
     });
   };
 
