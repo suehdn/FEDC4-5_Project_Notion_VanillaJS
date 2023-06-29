@@ -19,13 +19,13 @@ export default function Document({ targetElement, documentId }) {
       return;
     }
 
+    const { title, content } = await getDocument(documentId);
     targetElement.innerHTML = `
       <input class="document-title"/>
       <textarea class="document-content"></textarea>
     `;
     const [documentTitleElement, documentContentElement] = targetElement.children;
 
-    const { title, content } = await getDocument(documentId);
     documentTitleElement.value = title;
     documentContentElement.value = content;
   };
