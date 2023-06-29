@@ -14,7 +14,7 @@ export default class DocumentStore {
     this.setState(documents || []);
   }
 
-  async addDocument(title, parent = null) {
+  async addDocument(title, parent) {
     await addDocument(title, parent);
   }
 

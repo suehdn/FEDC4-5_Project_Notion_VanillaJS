@@ -9,6 +9,7 @@ export default class App {
         documentId: 0,
       },
     });
+    this.$target = $target;
 
     this.initEvents();
     this.route();
@@ -30,6 +31,7 @@ export default class App {
     if (pathname === '/') {
     } else if (pathname.indexOf('/documents/') === 0) {
       const [, , documentId] = pathname.split('/');
+      if (isNaN(documentId) || Number(documentId) === 0) return;
 
       this.documentPage.setState({ documentId: Number(documentId) });
     }

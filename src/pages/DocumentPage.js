@@ -1,4 +1,3 @@
-import { addDocument, modifyDocument, removeDocument } from '../apis/api.js';
 import { DOCUMENT } from '../constants/storageKeys.js';
 import { navigate } from '../utils/navigate.js';
 import storage from '../utils/storage.js';
@@ -45,34 +44,37 @@ export default class DocumentPage {
   }
 
   async initComponents() {
-    await this.documentStore.fetchDocuments();
+    const { $target, documentStore, editorStore } = this;
+    await documentStore.fetchDocuments();
 
     this.sidebar = new Sidebar({
-      $target: this.$target.querySelector('.sidebar'),
-      initialState: this.documentStore.state,
+      $target: $target.querySelector('.sidebar'),
+      initialState: documentStore.state,
       onAppend: async (id) => {
-        await this.documentStore.addDocument('새로운 문서', id);
-        await this.documentStore.fetchDocuments();
+        await documentStore.addDocument('새로운 문서', id);
+        await documentStore.fetchDocuments();
         this.render();
       },
       onRemove: async (id) => {
-        await this.documentStore.removeDocument(id);
-        await this.documentStore.fetchDocuments();
+        await documentStore.removeDocument(id);
+        await documentStore.fetchDocuments();
         this.render();
       },
       onNavigate: (id) => navigate(`/documents/${id}`),
     });
 
     this.documentEditor = new DocumentEditor({
-      $target: this.$target.querySelector('.editor'),
-      initialState: this.editorStore.state.document,
+      $target: $target.querySelector('.editor'),
+      initialState: editorStore.state.document,
       onChange: ({ name, value }) => {
-        this.editorStore.setDocument({
-          ...this.editorStore.state.document,
+        editorStore.setDocument({
+          ...editorStore.state.document,
           [name]: value,
         });
       },
     });
+
+    if (editorStore.state.documentId === 0) this.documentEditor.setHidden(true);
   }
 
   render() {
@@ -81,7 +83,7 @@ export default class DocumentPage {
 
     documentEditor.setState(editorStore.state.document);
     sidebar.setState(documentStore.state);
-
+    
     if (editorStore.state.documentId === 0) documentEditor.setHidden(true);
     else documentEditor.setHidden(false);
   }
