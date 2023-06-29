@@ -44,8 +44,19 @@
   padding: 0.25em;
 }
 
+.sidebar__document.active {
+  color: rgb(55, 53, 47);
+  background-color: rgb(226, 226, 225);
+  font-weight: bold;
+}
+
 .sidebar__document:hover {
   background-color: rgb(235, 235, 234);
+}
+
+.sidebar__document:hover .sidebar__document--action-section {
+  display: flex;
+  gap: 0.2em;
 }
 
 .sidebar__document--title {
@@ -56,12 +67,11 @@
 }
 
 .sidebar__document--action-section {
-  display: flex;
-  gap: 0.2em;
+  display: none;
 }
 
 .sidebar__icon {
-  padding: 0.2em;
+  padding: 0.15em;
   border-radius: 5px;
 }
 

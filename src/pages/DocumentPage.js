@@ -49,7 +49,10 @@ export default class DocumentPage {
 
     this.sidebar = new Sidebar({
       $target: $target.querySelector('.sidebar'),
-      initialState: documentStore.state,
+      initialState: {
+        currentDocumentId: editorStore.state.documentId,
+        documents: documentStore.state,
+      },
       onAppend: async (id) => {
         await documentStore.addDocument('새로운 문서', id);
         await documentStore.fetchDocuments();
@@ -82,7 +85,10 @@ export default class DocumentPage {
     const { documentEditor, editorStore, sidebar, documentStore } = this;
 
     documentEditor.setState(editorStore.state.document);
-    sidebar.setState(documentStore.state);
+    sidebar.setState({
+      currentDocumentId: editorStore.state.documentId,
+      documents: documentStore.state,
+    });
 
     if (editorStore.state.documentId === 0) documentEditor.setHidden(true);
     else documentEditor.setHidden(false);

@@ -33,11 +33,14 @@ export default class Sidebar {
   }
 
   render() {
-    const { $target, state } = this;
+    const { $target } = this;
+    const { currentDocumentId, documents } = this.state;
+
+    console.log(this.state);
 
     $target.innerHTML = `
       <header class="sidebar__header">Hoon's Notion</header>
-      <nav class="sidebar__nav">${template.documentList(state, 0)}</nav>
+      <nav class="sidebar__nav">${template.documentList({ documents, depth: 0, currentDocumentId })}</nav>
       <footer class="sidebar__footer" data-role="create">
         ${plusSvg()}
         <span>페이지 추가</span>
