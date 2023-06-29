@@ -30,12 +30,12 @@ export default class Component{
   }
 
   setEvent(events){
-    if(events) events.forEach(event => this.addEventDelegation(event))
+    if(events) events.forEach(event => this.setEventDelegation(event))
   }
 
   render(){}
 
-  addEventDelegation({action, tag, callback}){
+  setEventDelegation({action, tag, callback}){
     this._$target.addEventListener(action, (event) => {
       if(event.target.closest(`${tag}`)){
         callback(event)
@@ -48,8 +48,10 @@ export default class Component{
   }
 
   set state(newState){
-    this._state = newState
-    this.render()
+    if(this._state !== newState){
+      this._state = newState
+      this.render()
+    }
   }
 
   get $target(){
