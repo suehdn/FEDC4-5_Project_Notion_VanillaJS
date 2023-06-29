@@ -3,8 +3,12 @@
   max-width: 20em;
   display: flex;
   flex-direction: column;
+  fill: rgba(25, 23, 17, 0.6);
+  color: rgba(25, 23, 17, 0.6);
   background-color: rgb(251, 251, 250);
+  font-size: 0.9rem;
   overflow: hidden auto;
+  user-select: none;
 }
 
 .title-editor {
@@ -19,7 +23,10 @@
   border: 1px solid black;
 }
 
-.document-svg, .trash-svg, .plus-svg {
-  width: 16px;
-  fill: rgb(55, 53, 47);
+.document-svg, .trash-svg, .plus-svg  {
+  width: 1em;
+}
+
+.chevron-right-svg {
+  width: 0.5em;
 }

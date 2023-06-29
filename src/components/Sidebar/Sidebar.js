@@ -38,7 +38,10 @@ export default class Sidebar {
     $target.innerHTML = `
       <header class="sidebar__header">Hoon's Notion</header>
       <nav class="sidebar__nav">${template.documentList(state, 0)}</nav>
-      <footer class="sidebar__footer" data-role="create">${plusSvg()}페이지 추가</footer>
+      <footer class="sidebar__footer" data-role="create">
+        ${plusSvg()}
+        <span>페이지 추가</span>
+      </footer>
     `;
   }
 }
