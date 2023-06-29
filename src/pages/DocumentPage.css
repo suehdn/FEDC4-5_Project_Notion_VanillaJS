@@ -5,4 +5,11 @@
 .title-editor {
   font-size: 2rem;
   font-weight: bold;
+  width: 500px;
+  border: 1px solid black;
+}
+
+.content-editor {
+  width: 500px;
+  border: 1px solid black;
 }

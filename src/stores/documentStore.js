@@ -11,7 +11,7 @@ export default class DocumentStore {
 
   async fetchDocuments() {
     const documents = await getDocuments();
-    this.setState(documents);
+    this.setState(documents || []);
   }
 
   async addDocument(title, parent = null) {

@@ -12,7 +12,6 @@ export default class DocumentPage {
   constructor({ $target, initialState }) {
     this.$target = $target;
     this.$target.innerHTML = html;
-
     this.state = initialState;
 
     this.editorStore = new EditorStore({
@@ -55,8 +54,11 @@ export default class DocumentPage {
     this.documentEditor = new DocumentEditor({
       $target: this.$target.querySelector('.editor'),
       initialState: this.editorStore.state.document,
-      onChange: document => {
-        this.editorStore.setDocument(document);
+      onChange: ({ name, value }) => {
+        this.editorStore.setDocument({
+          ...this.editorStore.state.document,
+          [name]: value,
+        });
       },
     });
 
@@ -68,7 +70,6 @@ export default class DocumentPage {
     const { documentEditor, editorStore, sidebar, documentStore } = this;
 
     documentEditor.setState(editorStore.state.document);
-    console.log(documentStore);
     sidebar.setState(documentStore.state);
   }
 

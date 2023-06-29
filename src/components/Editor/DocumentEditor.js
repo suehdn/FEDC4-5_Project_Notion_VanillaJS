@@ -49,12 +49,8 @@ export default class DocumentEditor {
       if (!role || !['title', 'content'].includes(role)) return;
       // if (isComposing) return;
 
-      this.onChange({
-        ...this.state,
-        [role]: e.target.innerHTML,
-      });
+      this.onChange({ name: role, value: e.target.innerHTML });
     });
-
   }
 
   render() {
