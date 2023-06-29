@@ -83,7 +83,7 @@ export default class DocumentPage {
 
     documentEditor.setState(editorStore.state.document);
     sidebar.setState(documentStore.state);
-    
+
     if (editorStore.state.documentId === 0) documentEditor.setHidden(true);
     else documentEditor.setHidden(false);
   }

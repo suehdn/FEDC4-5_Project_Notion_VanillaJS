@@ -1,6 +1,8 @@
 .sidebar {
   min-width: 20em;
   max-width: 20em;
+  display: flex;
+  flex-direction: column;
   background-color: rgb(251, 251, 250);
   overflow: hidden auto;
 }
