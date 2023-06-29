@@ -21,6 +21,7 @@ export default function DocumentTreeRoot({ targetElement }) {
   };
 
   this.setEvent = () => {
+    // 토글버튼 클릭 이벤트리스너
     targetElement.addEventListener('click', (e) => {
       if (!e.target.closest('.document-toggle')) return;
 
@@ -46,12 +47,14 @@ export default function DocumentTreeRoot({ targetElement }) {
       this.setState({ ...this.state, invisibleTreeSet, foldedTreeSet });
     });
 
+    // 문서 이름 클릭 이벤트리스너
     targetElement.addEventListener('click', (e) => {
       if (!e.target.classList.contains('document-blob')) return;
       const documentId = e.target.parentNode.dataset.id;
       pushRoute(`/documents/${documentId}`);
     });
 
+    // 새 문서 버튼 클릭 이벤트리스너
     targetElement.addEventListener('click', async (e) => {
       if (!e.target.closest('.new-document-btn')) return;
       const documentTree = e.target.parentNode.parentNode;
@@ -76,6 +79,7 @@ export default function DocumentTreeRoot({ targetElement }) {
       pushRoute(`/documents/${newDocument.id}`);
     });
 
+    // 삭제 버튼 클릭 이벤트리스너
     targetElement.addEventListener('click', async (e) => {
       if (!e.target.closest('.delete-document-btn')) return;
       const { pathname } = window.location;
