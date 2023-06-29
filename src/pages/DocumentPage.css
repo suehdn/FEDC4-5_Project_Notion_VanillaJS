@@ -1,9 +1,8 @@
-#app {
-  display: flex;
-}
-
-.hidden {
-  display: none;
+.sidebar {
+  min-width: 20em;
+  max-width: 20em;
+  background-color: rgb(251, 251, 250);
+  overflow: hidden auto;
 }
 
 .title-editor {
@@ -16,4 +15,9 @@
 .content-editor {
   width: 500px;
   border: 1px solid black;
+}
+
+.document-svg, .trash-svg, .plus-svg {
+  width: 16px;
+  fill: rgb(55, 53, 47);
 }

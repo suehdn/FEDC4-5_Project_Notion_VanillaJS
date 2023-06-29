@@ -1,3 +1,6 @@
+import { documentSvg, trashSvg, plusSvg } from '../../utils/svgTemplates.js';
+import './Sidebar.css';
+
 export default class Sidebar {
   constructor({ $target, initialState, onNavigate, onAppend, onRemove }) {
     this.$target = $target;
@@ -16,8 +19,8 @@ export default class Sidebar {
   }
 
   initEvents() {
-    this.$target.addEventListener('click', e => {
-      const role = e.target.dataset.role;
+    this.$target.addEventListener('click', (e) => {
+      const role = e.target.closest('[data-role]')?.dataset.role;
       if (!role) return;
 
       const id = Number(e.target.closest('li')?.getAttribute('data-id'));
@@ -32,19 +35,23 @@ export default class Sidebar {
   render() {
     const { $target, state } = this;
 
-    const listTemplate = list => `<ul>${list.map(listItemTemplate).join('')}</ul>`;
+    const listTemplate = (list, depth) =>
+      `<ul class="sidebar__document-list">${list.map((item) => listItemTemplate(item, depth)).join('')}</ul>`;
 
-    const listItemTemplate = ({ id, title, documents, createdAt, updateAt }) => `
-      <li data-id="${id}">
-        <div>
-          <span data-role="navigate">${title}</span>
-          <button data-role="remove" type="button">X</button>
-          <button data-role="append" type="button">+</button>
+    const listItemTemplate = ({ id, title, documents, createdAt, updateAt }, depth) => `
+      <li class="sidebar__document-item" data-id="${id}">
+        <div class="sidebar__document" data-role="navigate" style="padding-left: ${0.5 + 1 * depth}em;">
+          <div class="sidebar__document-svg">${documentSvg('document-svg')}</div>
+          <div class="sidebar__document--title">${title}</div>
+          <section class="sidebar__document--action-section">
+            <div data-role="remove">${trashSvg('trash-svg')}</div>
+            <div data-role="append">${plusSvg('plus-svg')}</div>
+          </section>
         </div>
-        ${documents.length > 0 ? listTemplate(documents) : ''}
+        ${documents.length > 0 ? listTemplate(documents, depth + 1) : ''}
       </li>
     `;
 
-    $target.innerHTML = `${listTemplate(state)}`;
+    $target.innerHTML = `${listTemplate(state, 0)}`;
   }
 }

@@ -1,0 +1,31 @@
+.sidebar__document-list {
+  overflow: hidden;
+  padding-inline-start: 0px;
+}
+
+.sidebar__document-item {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar__document {
+  display: flex;
+  overflow: hidden;
+  padding: 0.5em;
+}
+
+.sidebar__document:hover {
+  background-color: gray;
+}
+
+.sidebar__document--title {
+  flex-grow: 1;
+  overflow: hidden;
+  text-overflow: clip;
+  white-space: nowrap;
+}
+
+.sidebar__document--action-section {
+  display: flex;
+  gap: 0.5em;
+}
