@@ -2,7 +2,7 @@ import { addDocument, modifyDocument, removeDocument } from '../apis/api.js';
 import { DOCUMENT } from '../constants/storageKeys.js';
 import storage from '../utils/storage.js';
 import Sidebar from '../components/Sidebar/Sidebar.js';
-import ContentEditor from '../components/Editor/ContentEditor.js';
+import DocumentEditor from '../components/Editor/DocumentEditor.js';
 import EditorStore from '../stores/editorStore.js';
 import DocumentStore from '../stores/documentStore.js';
 import html from './DocumentPage.html';
@@ -18,14 +18,13 @@ export default class DocumentPage {
     this.editorStore = new EditorStore({
       initialState: {
         documentId: this.state.documentId,
-        ...storage.getItem(DOCUMENT(this.state.documentId), {
+        document: storage.getItem(DOCUMENT(this.state.documentId), {
           title: '',
           content: '',
         }),
       },
     });
 
-    console.log(this.editorStore.state);
     this.documentStore = new DocumentStore();
     this.initComponents();
   }
@@ -53,14 +52,11 @@ export default class DocumentPage {
       },
     });
 
-    this.contentEditor = new ContentEditor({
-      $target: this.$target.querySelector('.content-editor'),
-      initialState: {
-        content: this.editorStore.state.content,
-      },
-      onChange: value => {
-        this.editorStore.setContent(value);
-        this.render();
+    this.documentEditor = new DocumentEditor({
+      $target: this.$target.querySelector('.editor'),
+      initialState: this.editorStore.state.document,
+      onChange: document => {
+        this.editorStore.setDocument(document);
       },
     });
 
@@ -69,9 +65,9 @@ export default class DocumentPage {
 
   async render() {
     //TODO: DocumentTitle, ContentEditor, Sidebar의 내용을 새롭게 렌더링하는 코드가 들어가야 합니다.
-    const { contentEditor, editorStore, sidebar, documentStore } = this;
+    const { documentEditor, editorStore, sidebar, documentStore } = this;
 
-    // contentEditor.setState(editorStore.state.content);
+    documentEditor.setState(editorStore.state.document);
     sidebar.setState(documentStore.state);
   }
 

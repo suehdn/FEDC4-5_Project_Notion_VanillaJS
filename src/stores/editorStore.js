@@ -10,23 +10,15 @@ export default class EditorStore {
     this._update();
   }
 
-  setTitle(value) {
-    this.state.title = value;
-    this._update();
-  }
-
-  setContent(value) {
-    this.state.content = value;
+  setDocument(document) {
+    this.state.document = document;
     this._update();
   }
 
   _update() {
     const { state } = this;
 
-    storage.setItem(DOCUMENT(state.documentId), {
-      title: state.title,
-      content: state.content,
-    });
+    storage.setItem(DOCUMENT(state.documentId), state.document);
 
     // TODO: API 요청을 디바운스로 해야합니다.
   }
