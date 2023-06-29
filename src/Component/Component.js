@@ -19,24 +19,24 @@
 // }
 
 export default class Component{
- #$target; #state; #props; 
+ _$target; _state; _props; 
 
   constructor({$target, initialState={}, props={}}){
-    this.#$target = $target
-    this.#state = initialState
-    this.#props = props
-    this.setEvent(this.#props.events)
+    this._$target = $target
+    this._state = initialState
+    this._props = props
+    this.setEvent(this._props.events)
     this.render()
   }
 
   setEvent(events){
-    events.forEach(event => this.addEventDelegation(event))
+    if(events) events.forEach(event => this.addEventDelegation(event))
   }
 
   render(){}
 
   addEventDelegation({action, tag, callback}){
-    this.#$target.addEventListener(action, (event) => {
+    this._$target.addEventListener(action, (event) => {
       if(event.target.closest(`${tag}`)){
         callback(event)
       }
@@ -44,19 +44,19 @@ export default class Component{
   }
 
   get state(){
-    return this.#state
+    return this._state
   }
 
   set state(newState){
-    this.#state = newState
+    this._state = newState
     this.render()
   }
 
   get $target(){
-    return this.#$target
+    return this._$target
   }
 
   get props(){
-    return this.#props
+    return this._props
   }
 }
