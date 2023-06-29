@@ -68,6 +68,7 @@ export default class DocumentPage {
     const { documentEditor, editorStore, sidebar, documentStore } = this;
 
     documentEditor.setState(editorStore.state.document);
+    console.log(documentStore);
     sidebar.setState(documentStore.state);
   }
 

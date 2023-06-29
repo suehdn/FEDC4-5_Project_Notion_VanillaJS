@@ -31,21 +31,30 @@ export default class DocumentEditor {
     //   this.onChange(e.target.innerHTML);
     // });
 
-    this.$title.addEventListener('input', e => {
-      this.onChange({
-        ...this.state,
-        title: e.target.value,
-      });
+    this.$title.addEventListener('keydown', e => {
+      if (e.key === 'Enter') return e.preventDefault(); // 엔터 입력시 개행 방지
     });
 
-    this.$content.addEventListener('input', e => {
+    this.$title.addEventListener('keyup', e => {
+      if (e.key === 'Enter') {
+        // 엔터 입력시 커서를 content로 이동
+        e.preventDefault();
+        this.$content.focus();
+        return;
+      }
+    });
+
+    this.$target.addEventListener('input', e => {
+      const role = e.target.dataset.role;
+      if (!role || !['title', 'content'].includes(role)) return;
       // if (isComposing) return;
 
       this.onChange({
         ...this.state,
-        content: e.target.innerHTML,
+        [role]: e.target.innerHTML,
       });
     });
+
   }
 
   render() {
@@ -54,7 +63,7 @@ export default class DocumentEditor {
 
     const content = state.content.split('\n').join('<br>');
     // const cursor = saveCursorPointer(this.$target);
-    this.$title.value = state.title;
+    this.$title.innerHTML = state.title;
     this.$content.innerHTML = content;
     // restoreCursorPointer(this.$target, cursor);
   }
