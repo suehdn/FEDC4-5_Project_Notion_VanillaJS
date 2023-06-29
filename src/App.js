@@ -1,13 +1,14 @@
 import Component from "./Component/Component.js"
 import DocumentTree from "./Component/DocumentTree.js"
-import { DOCUMENT_TREE_DUMMY_DATA } from "./DUMMY_DATA.js"
+import Editor from "./Component/Editor.js"
+import { DOCUMENT_DUMMY_DATA, DOCUMENT_TREE_DUMMY_DATA } from "./DUMMY_DATA.js"
 
 export default class App extends Component{
 
   render(){
     this.$target.innerHTML = 
     `
-      <aside id='documentTree'>글 트리</aside>
+      <aside id='documentTree'></aside>
       <section id='editor'>편집하는 곳</section>
     `
 
@@ -23,11 +24,18 @@ export default class App extends Component{
             tag:'a',
             callback: (event) => {
               event.preventDefault();
-              console.log(event.target.href)
               history.pushState(null,null,event.target.href)
             }
           },
         ]
+      }
+    })
+
+    new Editor({
+      $target: $editor,
+      initialState : DOCUMENT_DUMMY_DATA,
+      props : {
+        events: []
       }
     })
   }
