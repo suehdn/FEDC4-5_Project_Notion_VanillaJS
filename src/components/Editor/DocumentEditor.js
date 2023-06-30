@@ -59,12 +59,10 @@ export default class DocumentEditor {
   }
 
   render() {
-    const { state } = this;
-    if (!state) return;
+    const { title, content } = this.state;
 
-    const content = state.content.split('\n').join('<br>');
     // const cursor = saveCursorPointer(this.$target);
-    this.$title.innerHTML = state.title;
+    this.$title.innerHTML = title;
     this.$content.innerHTML = content;
     // restoreCursorPointer(this.$target, cursor);
   }

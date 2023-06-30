@@ -3,7 +3,7 @@ import { navigate } from '../utils/navigate.js';
 import storage from '../utils/storage.js';
 import Sidebar from '../components/Sidebar/Sidebar.js';
 import DocumentEditor from '../components/Editor/DocumentEditor.js';
-import EditorStore from '../stores/editorStore.js';
+import EditorStore, { initialDocument } from '../stores/editorStore.js';
 import DocumentStore from '../stores/documentStore.js';
 import html from './DocumentPage.html';
 import './DocumentPage.css';
@@ -17,10 +17,7 @@ export default class DocumentPage {
     this.editorStore = new EditorStore({
       initialState: {
         documentId: this.state.documentId,
-        document: storage.getItem(DOCUMENT(this.state.documentId), {
-          title: '',
-          content: '',
-        }),
+        document: initialDocument,
       },
     });
 
@@ -39,12 +36,7 @@ export default class DocumentPage {
 
     this.state = nextState;
     this.editorStore.setDocumentId(nextState.documentId);
-    this.editorStore.setDocument(
-      storage.getItem(DOCUMENT(nextState.documentId), {
-        title: '',
-        content: '',
-      })
-    );
+    await this.editorStore.fetchDocument(nextState.documentId);
 
     this.render();
   }
@@ -82,8 +74,10 @@ export default class DocumentPage {
       onChange: ({ name, value }) => {
         editorStore.setDocument({
           ...editorStore.state.document,
+          updateAt: new Date(),
           [name]: value,
         });
+        editorStore.saveDocument();
       },
     });
 
@@ -91,7 +85,6 @@ export default class DocumentPage {
   }
 
   render() {
-    //TODO: DocumentEditor, Sidebar의 내용을 새롭게 렌더링하는 코드가 들어가야 합니다.
     const { documentEditor, editorStore, sidebar, documentStore } = this;
 
     documentEditor.setState(editorStore.state.document);
