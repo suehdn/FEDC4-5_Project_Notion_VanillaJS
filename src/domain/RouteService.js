@@ -4,6 +4,7 @@ import DocumentTreeRoot from '../components/DocumentTreeRoot';
 export class RouteService {
   constructor() {
     if (!RouteService.instance) {
+      this.#setEvent();
       this.appElement = document.querySelector('#app');
       this.appElement.innerHTML = `
         <div class="document-tree-root"></div>
@@ -16,6 +17,10 @@ export class RouteService {
     }
 
     return RouteService.instance;
+  }
+
+  #setEvent() {
+    window.addEventListener('popstate', () => this.route());
   }
 
   route() {
