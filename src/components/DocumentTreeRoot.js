@@ -1,6 +1,5 @@
 import { getDocuments, postDocument, deleteDocument } from '../api';
-import { pushRoute } from '../domain/pushRoute';
-import { replaceRoute } from '../domain/replaceRoute';
+import { RouteService } from '../domain/RouteService';
 import DocumentTree from './DocumentTree';
 
 export default function DocumentTreeRoot({ targetElement }) {
@@ -50,13 +49,15 @@ export default function DocumentTreeRoot({ targetElement }) {
     // 문서 이름 클릭 이벤트리스너
     targetElement.addEventListener('click', (e) => {
       if (!e.target.classList.contains('document-blob-title')) return;
+      const router = new RouteService();
       const documentId = e.target.parentNode.parentNode.dataset.id;
-      pushRoute(`/documents/${documentId}`);
+      router.push(`/documents/${documentId}`);
     });
 
     // 새 문서 버튼 클릭 이벤트리스너
     targetElement.addEventListener('click', async (e) => {
       if (!e.target.closest('.new-document-btn')) return;
+      const router = new RouteService();
       const documentTree = e.target.parentNode.parentNode;
       const newDocument = await postDocument({ title: '', parent: documentTree.dataset.id });
 
@@ -76,20 +77,21 @@ export default function DocumentTreeRoot({ targetElement }) {
         foldedTreeSet: this.state.foldedTreeSet,
       });
 
-      pushRoute(`/documents/${newDocument.id}`);
+      router.push(`/documents/${newDocument.id}`);
     });
 
     // 삭제 버튼 클릭 이벤트리스너
     targetElement.addEventListener('click', async (e) => {
       if (!e.target.closest('.delete-document-btn')) return;
+      const router = new RouteService();
       const { pathname } = window.location;
       const documentIdParam = Number(pathname.split('/')[2]);
       const documentTree = e.target.parentNode.parentNode;
       await deleteDocument(documentTree.dataset.id);
       if (documentIdParam === Number(documentTree.dataset.id)) {
-        replaceRoute('/');
+        router.replace('/');
       } else {
-        replaceRoute(`/documents/${documentIdParam}`);
+        router.replace(`/documents/${documentIdParam}`);
       }
     });
   };

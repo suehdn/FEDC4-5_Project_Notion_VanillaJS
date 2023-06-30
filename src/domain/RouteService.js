@@ -18,13 +18,14 @@ export class RouteService {
       this.documentTreeRoot = new DocumentTreeRoot({ targetElement: documentTreeRootElement });
       this.selectedDocument = new Document({ targetElement: selectedDocumentElement });
       RouteService.instance = this;
+      this.#route();
     }
 
     return RouteService.instance;
   }
 
   #setEvent() {
-    window.addEventListener('popstate', () => this.route());
+    window.addEventListener('popstate', () => this.#route());
     window.addEventListener('editTitle', (e) => {
       const { documentId, title } = e.detail;
       const documentTreeElement = document.querySelector(`.document-tree[data-id="${documentId}"]`);
@@ -34,7 +35,7 @@ export class RouteService {
     window.addEventListener('asyncEditTitle', () => this.documentTreeRoot.render());
   }
 
-  route() {
+  #route() {
     const { pathname } = window.location;
     const appElement = document.querySelector('#app');
 
@@ -48,5 +49,15 @@ export class RouteService {
     } else {
       appElement.textContent = '404 not found';
     }
+  }
+
+  push(url) {
+    history.pushState(null, null, url);
+    this.#route();
+  }
+
+  replace(url) {
+    history.replaceState(null, null, url);
+    this.#route();
   }
 }
