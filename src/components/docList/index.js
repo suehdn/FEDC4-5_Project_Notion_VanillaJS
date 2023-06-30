@@ -1,37 +1,21 @@
-import DocNode from "./docNode"
-
 export default function DocList({ $target, initialState = [] }) {
-  const mockData = [
-    {
-      id: 1,
-      title: "제목1",
-      content: "내용1",
-      createdAt: "2021-01-01",
-      updatedAt: "2021-01-01",
-    },
-    {
-      id: 2,
-      title: "제목2",
-      content: "내용2",
-      createdAt: "2021-01-01",
-      updatedAt: "2021-01-01",
-    },
-  ]
-
-  // this.state = initialState
-  this.state = mockData
+  this.state = initialState
 
   this.render = () => {
-    $target.innerHTML = `
-      <ul class="doc-list">
-      </ul>
-    `
-    const $docList = $target.querySelector(".doc-list")
     this.state.forEach((doc) => {
-      new DocNode({
-        $target: $docList,
-        doc,
-      })
+      const $child = document.createElement("ul")
+      $child.className = "doc-list"
+      $child.dataset.id = doc.id
+      const $text = document.createElement("span")
+      $text.className = "doc-text"
+      $text.innerText = doc.title
+      $child.appendChild($text)
+
+      if (doc.documents.length) {
+        new DocList({ $target: $child, initialState: doc.documents })
+      }
+
+      $target.appendChild($child)
     })
   }
 

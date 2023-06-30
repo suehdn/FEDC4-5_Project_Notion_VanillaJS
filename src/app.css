@@ -21,7 +21,7 @@
 .side-bar {
   width: fit-content;
   position: relative;
-  padding: 20px;
+  padding: 20px 20px 20px 0px;
   border: 1px solid #000;
   float: left;
 }
@@ -36,7 +36,14 @@
 }
 
 ul.doc-list {
-  padding: 10px;
+  padding-left: 15px;
+}
+
+.doc-text:hover {
+  cursor: pointer;
+  transition: 0.3s;
+  background-color: #ccc;
+  border-radius: 5px;
 }
 
 .editor {
