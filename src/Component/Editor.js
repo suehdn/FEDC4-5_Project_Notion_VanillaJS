@@ -7,7 +7,7 @@ export default class Editor extends Component{
     this.$target.innerHTML = 
     `
       <textarea id='editorTextarea'>
-        ${this.state.content}
+        ${ this.state.content }
       </textarea>
     `
   }

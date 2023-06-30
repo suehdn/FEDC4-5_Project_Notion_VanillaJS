@@ -1,6 +1,6 @@
-import Component from "./Component/Component.js"
-import DocumentTree from "./Component/DocumentTree.js"
-import Editor from "./Component/Editor.js"
+import Component from './Component/Component.js'
+import DocumentTree from './Component/DocumentTree.js'
+import Editor from './Component/Editor.js'
 import { DOCUMENT_DUMMY_DATA, DOCUMENT_TREE_DUMMY_DATA } from "./DUMMY_DATA.js"
 
 export default class App extends Component{
@@ -25,18 +25,28 @@ export default class App extends Component{
             callback: (event) => {
               event.preventDefault();
               history.pushState(null,null,event.target.href)
+              this.route()
             }
           },
         ]
       }
     })
 
-    new Editor({
+    this.editor = new Editor({
       $target: $editor,
-      initialState : DOCUMENT_DUMMY_DATA,
+      initialState : { content : "환영합니다!"},
       props : {
         events: []
       }
     })
+  }
+
+  route(){
+    const { pathname } = window.location
+    console.log(pathname)
+    const [,documentId] = pathname.split('=')
+
+    this.editor.state = `https://kdt-frontend.programmers.co.kr/documents/%7BdocumentId%7D${documentId}`
+    this.editor.state = DOCUMENT_DUMMY_DATA
   }
 }

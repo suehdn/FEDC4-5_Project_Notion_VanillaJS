@@ -10,7 +10,7 @@ export default class DocumentTree extends Component{
            
           `
           <li id="document-${document.id}" class="document">
-            <a href='/${document.id}'>${document.title}</a>
+            <a href='documents=${document.id}'>${document.title}</a>
             <button class="documentAddButton">+</button>
           </li>
           `
