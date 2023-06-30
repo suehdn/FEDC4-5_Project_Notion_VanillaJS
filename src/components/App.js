@@ -20,9 +20,14 @@ export default class App {
       const { nextUrl } = e.detail;
       if (!nextUrl) return;
 
-      history.pushState(null, null, nextUrl);
+      if (window.location.pathname === nextUrl) history.replaceState(null, null, nextUrl);
+      else history.pushState(null, null, nextUrl);
       this.route();
     });
+
+    window.addEventListener('popstate', (e) => {
+      this.route();
+    })
   }
 
   route() {
