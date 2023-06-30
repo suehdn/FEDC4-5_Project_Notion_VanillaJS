@@ -1,14 +1,23 @@
 import template from './templates.js';
 import { plusSvg } from '../../utils/svgTemplates.js';
+import html from './Sidebar.html';
 import './Sidebar.css';
 
 export default class Sidebar {
   constructor({ $target, initialState, onNavigate, onAppend, onRemove }) {
     this.$target = $target;
+    $target.innerHTML = html;
+    this.$nav = $target.querySelector('.sidebar__nav');
+
     this.state = initialState;
     this.onNavigate = onNavigate;
     this.onAppend = onAppend;
     this.onRemove = onRemove;
+
+    $target.querySelector('.sidebar__footer').innerHTML = `
+      ${plusSvg()}
+      <span>페이지 추가</span>
+    `;
 
     this.render();
     this.initEvents();
@@ -20,7 +29,9 @@ export default class Sidebar {
   }
 
   initEvents() {
-    this.$target.addEventListener('click', (e) => {
+    const { $target } = this;
+    
+    $target.addEventListener('click', (e) => {
       const role = e.target.closest('[data-role]')?.dataset.role;
       const id = Number(e.target.closest('li')?.getAttribute('data-id'));
       if (!role) return;
@@ -33,18 +44,9 @@ export default class Sidebar {
   }
 
   render() {
-    const { $target } = this;
+    const { $nav } = this;
     const { currentDocumentId, documents } = this.state;
 
-    console.log(this.state);
-
-    $target.innerHTML = `
-      <header class="sidebar__header">Hoon's Notion</header>
-      <nav class="sidebar__nav">${template.documentList({ documents, depth: 0, currentDocumentId })}</nav>
-      <footer class="sidebar__footer" data-role="create">
-        ${plusSvg()}
-        <span>페이지 추가</span>
-      </footer>
-    `;
+    $nav.innerHTML = `${template.documentList({ documents, depth: 0, currentDocumentId })}`;
   }
 }
