@@ -1,8 +1,29 @@
 .app {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
 }
-/* div {
+
+div.document-list {
   display: flex;
-} */
+  position: relative;
+  flex-direction: column;
+}
+
+.global-nav {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.editor-page {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow: hidden;
+}
+
+input.editor-title {
+  height: 80px;
+}

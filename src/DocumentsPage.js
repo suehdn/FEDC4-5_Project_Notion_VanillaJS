@@ -34,7 +34,6 @@ export default function DocumentsPage({
               <button class="edit-button">수정</button>
               <button class="add-button">추가</button>
             </div>
-            <input class="document-title" type="text">
             `
         )
         .join("")}
@@ -71,7 +70,7 @@ export default function DocumentsPage({
         const { children } = $div;
 
         children[5].style.display =
-          children[5].style.display === "none" ? "flex" : "none";
+          children[5].style.display === "none" ? "block" : "none";
       } else if (childCreated === "false") {
         const stack = [];
         let documents = this.state;
