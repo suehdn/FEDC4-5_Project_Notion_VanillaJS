@@ -34,7 +34,7 @@ export default function DocumentsPage({
               <button class="edit-button">수정</button>
               <button class="add-button">추가</button>
             </div>
-            <input class="" type="text">
+            <input class="document-title" type="text">
             `
         )
         .join("")}
@@ -42,6 +42,7 @@ export default function DocumentsPage({
   };
 
   this.render = () => {
+    $page.innerHTML = "";
     this.appendDocuments(this.state, $page);
   };
 

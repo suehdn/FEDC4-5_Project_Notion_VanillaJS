@@ -10,6 +10,7 @@ export const request = async (url, option = {}) => {
       },
     });
     if (res.ok) {
+      alert("api 정상 호출");
       return res.json();
     }
     throw new Error("API 호출 오류");
