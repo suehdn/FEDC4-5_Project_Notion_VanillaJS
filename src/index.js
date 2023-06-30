@@ -1,3 +1,6 @@
 import "./style.css";
+import App from "./components/App";
 
-document.getElementById("root").innerHTML = "안녕하세요";
+const $target = document.querySelector("#root");
+
+new App({ $target });
