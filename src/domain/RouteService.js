@@ -21,6 +21,7 @@ export class RouteService {
 
   #setEvent() {
     window.addEventListener('popstate', () => this.route());
+    window.addEventListener('editdocument', () => this.documentTreeRoot.render());
   }
 
   route() {

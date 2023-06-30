@@ -18,10 +18,15 @@ export default function Document({ targetElement }) {
   this.setEvent = () => {
     const debouncedKeyupHandler = debounce((e) => {
       const [titleElement, contentElement] = targetElement.children;
+
       putDocument(this.state.documentId, {
         title: titleElement.value,
         content: contentElement.value,
       });
+
+      if (e.target.classList.contains('document-title')) {
+        targetElement.dispatchEvent(new CustomEvent('editdocument', { bubbles: true }));
+      }
     }, 1000);
 
     targetElement.addEventListener('keyup', debouncedKeyupHandler);
