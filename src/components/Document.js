@@ -16,20 +16,34 @@ export default function Document({ targetElement }) {
   };
 
   this.setEvent = () => {
-    const debouncedKeyupHandler = debounce((e) => {
+    const debouncedKeyupHandler = debounce(async (e) => {
       const [titleElement, contentElement] = targetElement.children;
 
-      putDocument(this.state.documentId, {
+      await putDocument(this.state.documentId, {
         title: titleElement.value,
         content: contentElement.value,
       });
 
       if (e.target.classList.contains('document-title')) {
-        targetElement.dispatchEvent(new CustomEvent('editdocument', { bubbles: true }));
+        targetElement.dispatchEvent(new CustomEvent('asyncEditTitle', { bubbles: true }));
       }
     }, 1000);
 
-    targetElement.addEventListener('keyup', debouncedKeyupHandler);
+    targetElement.addEventListener('keyup', (e) => {
+      const [titleElement] = targetElement.children;
+      if (e.target.classList.contains('document-title')) {
+        targetElement.dispatchEvent(
+          new CustomEvent('editTitle', {
+            detail: {
+              documentId: this.state.documentId,
+              title: titleElement.value,
+            },
+            bubbles: true,
+          }),
+        );
+      }
+      debouncedKeyupHandler(e);
+    });
   };
 
   this.render = async () => {

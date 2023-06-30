@@ -21,7 +21,13 @@ export class RouteService {
 
   #setEvent() {
     window.addEventListener('popstate', () => this.route());
-    window.addEventListener('editdocument', () => this.documentTreeRoot.render());
+    window.addEventListener('editTitle', (e) => {
+      const { documentId, title } = e.detail;
+      const documentTreeElement = document.querySelector(`.document-tree[data-id="${documentId}"]`);
+      const documentTitleElement = documentTreeElement.querySelector('.document-blob-title');
+      documentTitleElement.textContent = title;
+    });
+    window.addEventListener('asyncEditTitle', () => this.documentTreeRoot.render());
   }
 
   route() {
