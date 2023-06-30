@@ -48,10 +48,8 @@ export default class Component{
   }
 
   set state(newState){
-    if(this._state !== newState){
-      this._state = newState
-      this.render()
-    }
+    this._state = newState
+    this.render()
   }
 
   get $target(){
