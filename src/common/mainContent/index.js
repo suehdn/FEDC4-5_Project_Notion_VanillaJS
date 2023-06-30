@@ -1,17 +1,24 @@
 import Editor from "../../components/editor"
 import DocNext from "../../components/docNext"
 
-export default function MainContent({ $target, initialState = [] }) {
+export default function MainContent({ $target, initialState = {} }) {
+  this.state = initialState
+
   this.render = () => {
     new Editor({
       $target,
-      initialState,
+      initialState: this.state,
     })
 
     new DocNext({
       $target,
-      initialState,
+      initialState: this.state,
     })
+  }
+
+  this.setState = (nextState) => {
+    this.state = nextState
+    this.render()
   }
 
   this.render()

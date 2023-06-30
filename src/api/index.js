@@ -1,4 +1,4 @@
-import { apiClient } from "../utils/api"
+import { apiClient } from "../utils/apiClient"
 
 async function getDocuments() {
   return await apiClient("/documents", "GET")
@@ -20,4 +20,4 @@ async function deleteDocument(id) {
   return await apiClient(`/documents/${id}`, "DELETE")
 }
 
-export { getDocuments, getDocumentsContent, createDocument, updateDocument, deleteDocument }
+export const documentAdapter = { getDocuments, getDocumentsContent, createDocument, updateDocument, deleteDocument }
