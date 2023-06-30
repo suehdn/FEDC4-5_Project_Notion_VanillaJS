@@ -1,8 +1,10 @@
-import { getDocument } from '../api';
+import { getDocument, putDocument } from '../api';
+import debounce from '../utils/debounce';
 
 export default function Document({ targetElement }) {
   this.init = () => {
     this.targetElement = targetElement;
+    this.setEvent();
     this.render();
   };
 
@@ -11,6 +13,18 @@ export default function Document({ targetElement }) {
   this.setState = (nextState) => {
     this.state = { ...nextState };
     this.render();
+  };
+
+  this.setEvent = () => {
+    const debouncedKeyupHandler = debounce((e) => {
+      const [titleElement, contentElement] = targetElement.children;
+      putDocument(this.state.documentId, {
+        title: titleElement.value,
+        content: contentElement.value,
+      });
+    }, 1000);
+
+    targetElement.addEventListener('keyup', debouncedKeyupHandler);
   };
 
   this.render = async () => {
