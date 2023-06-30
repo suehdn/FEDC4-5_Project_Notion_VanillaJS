@@ -1,3 +1,5 @@
+import { postDocument } from '../api';
+import Button from '../components/Button';
 import Document from '../components/Document';
 import DocumentTreeRoot from '../components/DocumentTreeRoot';
 
@@ -7,9 +9,18 @@ export class RouteService {
       this.#setEvent();
       this.appElement = document.querySelector('#app');
       const [sideBarElement, selectedDocumentElement] = this.appElement.children;
-      const [documentTreeRootElement] = sideBarElement.children;
+      const [documentTreeRootElement, newRootDocumentBtn] = sideBarElement.children;
       this.documentTreeRoot = new DocumentTreeRoot({ targetElement: documentTreeRootElement });
       this.selectedDocument = new Document({ targetElement: selectedDocumentElement });
+      this.newRootDocumentBtn = new Button({
+        targetElement: newRootDocumentBtn,
+        textContent: '새 문서',
+        onClick: async () => {
+          const { id } = await postDocument({ title: '', parent: null });
+          this.documentTreeRoot.render();
+          this.push(`/documents/${id}`);
+        },
+      });
       RouteService.instance = this;
       this.#route();
     }
