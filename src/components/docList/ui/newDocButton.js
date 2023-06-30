@@ -4,7 +4,7 @@ import { createDocument } from "../../../api"
 export default function newDocButton({ $target, parentId }) {
   const onClickNewDoc = async () => {
     await createDocument({ title: "제목", parentId: parentId })
-    window.location.href = `/documents/${parentId}`
+    history.pushState(null, null, `/documents/${parentId}`)
   }
 
   this.render = () =>

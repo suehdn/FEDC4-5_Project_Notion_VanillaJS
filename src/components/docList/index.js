@@ -13,6 +13,9 @@ export default function DocList({ $target, initialState = [] }) {
       const $text = document.createElement("span")
       $text.className = "doc-text"
       $text.innerText = doc.title
+      $text.addEventListener("click", (e) => {
+        history.pushState({ id: doc.id }, doc.title, `/documents/${doc.id}`)
+      })
       $container.appendChild($text)
       $child.appendChild($container)
       new newDocButton({ $target: $container, parentId: doc.id })
