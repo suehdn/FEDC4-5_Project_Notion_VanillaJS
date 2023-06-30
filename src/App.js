@@ -24,7 +24,8 @@ export default class App extends Component{
           {
             action:'click',
             tag:'a',
-            callback: (event) => {
+            target: 'a',
+            callback: ({event}) => {
               event.preventDefault();
               history.pushState(null,null,event.target.href)
               this.route()
@@ -33,8 +34,9 @@ export default class App extends Component{
           {
             button:'click',
             tag:'button',
-            callback: (event) => {
-              
+            target: 'li',
+            callback: ({event,target}) => {
+              console.log(event,target)
             }
           }
         ]
@@ -43,19 +45,32 @@ export default class App extends Component{
 
     this.editor = new Editor({
       $target: $editor,
-      initialState : { content : "환영합니다!"},
+      initialState : DOCUMENT_DUMMY_DATA,
       props : {
         events: [
           {
             action:'keyup',
-            tag:'textarea',
-            callback: (event) => {
-              const {value, dataset} = event.target
-              const key = 'document='+dataset.id
+            tag:'div',
+            target:'div',
+            callback: ({target}) => {
+              const { dataset, innerHTML } = target
+              const key = 'document=' + dataset.id
               setItem(key,{
-                tmpSaveDate : new Date(),
-                content : value
+                ...this.editor.state,
+                "content": innerHTML,
+                "tmpSaveDate": new Date()
               })
+            }
+          },
+          {
+            action:'click',
+            tag:'button',
+            target:'div',
+            callback: ({event, target}) => {
+              console.log(target.children.textarea.dataset.id)
+              // 여기서 서버에 저장하는 로직을 구현하면 됩니다.
+              alert('저장되었습니다.')
+              removeItem('document=' + target.children.textarea.dataset.id)
             }
           }
         ]
@@ -70,7 +85,7 @@ export default class App extends Component{
     const FETCH_DUMMY_DATA = {
       "id": 1,
       "title": "노션을 만들자",
-      "content": "즐거운 자바스크립트의 세계!",
+      "content": "FETCH_DUMMY_DATA",
       "documents": [
         {
           "id": 2,
@@ -88,6 +103,6 @@ export default class App extends Component{
         return
       }
     }
-    this.editor.state = DOCUMENT_DUMMY_DATA
+    this.editor.state = FETCH_DUMMY_DATA
   }
 }

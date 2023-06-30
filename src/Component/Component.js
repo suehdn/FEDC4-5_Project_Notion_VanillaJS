@@ -35,10 +35,10 @@ export default class Component{
 
   render(){}
 
-  setEventDelegation({action, tag, callback}){
+  setEventDelegation({action, tag, target, callback}){
     this._$target.addEventListener(action, (event) => {
       if(event.target.closest(`${tag}`)){
-        callback(event)
+        callback({event,target:event.target.closest(`${target}`)})
       }
     })
   }
