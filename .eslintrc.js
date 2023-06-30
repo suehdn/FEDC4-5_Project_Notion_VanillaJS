@@ -9,5 +9,7 @@ module.exports = {
     sourceType: 'module',
   },
   plugins: [],
-  rules: {},
+  rules: {
+    'import/no-unresolved': 'off',
+  },
 };
