@@ -11,7 +11,7 @@ export class RouteService {
       `;
       const [documentTreeRootElement, selectedDocumentElement] = this.appElement.children;
       this.documentTreeRoot = new DocumentTreeRoot({ targetElement: documentTreeRootElement });
-      this.selectedDocument = new Document({ targetElement: selectedDocumentElement, documentId: null });
+      this.selectedDocument = new Document({ targetElement: selectedDocumentElement });
       RouteService.instance = this;
     }
 
@@ -24,11 +24,11 @@ export class RouteService {
 
     if (pathname === '/') {
       this.documentTreeRoot.render();
-      this.selectedDocument.setState({ documentId: null });
+      this.selectedDocument.setState({ ...this.selectedDocument.state, documentId: null });
     } else if (pathname.indexOf('/documents') === 0) {
       const documentId = Number(pathname.split('/')[2]);
       this.documentTreeRoot.render();
-      this.selectedDocument.setState({ documentId });
+      this.selectedDocument.setState({ ...this.selectedDocument.state, documentId });
     } else {
       appElement.textContent = '404 not found';
     }

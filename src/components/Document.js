@@ -1,14 +1,15 @@
 import { getDocument } from '../api';
 
-export default function Document({ targetElement, documentId }) {
+export default function Document({ targetElement }) {
   this.init = () => {
     this.targetElement = targetElement;
     this.render();
   };
 
-  this.state = { documentId };
-  this.setState = ({ documentId }) => {
-    this.state = { ...this.state, documentId };
+  this.state = { documentId: null };
+
+  this.setState = (nextState) => {
+    this.state = { ...nextState };
     this.render();
   };
 
