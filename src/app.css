@@ -46,7 +46,17 @@ ul.doc-list {
   border-radius: 5px;
 }
 
+.doc-node-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: fit-content;
+  word-break: keep-all;
+}
+
 .editor {
+  display: flex;
+  flex-direction: column;
   border: 1px solid #000;
   flex: 1;
 }
@@ -55,4 +65,21 @@ ul.doc-list {
   border: 1px solid red;
   height: fit-content;
   padding: 20px;
+}
+
+.make-document-button {
+  border-radius: 4px;
+  background: transparent;
+  margin-left: 4px;
+
+  width: fit-content;
+  height: fit-content;
+
+  font-size: 3px;
+}
+
+.make-document-button:hover {
+  background-color: #ccc;
+  transition: 0.3s;
+  cursor: pointer;
 }

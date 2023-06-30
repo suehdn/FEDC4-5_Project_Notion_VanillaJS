@@ -15,8 +15,8 @@ export default function Editor({ $target, initialState = {}, onEditing }) {
   this.render = () => {
     if (!isInitialize) {
       $editor.innerHTML = `
-        <input type="text" name="title" style="width:600px;" value=${this.state.title} />
-        <textarea name="content" style="width:600px; height:400px;">${this.state.content}</textarea>
+        <input type="text" name="title" style="width:100%; height:40px" value=${this.state.title} />
+        <textarea name="content" style="width:100%; flex:1;">${this.state.content}</textarea>
     `
     }
     isInitialize = true

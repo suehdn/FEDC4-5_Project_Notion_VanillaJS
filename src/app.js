@@ -11,6 +11,25 @@ export default function App({ $target, initialState = [] }) {
     </div>
   `
 
+  const editor = new MainContent({
+    $target: $target.querySelector(".main-content"),
+    initialState: {
+      id: 1,
+      title: "노션을 만들자",
+      content: "즐거운 자바스크립트의 세계!",
+      documents: [
+        {
+          id: 2,
+          title: "",
+          createdAt: "",
+          updatedAt: "",
+        },
+      ],
+      createdAt: "",
+      updatedAt: "",
+    },
+  })
+
   this.render = () => {
     new NavBar({ $target: $target.querySelector(".nav-bar") })
     new SideBar({ $target: $target.querySelector(".side-bar") })
@@ -18,26 +37,9 @@ export default function App({ $target, initialState = [] }) {
 
   this.route = () => {
     const { pathname } = window.location
-    const editor = new MainContent({
-      $target: $target.querySelector(".main-content"),
-      initialState: {
-        id: 1,
-        title: "노션을 만들자",
-        content: "즐거운 자바스크립트의 세계!",
-        documents: [
-          {
-            id: 2,
-            title: "",
-            createdAt: "",
-            updatedAt: "",
-          },
-        ],
-        createdAt: "",
-        updatedAt: "",
-      },
-    })
-
     if (pathname.indexOf("/documents") === 0) {
+      const $mainContent = $target.querySelector(".main-content")
+      $mainContent.innerHTML = ""
       const [, , id] = pathname.split("/")
       editor.setState({ id })
     }

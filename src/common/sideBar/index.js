@@ -1,6 +1,9 @@
 import DocList from "../../components/docList"
 
 export default function SideBar({ $target, initialState = [] }) {
+  /**
+   * TODO: mockData를 서버에서 받아온 데이터로 변경해야 합니다.
+   */
   const mockData = [
     {
       id: 1,

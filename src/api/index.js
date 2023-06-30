@@ -20,4 +20,4 @@ async function deleteDocument(id) {
   return await apiClient(`/documents/${id}`, "DELETE")
 }
 
-export const documentAdapter = { getDocuments, getDocumentsContent, createDocument, updateDocument, deleteDocument }
+export { getDocuments, getDocumentsContent, createDocument, updateDocument, deleteDocument }
