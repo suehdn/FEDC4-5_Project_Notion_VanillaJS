@@ -10,6 +10,10 @@
 - 내용
   - [[Day 19] 노션 클로닝 요구사항](https://school.programmers.co.kr/app/courses/17516/curriculum/lessons/196456#part-46365)을 확인해 주세요.
 
+## 배포링크
+
+https://notion-vanilla-js-dlwl98.vercel.app
+
 ## 기본 요구사항
 
 바닐라 JS만을 이용해 노션을 클로닝합니다.
