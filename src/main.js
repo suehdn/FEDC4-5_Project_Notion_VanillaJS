@@ -1,3 +1,4 @@
+import './styleReset.css';
 import App from './App';
 
 const initApp = ($target) => new App({ $target });
