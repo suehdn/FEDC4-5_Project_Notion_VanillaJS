@@ -16,7 +16,7 @@ export default function DocumentTree({ targetElement, childDocuments, invisibleT
                 <span class="document-toggle">
                   ${foldedTreeSet.has(id) ? '>' : 'v'}
                 </span>
-                ${title === '' ? '제목없음' : title}
+                <span class="document-blob-title">${title === '' ? '제목없음' : title}</span>
                 <span class="new-document-btn">+</span>
                 <span class="delete-document-btn">삭제</span>
               </span>
