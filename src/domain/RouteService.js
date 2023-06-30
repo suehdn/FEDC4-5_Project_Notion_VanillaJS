@@ -7,10 +7,14 @@ export class RouteService {
       this.#setEvent();
       this.appElement = document.querySelector('#app');
       this.appElement.innerHTML = `
-        <div class="document-tree-root"></div>
+        <div class="side-bar">
+          <div class="document-tree-root"></div>
+          <button class="new-root-document-btn">새 문서</button>
+        </div>
         <div class="selected-document"></div>
       `;
-      const [documentTreeRootElement, selectedDocumentElement] = this.appElement.children;
+      const [sideBarElement, selectedDocumentElement] = this.appElement.children;
+      const [documentTreeRootElement] = sideBarElement.children;
       this.documentTreeRoot = new DocumentTreeRoot({ targetElement: documentTreeRootElement });
       this.selectedDocument = new Document({ targetElement: selectedDocumentElement });
       RouteService.instance = this;
