@@ -1,4 +1,4 @@
-import { DOCUMENT } from '../constants/storageKeys.js';
+import { DOCUMENT, OPENED_DOCUMENTS } from '../constants/storageKeys.js';
 import { navigate } from '../utils/navigate.js';
 import storage from '../utils/storage.js';
 import Sidebar from '../components/Sidebar/Sidebar.js';
@@ -24,7 +24,13 @@ export default class DocumentPage {
       },
     });
 
-    this.documentStore = new DocumentStore();
+    this.documentStore = new DocumentStore({
+      initialState: {
+        openedDocuments: storage.getItem(OPENED_DOCUMENTS, {}),
+        documents: [],
+      },
+    });
+
     this.initComponents();
   }
 
@@ -51,7 +57,7 @@ export default class DocumentPage {
       $target: $target.querySelector('.sidebar'),
       initialState: {
         currentDocumentId: editorStore.state.documentId,
-        documents: documentStore.state,
+        documents: documentStore.state.documents,
       },
       onAppend: async (id) => {
         await documentStore.addDocument('새로운 문서', id);
@@ -64,6 +70,10 @@ export default class DocumentPage {
         this.render();
       },
       onNavigate: (id) => navigate(`/documents/${id}`),
+      onToggleOpened: (id) => {
+        this.documentStore.toggleOpened(id);
+        this.render();
+      },
     });
 
     this.documentEditor = new DocumentEditor({
@@ -86,8 +96,9 @@ export default class DocumentPage {
 
     documentEditor.setState(editorStore.state.document);
     sidebar.setState({
+      documents: documentStore.state.documents,
+      openedDocuments: documentStore.state.openedDocuments,
       currentDocumentId: editorStore.state.documentId,
-      documents: documentStore.state,
     });
 
     if (editorStore.state.documentId === 0) documentEditor.setHidden(true);

@@ -4,7 +4,7 @@ import html from './Sidebar.html';
 import './Sidebar.css';
 
 export default class Sidebar {
-  constructor({ $target, initialState, onNavigate, onAppend, onRemove }) {
+  constructor({ $target, initialState, onNavigate, onAppend, onRemove, onToggleOpened }) {
     this.$target = $target;
     $target.innerHTML = html;
     this.$nav = $target.querySelector('.sidebar__nav');
@@ -13,6 +13,7 @@ export default class Sidebar {
     this.onNavigate = onNavigate;
     this.onAppend = onAppend;
     this.onRemove = onRemove;
+    this.onToggleOpened = onToggleOpened;
 
     $target.querySelector('.sidebar__footer').innerHTML = `
       ${plusSvg()}
@@ -30,7 +31,7 @@ export default class Sidebar {
 
   initEvents() {
     const { $target } = this;
-    
+
     $target.addEventListener('click', (e) => {
       const role = e.target.closest('[data-role]')?.dataset.role;
       const id = Number(e.target.closest('li')?.getAttribute('data-id'));
@@ -40,13 +41,14 @@ export default class Sidebar {
       else if (role === 'navigate' && !isNaN(id)) this.onNavigate(id);
       else if (role === 'append' && !isNaN(id)) this.onAppend(id);
       else if (role === 'remove' && !isNaN(id)) this.onRemove(id);
+      else if (role === 'toggle-opened' && !isNaN(id)) this.onToggleOpened(id);
     });
   }
 
   render() {
     const { $nav } = this;
-    const { currentDocumentId, documents } = this.state;
+    const { documents, openedDocuments, currentDocumentId } = this.state;
 
-    $nav.innerHTML = `${template.documentList({ documents, depth: 0, currentDocumentId })}`;
+    $nav.innerHTML = `${template.documentList({ depth: 1, documents, openedDocuments, currentDocumentId })}`;
   }
 }
