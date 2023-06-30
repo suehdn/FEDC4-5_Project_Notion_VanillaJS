@@ -1,5 +1,6 @@
 import { getDocument, putDocument } from '../api';
 import debounce from '../utils/debounce';
+import { RouteService } from '../domain/RouteService';
 
 export default function Document({ targetElement }) {
   this.init = () => {
@@ -27,7 +28,7 @@ export default function Document({ targetElement }) {
       if (e.target.classList.contains('document-title')) {
         targetElement.dispatchEvent(new CustomEvent('asyncEditTitle', { bubbles: true }));
       }
-    }, 1000);
+    }, 500);
 
     targetElement.addEventListener('keyup', (e) => {
       const [titleElement] = targetElement.children;
@@ -44,6 +45,12 @@ export default function Document({ targetElement }) {
       }
       debouncedKeyupHandler(e);
     });
+
+    targetElement.addEventListener('click', (e) => {
+      if (!e.target.closest('.sub-document-links > button')) return;
+      const router = new RouteService();
+      router.push(`/documents/${e.target.dataset.id}`);
+    });
   };
 
   this.render = async () => {
@@ -53,15 +60,23 @@ export default function Document({ targetElement }) {
       return;
     }
 
-    const { title, content } = await getDocument(documentId);
+    const { title, content, documents } = await getDocument(documentId);
     targetElement.innerHTML = `
       <input class="document-title"/>
       <textarea class="document-content"></textarea>
+      <div class="sub-document-links"></div>
     `;
-    const [documentTitleElement, documentContentElement] = targetElement.children;
+    const [documentTitleElement, documentContentElement, subDocumentLinksElement] = targetElement.children;
 
     documentTitleElement.value = title;
     documentContentElement.value = content;
+    documents.forEach(({ id, title }) => {
+      const buttonElement = document.createElement('button');
+      buttonElement.classList.add('sub-document-link-btn');
+      buttonElement.setAttribute('data-id', id);
+      buttonElement.textContent = title === '' ? '제목없음' : title;
+      subDocumentLinksElement.appendChild(buttonElement);
+    });
   };
 
   this.init();
