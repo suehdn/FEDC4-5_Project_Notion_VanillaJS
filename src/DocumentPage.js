@@ -5,8 +5,7 @@ export function DocumentPage ($target) {
     $documentPage.className = 'documentPage'
     $target.appendChild($documentPage);
     this.state = {
-      documentData: [],
-      selectedId : null,
+      documentData: []
     }
     
     this.setState = (nextState) => {

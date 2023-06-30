@@ -1,0 +1,29 @@
+
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-style: normal;
+}
+/* 폰트 적용 */
+body {
+    font-family: 'Pretandard-Regular', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    position: relative;
+    background-color: white;
+    width:100%;
+    height: 100vh;
+    box-sizing:border-box;
+    margin:0px;
+}
+
+.app{
+    width: 100%;
+    height:100%;
+}
+
+.mainApp {
+    display: flex;
+    flex-direction: row;
+    height:100%;
+}

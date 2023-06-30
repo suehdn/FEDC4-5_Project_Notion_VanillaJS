@@ -1,0 +1,28 @@
+.documentPage {
+    background-color: #F7F7F5;
+    width: 230px;
+    height: 100%;
+    border-right: 1px solid #e7e7e7;
+    font-family: 'Pretandard-Regular', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #72716D;
+    padding: 10px;
+}
+
+.doc{
+    list-style: none;
+    cursor:pointer;
+}
+.doc:hover{
+    background-color: #EEEFED;
+    color: black;
+}
+
+[class^="doc-"]{
+    background-color: #F7F7F5;
+}
+[class^="doc-"]:hover{
+    color: #72716D!important;
+    background-color: #EAEAE7!important;
+}

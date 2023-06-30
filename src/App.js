@@ -1,9 +1,10 @@
 import { EditorPage } from "./EditorPage.js";
 import { DocumentPage } from "./DocumentPage.js";
 
+
 export default function App ($target) {
     const $app = document.createElement('div');
-    $app.className = 'App'
+    $app.className = 'mainApp'
     const editorPage = new EditorPage($app);
     const documentPage = new DocumentPage($app);
 
