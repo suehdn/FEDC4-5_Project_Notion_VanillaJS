@@ -25,7 +25,7 @@ export default function App({ $target }) {
       this.route();
     },
     onAdd: (id) => {
-
+      fetchAddNotion(id);
     }
   });
 
@@ -54,12 +54,12 @@ export default function App({ $target }) {
   initRouter(() => this.route());
 
   // 페이지 추가 후 서버 저장
-  const fetchAddNotion = async () => {
+  const fetchAddNotion = async (id = null) => {
     const createdNotion = await request("/documents", {
       method: "POST",
       body: JSON.stringify({
         title: "제목없음",
-        parent: null,
+        parent: id,
       }),
     });
     history.pushState(null, null, `/documents/${createdNotion.id}`);

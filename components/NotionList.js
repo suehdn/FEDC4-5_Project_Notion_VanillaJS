@@ -20,11 +20,10 @@ export default function NotionList({
   };
 
   this.render = () => {
-    $notionList.innerHTML = `
-      <ul class="notions">
-        ${this.state
-          .map(
-            ({ id, title, document }) => `
+
+    const renderNotion = (id, title, documents) => {
+      if (documents.length > 0) {
+        return `
           <li class="list" data-id="${id}">
             ${title}
             <div class="btnContainer">
@@ -32,8 +31,42 @@ export default function NotionList({
               <button class="addBtn" data-id="${id}">+</button>
             </div>
           </li>
-          
+          <ul>
+            ${documents.map(({ id, title, documents }) => `
+              ${renderNotion(id, title, documents)}
+            `).join("")}
+          </ul>
         `
+      } else {
+        return `
+          <li class="list" data-id="${id}">
+            ${title}
+            <div class="btnContainer">
+              <button class="removeBtn" data-id="${id}">x</button>
+              <button class="addBtn" data-id="${id}">+</button>
+            </div>
+          </li>
+        `;
+      }
+    }
+
+    $notionList.innerHTML = `
+      <ul class="notions">
+        ${this.state
+          .map(
+            ({ id, title, documents }) => `
+              ${renderNotion(id, title, documents)}
+            `
+        //     `
+        //   <li class="list" data-id="${id}">
+        //     ${title}
+        //     <div class="btnContainer">
+        //       <button class="removeBtn" data-id="${id}">x</button>
+        //       <button class="addBtn" data-id="${id}">+</button>
+        //     </div>
+        //   </li>
+          
+        // `
           )
           .join("")}
       </ul>
@@ -45,6 +78,7 @@ export default function NotionList({
   $notionList.addEventListener("click", (e) => {
     const id = e.target.dataset.id;
     if (e.target.className === "list") {
+      console.log(id);
       onClick(id);
     } else if (e.target.className === "addBtn"){
       onAdd(id);
