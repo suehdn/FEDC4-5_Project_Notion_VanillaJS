@@ -21,8 +21,8 @@ const template = (function () {
         <div class="sidebar__document-svg">${documentSvg()}</div>
         <div class="sidebar__document--title">${title}</div>
         <section class="sidebar__document--action-section">
-          <div class="sidebar__icon" data-role="remove">${trashSvg()}</div>
-          <div class="sidebar__icon" data-role="append">${plusSvg()}</div>
+          <div class="sidebar__icon" data-role="remove" title="삭제">${trashSvg()}</div>
+          <div class="sidebar__icon" data-role="append" title="하위 페이지 추가">${plusSvg()}</div>
         </section>
       </div>
       ${documents.length > 0 ? documentList({ documents, depth: depth + 1, currentDocumentId }) : ''}

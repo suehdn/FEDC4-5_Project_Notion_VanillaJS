@@ -39,6 +39,7 @@
 .sidebar__document {
   display: flex;
   align-items: center;
+  position: relative;
   overflow: hidden;
   gap: 0.5em;
   padding: 0.25em;
@@ -56,7 +57,12 @@
 
 .sidebar__document:hover .sidebar__document--action-section {
   display: flex;
+  position: absolute;
+  right: 0;
+  padding: 0.25em;
   gap: 0.2em;
+  background-color: inherit;
+  z-index: 10;
 }
 
 .sidebar__document--title {
