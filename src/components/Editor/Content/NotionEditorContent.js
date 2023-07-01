@@ -18,6 +18,6 @@ export default class NotionEditorContent {
   render() {
     const { content } = this.state;
 
-    this.$content.innerHTML = content;
+    this.$content.value = content;
   }
 }
