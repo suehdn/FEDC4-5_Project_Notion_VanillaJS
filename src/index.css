@@ -14,3 +14,17 @@ body {
 .hidden {
   display: none;
 }
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D3D1CB;
+}
+
+::-webkit-scrollbar-track {
+  background: #EDECE9;
+}
