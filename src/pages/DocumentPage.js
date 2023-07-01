@@ -80,31 +80,55 @@ export default class DocumentPage {
       $target: $target.querySelector('.main__editor'),
       initialState: editorStore.state.document,
       onChange: ({ name, value }) => {
-        editorStore.setDocument({
+        const newDocument = {
           ...editorStore.state.document,
-          updateAt: new Date(),
           [name]: value,
-        });
+          updateAt: new Date(),
+        }
+
+        editorStore.setDocument(newDocument);
         editorStore.saveDocument();
+
+        // TODO: documentStore 에서 editorStore.state.documentId 의 문서 내용을 변경해야 함.
+        documentStore.updateDocument(editorStore.state.documentId, newDocument);
+        this.renderSidebar();
+        this.renderNavbar();
       },
     });
 
     if (editorStore.state.documentId === 0) this.documentEditor.setHidden(true);
   }
 
-  render() {
-    const { documentEditor, sidebar, navbar } = this;
-    const { editorStore, documentStore } = this;
+  renderEditor() {
+    const { documentEditor } = this;
+    const { editorStore } = this;
 
     documentEditor.setState(editorStore.state.document);
+    if (editorStore.state.documentId === 0) documentEditor.setHidden(true);
+    else documentEditor.setHidden(false);
+  }
+
+  renderSidebar() {
+    const { sidebar } = this;
+    const { editorStore, documentStore } = this;
+
     sidebar.setState({
       documents: documentStore.state.documents,
       openedDocuments: documentStore.state.openedDocuments,
       currentDocumentId: editorStore.state.documentId,
     });
-    navbar.setState({ routes: documentStore.findDocumentRoute(editorStore.state.documentId) });
+  }
 
-    if (editorStore.state.documentId === 0) documentEditor.setHidden(true);
-    else documentEditor.setHidden(false);
+  renderNavbar() {
+    const { navbar } = this;
+    const { editorStore, documentStore } = this;
+
+    navbar.setState({ routes: documentStore.findDocumentRoute(editorStore.state.documentId) });
+  }
+
+  render() {
+    this.renderEditor();
+    this.renderSidebar();
+    this.renderNavbar();
   }
 }
