@@ -3,13 +3,14 @@ import DocNext from "../../components/docNext"
 
 import { getDocumentsContent } from "../../api"
 
-export default function MainContent({ $target, initialState = {} }) {
+export default function MainContent({ $target, initialState = {}, renderApp }) {
   this.state = initialState
 
   this.render = () => {
     new Editor({
       $target,
       initialState: this.state,
+      renderApp,
     })
 
     new DocNext({

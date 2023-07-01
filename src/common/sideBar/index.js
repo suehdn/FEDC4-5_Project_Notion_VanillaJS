@@ -32,7 +32,7 @@ const mockData = [
   },
 ]
 
-export default function SideBar({ $target, initialState = [] }) {
+export default function SideBar({ $target, loadDocument }) {
   this.render = async () => {
     const docs = await getDocuments()
     $target.innerHTML = ""
@@ -40,6 +40,7 @@ export default function SideBar({ $target, initialState = [] }) {
       $target: $target,
       initialState: docs,
       renderSideBar: this.render,
+      loadDocument,
     })
   }
 

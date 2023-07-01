@@ -17,18 +17,21 @@ export default function App({ $target, initialState = dummyData }) {
     </div>
   `
 
+  this.render = () => {
+    console.log("rendered")
+    new NavBar({ $target: $target.querySelector(".nav-bar") })
+    new SideBar({ $target: $target.querySelector(".side-bar"), loadDocument: this.route })
+  }
+
   const editor = new MainContent({
     $target: $target.querySelector(".main-content"),
     initialState: initialState,
+    renderApp: this.render,
   })
-
-  this.render = () => {
-    new NavBar({ $target: $target.querySelector(".nav-bar") })
-    new SideBar({ $target: $target.querySelector(".side-bar") })
-  }
 
   this.route = () => {
     const { pathname } = window.location
+    console.log(pathname)
     if (pathname.indexOf("/documents") === 0) {
       const $mainContent = $target.querySelector(".main-content")
       $mainContent.innerHTML = ""
@@ -37,6 +40,6 @@ export default function App({ $target, initialState = dummyData }) {
     }
   }
 
-  this.render()
   this.route()
+  this.render()
 }

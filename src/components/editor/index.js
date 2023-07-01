@@ -1,4 +1,6 @@
-export default function Editor({ $target, initialState = {}, onEditing }) {
+import { deleteDocument } from "../../api"
+
+export default function Editor({ $target, initialState = {}, onEditing, renderApp }) {
   this.state = initialState
   let isInitialize = false
   const $editor = document.createElement("div")
@@ -7,18 +9,39 @@ export default function Editor({ $target, initialState = {}, onEditing }) {
 
   this.setState = (nextState) => {
     this.state = nextState
+    console.log("hi", this.state)
     $editor.querySelector("input[name=title]").value = this.state.title
     $editor.querySelector("textarea[name=content]").value = this.state.content
+    $editor.querySelector(".doc-delete-button").addEventListener("click", async () => {
+      await deleteDocument(this.state.id)
+      $editor.querySelector(".doc-delete-button").style.display = "none"
+      history.replaceState(null, null, "/")
+      this.setState({ title: "", content: "" })
+      renderApp()
+    })
+
     this.render()
   }
 
   this.render = () => {
     if (!isInitialize) {
       $editor.innerHTML = `
-        <input type="text" name="title" style="width:100%; height:40px" value=${this.state.title} />
+        <div class='doc-nav'>
+          <input type="text" class='doc-title' name="title" value=${this.state.title} />
+          <button class='doc-delete-button'>삭제</button>
+        </div>
         <textarea name="content" style="width:100%; flex:1;">${this.state.content}</textarea>
     `
     }
+
+    $editor.querySelector(".doc-delete-button").addEventListener("click", async () => {
+      await deleteDocument(this.state.id)
+      $editor.querySelector(".doc-delete-button").style.display = "none"
+      history.replaceState(null, null, "/")
+      this.setState({ title: "", content: "" })
+      renderApp()
+    })
+
     isInitialize = true
   }
   this.render()
