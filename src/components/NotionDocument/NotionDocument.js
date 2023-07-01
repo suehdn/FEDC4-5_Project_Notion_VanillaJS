@@ -1,7 +1,6 @@
-import { createDocument, updateDocument } from '@api/document';
+import { updateDocument } from '@api/document';
 
-import { removeItem, setItem } from '@utils/localStorage';
-import { history } from '@utils/router';
+import { setItem } from '@utils/localStorage';
 
 import NotionEditor from '@components/Editor/NotionEditor';
 
@@ -32,23 +31,11 @@ export default class NotionDocument {
         tempSaveDate: new Date(),
       });
 
-      const isNew = this.state.id === 'new';
-      if (isNew) {
-        const createdDocument = await createDocument({ title: document.title });
-        history.replace(`/documents/${createdDocument.id}`);
-        removeItem('temp-post-new');
-
-        this.setState({
-          ...this.state,
-          ...createdDocument,
-        });
-      } else {
-        await updateDocument(document.id, document);
-        this.setState({
-          ...this.state,
-          ...document,
-        });
-      }
+      const updatedDocument = await updateDocument(document.id, document);
+      this.setState({
+        ...this.state,
+        ...updatedDocument,
+      });
     }, 1000);
   }
 
