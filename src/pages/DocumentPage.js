@@ -69,7 +69,7 @@ export default class DocumentPage {
     });
 
     this.documentEditor = new DocumentEditor({
-      $target: $target.querySelector('.editor'),
+      $target: $target.querySelector('.main__editor'),
       initialState: editorStore.state.document,
       onChange: ({ name, value }) => {
         editorStore.setDocument({

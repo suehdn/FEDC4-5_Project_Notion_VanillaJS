@@ -1,10 +1,11 @@
 import { saveCursorPointer, restoreCursorPointer } from '../../utils/cursor.js';
+import './Editor.css';
 
 export default class DocumentEditor {
   constructor({ $target, initialState, onChange }) {
     this.$target = $target;
-    this.$title = document.querySelector('.title-editor');
-    this.$content = document.querySelector('.content-editor');
+    this.$title = document.querySelector('.main__title-editor');
+    this.$content = document.querySelector('.main__content-editor');
 
     this.state = initialState;
     this.onChange = onChange;
