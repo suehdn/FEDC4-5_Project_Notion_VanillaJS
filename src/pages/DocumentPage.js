@@ -1,12 +1,12 @@
-import { DOCUMENT, OPENED_DOCUMENTS } from '../constants/storageKeys.js';
+import { OPENED_DOCUMENTS } from '../constants/storageKeys.js';
 import { navigate } from '../utils/navigate.js';
 import storage from '../utils/storage.js';
 import Sidebar from '../components/Sidebar/Sidebar.js';
+import Navbar from '../components/Navbar/Navbar.js';
 import DocumentEditor from '../components/Editor/DocumentEditor.js';
 import EditorStore, { initialDocument } from '../stores/editorStore.js';
 import DocumentStore from '../stores/documentStore.js';
 import html from './DocumentPage.html';
-import './DocumentPage.css';
 
 export default class DocumentPage {
   constructor({ $target, initialState }) {
@@ -53,11 +53,11 @@ export default class DocumentPage {
       },
       onAppend: async (id) => {
         this.documentStore.setOpened(id, true);
-        
+
         const newDocument = await documentStore.addDocument('', id);
         await documentStore.fetchDocuments();
 
-        navigate(`/documents/${newDocument.id}`)
+        navigate(`/documents/${newDocument.id}`);
         this.render();
       },
       onRemove: async (id) => {
@@ -70,6 +70,10 @@ export default class DocumentPage {
         this.documentStore.setOpened(id, !this.documentStore.state.openedDocuments[id]);
         this.render();
       },
+    });
+
+    this.navbar = new Navbar({
+      $target: $target.querySelector('.main__navbar'),
     });
 
     this.documentEditor = new DocumentEditor({
@@ -89,7 +93,8 @@ export default class DocumentPage {
   }
 
   render() {
-    const { documentEditor, editorStore, sidebar, documentStore } = this;
+    const { documentEditor, sidebar, navbar } = this;
+    const { editorStore, documentStore } = this;
 
     documentEditor.setState(editorStore.state.document);
     sidebar.setState({
@@ -97,6 +102,7 @@ export default class DocumentPage {
       openedDocuments: documentStore.state.openedDocuments,
       currentDocumentId: editorStore.state.documentId,
     });
+    navbar.setState({ routes: documentStore.findDocumentRoute(editorStore.state.documentId) });
 
     if (editorStore.state.documentId === 0) documentEditor.setHidden(true);
     else documentEditor.setHidden(false);

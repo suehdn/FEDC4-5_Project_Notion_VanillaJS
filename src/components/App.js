@@ -1,4 +1,5 @@
 import DocumentPage from '../pages/DocumentPage.js';
+import { navigate } from '../utils/navigate.js';
 import { NAVIGATE_EVENT_KEY } from '../utils/navigate.js';
 
 export default class App {
@@ -27,7 +28,13 @@ export default class App {
 
     window.addEventListener('popstate', (e) => {
       this.route();
-    })
+    });
+
+    window.addEventListener('click', (e) => {
+      if (e.target.tagName !== 'A') return;
+      e.preventDefault();
+      navigate(e.target.getAttribute('href'));
+    });
   }
 
   route() {
