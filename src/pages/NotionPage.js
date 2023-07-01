@@ -21,10 +21,19 @@ export default class NotionPage {
     const documents = await request('/documents');
     this.$sidebar.setState(documents);
 
+    const document = await this.fetchDocument();
+    this.$document.setState(document);
+  }
+
+  async fetchDocument() {
     const { documentId } = this.state;
-    if (documentId !== 'empty') {
-      const document = await request(`/documents/${documentId}`);
-      this.$document.setState(document);
-    }
+
+    if (documentId === 'empty')
+      return {
+        title: '',
+        content: '',
+      };
+    const document = await request(`/documents/${documentId}`);
+    return document;
   }
 }
