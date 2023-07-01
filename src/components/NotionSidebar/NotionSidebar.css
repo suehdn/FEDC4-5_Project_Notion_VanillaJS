@@ -1,29 +1,15 @@
-.notion-sidebar-container {
+.notion-sidebar {
   display: flex;
   flex-direction: column;
   width: 300px;
   height: 100%;
+  padding: 20px 0;
   border-right: 1px solid #f5f6f5;
 
   background-color: #fbfbfa;
 }
 
-.notion-sidebar-container ul {
-  width: 100%;
-  height: 100%;
-  padding: 10px 5px;
-}
-
-.notion-sidebar-container ul li {
-  width: 100%;
-  padding: 5px 10px;
-
-  color: #19171199;
-  font-size: 14px;
-  font-weight: 600;
-
-  &:hover {
-    background-color: #ededeb;
-    cursor: pointer;
-  }
+.document-create-button {
+  height: 30px;
+  margin: 5px 10px;
 }

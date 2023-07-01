@@ -1,0 +1,19 @@
+.document-list {
+  width: 100%;
+  height: 100%;
+  padding: 10px 5px;
+}
+
+.document-list li {
+  width: 100%;
+  padding: 5px 10px;
+
+  color: #19171199;
+  font-size: 14px;
+  font-weight: 600;
+
+  &:hover {
+    background-color: #ededeb;
+    cursor: pointer;
+  }
+}

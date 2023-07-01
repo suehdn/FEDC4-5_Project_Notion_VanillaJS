@@ -18,8 +18,8 @@ export default class NotionPage {
   async setState(nextState) {
     this.state = nextState;
 
-    const documents = await getDocumentList();
-    this.$sidebar.setState(documents);
+    const documentList = await getDocumentList();
+    this.$sidebar.setState({ documentList });
 
     const { documentId } = this.state;
     if (documentId === null) {
