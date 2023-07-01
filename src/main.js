@@ -1,5 +1,5 @@
-import './styleReset.css';
 import App from './App';
+import './styleReset.css';
 
 const initApp = ($target) => new App({ $target });
 
