@@ -3,11 +3,20 @@ const path = require('path');
 
 module.exports = {
   entry: {
-    main: './src/index.js', // 파일의 진입점(entry point)는 ./src/index.js가 된다.
+    main: './src/main.js', // 파일의 진입점(entry point)는 ./src/index.js가 된다.
+  },
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, 'src/'),
+      '@components': path.resolve(__dirname, 'src/components/'),
+      '@api': path.resolve(__dirname, 'src/api/'),
+      '@router': path.resolve(__dirname, 'src/router'),
+    },
   },
   output: {
-    path: path.resolve('./dist'),
+    path: path.resolve('./dist'), // 빌드 결과물을 저장할 경로를 지정한다.
     filename: '[name].js', // entry point의 Key가 main이므로, main.js로 빌드된다.
+    publicPath: '/', // 정적 파일이 위치할 기본 경로를 지정한다.
   },
   devServer: {
     static: {
@@ -28,6 +37,17 @@ module.exports = {
       {
         test: /\.css$/, // .css 확장자로 끝나는 모든 파일을 의미한다.
         use: ['style-loader', 'css-loader'], // style-loader를 앞에 적용해야 오류가 발생하지 않는다.
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/i, // 폰트 파일을 의미한다.
+        use: [
+          {
+            loader: 'file-loader', // 파일을 모듈로 변환하는 역할을 한다.
+            options: {
+              name: 'assets/fonts/[name].[hash:8].[ext]', // 파일이 저장될 경로와 이름을 지정한다.
+            },
+          },
+        ],
       },
     ],
   },
