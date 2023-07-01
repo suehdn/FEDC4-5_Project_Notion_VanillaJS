@@ -16,10 +16,10 @@ export default class DocumentStore {
     this.state = nextState;
   }
 
-  toggleOpened(documentId) {
+  setOpened(documentId, opened) {
     const openedDocuments = { ...this.state.openedDocuments };
-    if (openedDocuments[documentId]) delete openedDocuments[documentId];
-    else openedDocuments[documentId] = true;
+    if (opened) openedDocuments[documentId] = true;
+    else delete openedDocuments[documentId];
 
     this.setState({ ...this.state, openedDocuments });
     storage.setItem(OPENED_DOCUMENTS, openedDocuments);
@@ -33,11 +33,11 @@ export default class DocumentStore {
     });
   }
 
-  async addDocument(title, parent) {
-    await addDocument(title, parent);
+  addDocument(title, parent) {
+    return addDocument(title, parent);
   }
 
-  async removeDocument(documentId) {
-    await removeDocument(documentId);
+  removeDocument(documentId) {
+    return removeDocument(documentId);
   }
 }

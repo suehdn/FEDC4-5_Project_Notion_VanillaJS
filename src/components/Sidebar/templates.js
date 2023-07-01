@@ -39,7 +39,7 @@ const template = (function () {
         >
           <div class="sidebar__icon sidebar__open-button" data-role="toggle-opened">${chevronRightSvg()}</div>
           <div class="sidebar__document-svg">${documentSvg()}</div>
-          <div class="sidebar__document--title">${title}</div>
+          <div class="sidebar__document--title">${title === '' ? '제목 없음' : title}</div>
           <section class="sidebar__document--action-section">
             <div class="sidebar__icon" data-role="remove" title="삭제">${trashSvg()}</div>
             <div class="sidebar__icon" data-role="append" title="하위 페이지 추가">${plusSvg()}</div>

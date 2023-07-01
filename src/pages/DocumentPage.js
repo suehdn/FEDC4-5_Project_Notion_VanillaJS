@@ -52,8 +52,12 @@ export default class DocumentPage {
         documents: documentStore.state.documents,
       },
       onAppend: async (id) => {
-        await documentStore.addDocument('새로운 문서', id);
+        this.documentStore.setOpened(id, true);
+        
+        const newDocument = await documentStore.addDocument('', id);
         await documentStore.fetchDocuments();
+
+        navigate(`/documents/${newDocument.id}`)
         this.render();
       },
       onRemove: async (id) => {
@@ -63,7 +67,7 @@ export default class DocumentPage {
       },
       onNavigate: (id) => navigate(`/documents/${id}`),
       onToggleOpened: (id) => {
-        this.documentStore.toggleOpened(id);
+        this.documentStore.setOpened(id, !this.documentStore.state.openedDocuments[id]);
         this.render();
       },
     });
