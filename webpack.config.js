@@ -19,6 +19,7 @@ module.exports = (_, argv) => {
 
     output: {
       path: path.resolve(__dirname, './dist'),
+      publicPath: '/',
       filename: 'index.js',
       clean: true,
     },
@@ -26,6 +27,9 @@ module.exports = (_, argv) => {
     devServer: {
       port: 3000,
       hot: true,
+      historyApiFallback: {
+        index: '/index.html',
+      },
     },
 
     devtool: isDevelopment ? 'eval-source-map' : 'source-map',
