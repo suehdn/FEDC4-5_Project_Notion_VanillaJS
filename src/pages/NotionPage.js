@@ -1,4 +1,4 @@
-import request from '@utils/api';
+import { getDocument, getDocumentList } from '@api/document';
 
 import NotionDocument from '@components/NotionDocument/NotionDocument';
 import NotionSidebar from '@components/NotionSidebar/NotionSidebar';
@@ -18,7 +18,7 @@ export default class NotionPage {
   async setState(nextState) {
     this.state = nextState;
 
-    const documents = await request('/documents');
+    const documents = await getDocumentList();
     this.$sidebar.setState(documents);
 
     const document = await this.fetchDocument();
@@ -33,7 +33,7 @@ export default class NotionPage {
         title: '',
         content: '',
       };
-    const document = await request(`/documents/${documentId}`);
+    const document = await getDocument(documentId);
     return document;
   }
 }
