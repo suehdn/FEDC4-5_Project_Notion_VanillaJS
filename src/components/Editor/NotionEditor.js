@@ -12,12 +12,12 @@ export default class NotionEditor {
     this.$title = new NotionEditorTitle({ $target: this.$editor });
     this.$content = new NotionEditorContent({ $target: this.$editor });
 
-    this.initEventListener(onEdit);
+    this.setEvent(onEdit);
   }
 
   getNextStateWithTarget(target) {
     const name = target.getAttribute('name');
-    const value = name === 'title' ? target.value : target.innerHTML;
+    const { value } = target;
 
     return {
       ...this.state,
@@ -25,7 +25,7 @@ export default class NotionEditor {
     };
   }
 
-  initEventListener(callback) {
+  setEvent(callback) {
     this.$editor.addEventListener('input', (e) => {
       const nextState = this.getNextStateWithTarget(e.target);
       callback?.(nextState);
