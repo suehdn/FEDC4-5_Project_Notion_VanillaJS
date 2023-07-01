@@ -11,6 +11,10 @@ export default class NotionSidebar {
     this.$sidebar = document.createElement('ul');
     $sidebarContainer.appendChild(this.$sidebar);
 
+    this.setEvent();
+  }
+
+  setEvent() {
     this.$sidebar.addEventListener('click', (e) => {
       const $li = e.target.closest('li');
 
