@@ -22,7 +22,7 @@ export default class NotionPage {
     this.$sidebar.setState(documents);
 
     const { documentId } = this.state;
-    if (documentId === 'empty') {
+    if (documentId === null) {
       this.$document.setState({ isVisible: false });
       return;
     }

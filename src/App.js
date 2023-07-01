@@ -17,7 +17,7 @@ export default class App {
     const { pathname } = window.location;
 
     if (Pathname.isRoot(pathname)) {
-      return this.$notionPage.setState({ documentId: 'empty' });
+      return this.$notionPage.setState({ documentId: null });
     }
 
     if (Pathname.isDocument(pathname)) {
