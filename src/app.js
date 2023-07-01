@@ -2,7 +2,13 @@ import SideBar from "./common/sideBar"
 import NavBar from "./common/navBar"
 import MainContent from "./common/mainContent"
 
-export default function App({ $target, initialState = [] }) {
+const dummyData = {
+  id: 0,
+  title: "Welcome! NoNotion",
+  content: "안녕하세요. NoNotion입니다.",
+}
+
+export default function App({ $target, initialState = dummyData }) {
   $target.innerHTML = `
     <div class="nav-bar"></div>
     <div class="main-container">
@@ -13,21 +19,7 @@ export default function App({ $target, initialState = [] }) {
 
   const editor = new MainContent({
     $target: $target.querySelector(".main-content"),
-    initialState: {
-      id: 1,
-      title: "노션을 만들자",
-      content: "즐거운 자바스크립트의 세계!",
-      documents: [
-        {
-          id: 2,
-          title: "",
-          createdAt: "",
-          updatedAt: "",
-        },
-      ],
-      createdAt: "",
-      updatedAt: "",
-    },
+    initialState: initialState,
   })
 
   this.render = () => {

@@ -1,6 +1,8 @@
 import Editor from "../../components/editor"
 import DocNext from "../../components/docNext"
 
+import { getDocumentsContent } from "../../api"
+
 export default function MainContent({ $target, initialState = {} }) {
   this.state = initialState
 
@@ -16,8 +18,9 @@ export default function MainContent({ $target, initialState = {} }) {
     })
   }
 
-  this.setState = (nextState) => {
-    this.state = nextState
+  this.setState = async (nextState) => {
+    this.state = await getDocumentsContent(nextState.id)
+    console.log(this.state)
     this.render()
   }
 

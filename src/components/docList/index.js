@@ -1,10 +1,10 @@
 import newDocButton from "./ui/newDocButton"
 
-export default function DocList({ $target, initialState = [] }) {
+export default function DocList({ $target, initialState = [], renderSideBar }) {
   this.state = initialState
 
-  this.render = () => {
-    this.state.forEach((doc) => {
+  this.render = async () => {
+    this.state.forEach(async (doc) => {
       const $child = document.createElement("ul")
       $child.className = "doc-list"
       $child.dataset.id = doc.id
@@ -18,13 +18,13 @@ export default function DocList({ $target, initialState = [] }) {
       })
       $container.appendChild($text)
       $child.appendChild($container)
-      new newDocButton({ $target: $container, parentId: doc.id })
+      new newDocButton({ $target: $container, parentId: doc.id, renderSideBar })
 
       if (doc.documents.length) {
-        new DocList({ $target: $child, initialState: doc.documents })
+        new DocList({ $target: $child, initialState: doc.documents, renderSideBar })
       }
 
-      $target.appendChild($child)
+      await $target.appendChild($child)
     })
   }
 
