@@ -8,5 +8,8 @@ export const getDocument = async (documentId) =>
 export const createDocument = async (document) =>
   api.post('/documents', document);
 
+export const updateDocument = async (documentId, document) =>
+  api.put(`/documents/${documentId}`, document);
+
 export const deleteDocument = async (documentId) =>
   api.del(`/documents/${documentId}`);
