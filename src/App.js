@@ -54,7 +54,8 @@ export default class App extends Component{
             target:'div',
             callback: ({target}) => {
               const { dataset, innerHTML } = target
-              const key = 'document=' + dataset.id
+              console.log(dataset.id,innerHTML)
+              const key = 'document/' + dataset.id
               setItem(key,{
                 ...this.editor.state,
                 "content": innerHTML,
@@ -67,10 +68,13 @@ export default class App extends Component{
             tag:'button',
             target:'div',
             callback: ({event, target}) => {
-              console.log(target.children.textarea.dataset.id)
               // 여기서 서버에 저장하는 로직을 구현하면 됩니다.
+              // await request(`/documents/${target.children.textarea.dataset.id}`,{
+              //   method:'PUT',
+              //   body: JSON.stringify(this.editor.state)
+              // })
               alert('저장되었습니다.')
-              removeItem('document=' + target.children.textarea.dataset.id)
+              removeItem('document/' + target.children.textarea.dataset.id)
             }
           }
         ]
@@ -80,8 +84,10 @@ export default class App extends Component{
 
   async route(){
     const { pathname } = window.location
-    const [,documentId] = pathname.split('=')
-    const tmpDocument = getItem('document='+documentId)
+    const [,,documentId] = pathname.split('/')
+    const tmpDocument = getItem('document/'+documentId)
+    // 서버에서 데이터 불러오기
+    // const { data } = await request(`/documents/${documentId}`)
     const FETCH_DUMMY_DATA = {
       "id": 1,
       "title": "노션을 만들자",
