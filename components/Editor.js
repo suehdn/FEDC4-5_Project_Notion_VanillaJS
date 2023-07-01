@@ -11,14 +11,15 @@ export default function Editor({ $target, initialState, onEditing }) {
   this.setState = (nextState) => {
     this.state = nextState;
     $editor.querySelector("[name=title]").value = this.state.title;
-    $editor.querySelector("[name=content]").innerHTML = this.state.content.replace("<div><br></div>", "<br>");
+    $editor.querySelector("[name=content]").innerHTML = this.state.content;
     this.render();
   };
 
   this.render = () => {
     if (!isInitialize) {
       $editor.innerHTML = `
-        <input type="text" name="title" value="${this.state.title}" />
+        <input type="text" name="title" placeholder="제목 없음" value="${this.state.title}" />
+        <label for="myInput"></label>
         <div class="content" contentEditable="true" name="content">${this.state.content}</div>
       `;
       isInitialize = true;

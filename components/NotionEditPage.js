@@ -19,7 +19,7 @@ export default function NotionEditPage({ $target, initialState, onRender }) {
     this.render();
     editor.setState(
       this.state.notion || {
-        title: "제목없음",
+        title: "",
         content: "",
       }
     );
@@ -35,7 +35,6 @@ export default function NotionEditPage({ $target, initialState, onRender }) {
         clearTimeout(timer);
       }
       timer = setTimeout(async () => {
-        console.log(notion);
         await request(`/documents/${this.state.notionId}`, {
           method: "PUT",
           body: JSON.stringify(notion),

@@ -26,7 +26,7 @@ export default function App({ $target }) {
     },
     onAdd: (id) => {
       fetchAddNotion(id);
-    }
+    },
   });
 
   const editorPage = new NotionEditPage({
@@ -58,7 +58,7 @@ export default function App({ $target }) {
     const createdNotion = await request("/documents", {
       method: "POST",
       body: JSON.stringify({
-        title: "제목없음",
+        title: "제목 없음",
         parent: id,
       }),
     });
