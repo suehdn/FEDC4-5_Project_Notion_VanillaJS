@@ -11,5 +11,6 @@ module.exports = {
   plugins: [],
   rules: {
     'import/no-unresolved': 'off',
+    'class-methods-use-this': 'off',
   },
 };
