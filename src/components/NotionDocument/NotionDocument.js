@@ -1,4 +1,7 @@
-import { setItem } from '@utils/localStorage';
+import { createDocument, updateDocument } from '@api/document';
+
+import { removeItem, setItem } from '@utils/localStorage';
+import { history } from '@utils/router';
 
 import NotionEditor from '@components/Editor/NotionEditor';
 
@@ -6,8 +9,13 @@ import './NotionDocument.css';
 
 export default class NotionDocument {
   constructor({ $target }) {
+    this.$document = document.createElement('div');
+    this.$document.className = 'notion-document';
+
+    $target.appendChild(this.$document);
+
     this.$editor = new NotionEditor({
-      $target,
+      $target: this.$document,
       onEdit: this.onEdit.bind(this),
     });
 
@@ -23,19 +31,42 @@ export default class NotionDocument {
         ...document,
         tempSaveDate: new Date(),
       });
-    }, 1000);
 
-    const nextState = {
-      ...this.state,
-      ...document,
-    };
-    this.setState(nextState);
+      const isNew = this.state.id === 'new';
+      if (isNew) {
+        const createdDocument = await createDocument({ title: document.title });
+        history.replace(`/documents/${createdDocument.id}`);
+        removeItem('temp-post-new');
+
+        this.setState({
+          ...this.state,
+          ...createdDocument,
+        });
+      } else {
+        await updateDocument(document.id, document);
+        this.setState({
+          ...this.state,
+          ...document,
+        });
+      }
+    }, 1000);
   }
 
   setState(nextState) {
-    this.state = nextState;
+    this.state = {
+      ...this.state,
+      ...nextState,
+    };
 
-    const { title, content } = this.state;
-    this.$editor.setState({ title, content });
+    const { id, title, content } = this.state;
+    this.$editor.setState({ id, title, content });
+
+    this.render();
+  }
+
+  render() {
+    const { isVisible } = this.state;
+
+    this.$document.style.visibility = isVisible ? 'visible' : 'hidden';
   }
 }

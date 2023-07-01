@@ -21,19 +21,13 @@ export default class NotionPage {
     const documents = await getDocumentList();
     this.$sidebar.setState(documents);
 
-    const document = await this.fetchDocument();
-    this.$document.setState(document);
-  }
-
-  async fetchDocument() {
     const { documentId } = this.state;
+    if (documentId === 'empty') {
+      this.$document.setState({ isVisible: false });
+      return;
+    }
 
-    if (documentId === 'empty')
-      return {
-        title: '',
-        content: '',
-      };
     const document = await getDocument(documentId);
-    return document;
+    this.$document.setState({ ...document, isVisible: true });
   }
 }
