@@ -1,3 +1,5 @@
+import { push } from '@utils/router';
+
 import './NotionSidebar.css';
 
 export default class NotionSidebar {
@@ -8,6 +10,15 @@ export default class NotionSidebar {
 
     this.$sidebar = document.createElement('ul');
     $sidebarContainer.appendChild(this.$sidebar);
+
+    this.$sidebar.addEventListener('click', (e) => {
+      const $li = e.target.closest('li');
+
+      if ($li) {
+        const { id } = $li.dataset;
+        push(`/documents/${id}`);
+      }
+    });
   }
 
   setState(nextState) {
