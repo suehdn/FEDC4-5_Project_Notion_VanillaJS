@@ -1,0 +1,61 @@
+.SideBar {
+  flex: 1;
+  border-right: 1px solid #ccc;
+}
+
+.SideBar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.Documents .Title {
+  font-size: 1.2vw;
+}
+
+.Documents {
+  display: flex;
+  flex-direction: column;
+}
+
+.Documents li {
+  flex: 1;
+  padding-left: 0.4rem;
+}
+
+.Documents button {
+  font-size: 1vw;
+}
+
+.Documents .TitleWrapper {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.Documents .TitleWrapperHeader {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+}
+
+.Documents .Title {
+  flex: 1;
+}
+
+.Documents .Title:hover {
+  background-color: #ccc;
+}
+
+.Documents .Content {
+  cursor: default;
+  overflow: hidden;
+  max-height: 0;
+  transition: transform 0.3s ease-out;
+}
+
+.DocumentsWrapper {
+  display: flex;
+  flex-direction: column;
+}
