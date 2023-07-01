@@ -10,6 +10,7 @@ module.exports = (_, argv) => {
     resolve: {
       extensions: ['.js'],
       alias: {
+        '@api': path.resolve(__dirname, 'src/api'),
         '@components': path.resolve(__dirname, 'src/components'),
         '@consts': path.resolve(__dirname, 'src/consts'),
         '@pages': path.resolve(__dirname, 'src/pages'),
