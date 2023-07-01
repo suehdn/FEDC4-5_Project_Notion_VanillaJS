@@ -1,4 +1,4 @@
-import { push } from '@utils/router';
+import { history } from '@utils/router';
 
 import './NotionSidebar.css';
 
@@ -20,7 +20,7 @@ export default class NotionSidebar {
 
       if ($li) {
         const { id } = $li.dataset;
-        push(`/documents/${id}`);
+        history.push(`/documents/${id}`);
       }
     });
   }

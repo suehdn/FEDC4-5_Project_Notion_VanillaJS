@@ -1,5 +1,6 @@
 const POPSTATE_EVENT = 'popstate';
 const HISTORY_PUSH_EVENT = 'history-push';
+const HISTORY_REPLACE_EVENT = 'history-replace';
 
 const initPopstateEventListener = (onRoute) => {
   window.addEventListener(POPSTATE_EVENT, () => {
@@ -18,15 +19,37 @@ const initHistoryPushEventListener = (onRoute) => {
   });
 };
 
+const initHistoryReplaceEventListener = (onRoute) => {
+  window.addEventListener(HISTORY_REPLACE_EVENT, (e) => {
+    const { nextUrl } = e.detail;
+
+    if (!nextUrl) return;
+
+    window.history.replaceState(null, null, nextUrl);
+    onRoute();
+  });
+};
+
 export const initRouter = (onRoute) => {
   initPopstateEventListener(onRoute);
   initHistoryPushEventListener(onRoute);
+  initHistoryReplaceEventListener(onRoute);
 };
 
-export const push = (nextUrl) => {
+const push = (nextUrl) => {
   window.dispatchEvent(
     new CustomEvent(HISTORY_PUSH_EVENT, {
       detail: { nextUrl },
     })
   );
 };
+
+const replace = (nextUrl) => {
+  window.dispatchEvent(
+    new CustomEvent(HISTORY_REPLACE_EVENT, {
+      detail: { nextUrl },
+    })
+  );
+};
+
+export const history = { push, replace };
