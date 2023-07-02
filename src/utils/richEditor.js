@@ -17,26 +17,26 @@ export const makeRichText = ($editor, key) => {
   // 에디터가 비어있으면 내용 초기화
   if ($editor.innerHTML === '<br>') $editor.innerHTML = '';
 
-  // # 으로 헤딩 속성 지정
+  // 헤딩 속성 지정
   if (key === ' ' && $line) {
     if (text.startsWith('### ')) {
-      const newText = text.substring(4) || '<br>';
+      const nextHtml = $parentNode.innerHTML.substring(4) || '<br>';
       $line.classList.add('editor__h3');
       $line.classList.remove('editor__h2');
       $line.classList.remove('editor__h1');
-      $line.innerHTML = `<span>${newText}</span>`;
+      $line.innerHTML = nextHtml;
     } else if (text.startsWith('## ')) {
-      const newText = text.substring(3) || '<br>';
+      const nextHtml = $parentNode.innerHTML.substring(3) || '<br>';
       $line.classList.remove('editor__h3');
       $line.classList.add('editor__h2');
       $line.classList.remove('editor__h1');
-      $line.innerHTML = `<span>${newText}</span>`;
+      $line.innerHTML = nextHtml;
     } else if (text.startsWith('# ')) {
-      const newText = text.substring(2) || '<br>';
+      const nextHtml = $parentNode.innerHTML.substring(2) || '<br>';
       $line.classList.remove('editor__h3');
       $line.classList.remove('editor__h2');
       $line.classList.add('editor__h1');
-      $line.innerHTML = `<span>${newText}</span>`;
+      $line.innerHTML = nextHtml;
     }
   }
 };
