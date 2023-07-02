@@ -1,4 +1,8 @@
-export function DocumentList({$target, data =[], depth = 0, initialState}) {
+import { DocumentCreate } from "./DocumentCreate.js"
+import { push } from '../router.js';
+
+export function DocumentList({$target, data =[], depth = 0, initialState, onSubmit}) {
+    
     this.state = initialState
     this.setState = (nextState) => {
         this.state = nextState
@@ -17,19 +21,32 @@ export function DocumentList({$target, data =[], depth = 0, initialState}) {
         data.forEach((data => {
             const $parentNode = document.createElement('div')
             $parentNode.className = `doc-${this.state.selectedNode}`
+            $parentNode.style.marginLeft = `${this.state.depth * 10}px`;
+            const createBtn = new DocumentCreate({
+                $target: $parentNode, 
+                parentId: this.state.parent, 
+                onClick: () => {
+                    console.log("클릭클릭")
+            },
+                onSubmit: onSubmit
+            })
+            createBtn.render();
             $li.append($parentNode);
             const documentList = new DocumentList({
                 $target: $parentNode,
                 data: [data],
                 depth: this.state.depth + 1,
-                initialState: this.state
+                initialState: this.state,
+                onSubmit: onSubmit
             })
             documentList.render();
         }))
     }
     $target.addEventListener('click', (e) => {
         e.stopPropagation();
-        if($target.classList.contains('documentPage') && !e.target.classList.contains('doc')){
+        if($target.classList.contains('documentPage') && !e.target.classList.contains('doc'))
+            return
+        if(e.target.classList.contains('createDoc')){
             return
         }
         if(this.state.isOpen){
@@ -56,9 +73,9 @@ export function DocumentList({$target, data =[], depth = 0, initialState}) {
                         isOpen: !this.state.isOpen,
                         depth: this.state.depth + 1
                     })
-                    console.log(this.state)
                     this.onSelect(childrenData[0], $li)
                 }
+                push(`/documents/${id}`);
             }
         }    
     })

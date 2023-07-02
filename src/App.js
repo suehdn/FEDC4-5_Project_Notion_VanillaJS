@@ -1,6 +1,6 @@
 import { EditorPage } from "./EditorPage.js";
 import { DocumentPage } from "./DocumentPage.js";
-
+import { initRouter } from "./router.js";
 
 export default function App ($target) {
     const $app = document.createElement('div');
@@ -20,11 +20,22 @@ export default function App ($target) {
 
     //router 설정하는 친구 
     this.route = () => {
-
+        const { pathname } = window.location;
+        console.log(pathname);
+        if (pathname.indexOf('/documents/') === 0){
+            console.log("안녕")
+            const [, , documentId] = pathname.split('/');
+            editorPage.setState({...editorPage.state, id : documentId});
+        }
     }
     this.render = () => {
         documentPage.render();
+        const { pathname } = window.location;
+        const [, , documentId] = pathname.split('/');
+        if(documentId){
+            editorPage.setState({...editorPage.state, id: documentId})
+        }
     }
     this.render();
-
+    initRouter({onRoute : () => this.route()});
 }
