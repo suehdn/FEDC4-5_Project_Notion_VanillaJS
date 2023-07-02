@@ -1,3 +1,9 @@
+import { fetchAPI } from './util/api.js';
 export default function App({ $target }) {
-  console.log($target);
+  const request = async () => {
+    let res = await fetchAPI('/');
+    console.log(res);
+  };
+
+  request();
 }
