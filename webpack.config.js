@@ -13,7 +13,6 @@ module.exports = (_, argv) => {
         '@api': path.resolve(__dirname, 'src/api'),
         '@components': path.resolve(__dirname, 'src/components'),
         '@consts': path.resolve(__dirname, 'src/consts'),
-        '@core': path.resolve(__dirname, 'src/core'),
         '@pages': path.resolve(__dirname, 'src/pages'),
         '@utils': path.resolve(__dirname, 'src/utils'),
       },

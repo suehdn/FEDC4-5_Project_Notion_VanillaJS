@@ -1,7 +1,7 @@
 const API_END_POINT = 'https://kdt-frontend.programmers.co.kr';
 
 const getHeader = () => {
-  const username = 'kutta97';
+  const username = 'roto';
   return {
     'Content-Type': 'application/json',
     'x-username': username,

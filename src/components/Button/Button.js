@@ -1,20 +1,18 @@
-import Component from '@core/Component';
+export default class Button {
+  constructor({ $target, className, textContent, onClick }) {
+    this.$createButton = document.createElement('button');
 
-export default class Button extends Component {
-  template() {
-    const { className, textContent } = this.props;
-    return `
-      <button class="${className}">
-        ${textContent}
-      </button>
-    `;
+    this.$createButton.className = className;
+    this.$createButton.textContent = textContent;
+
+    $target.appendChild(this.$createButton);
+
+    this.setEvent(onClick);
   }
 
-  setEvent() {
-    const { className, onClick } = this.props;
-
-    this.addEvent('click', `.${className}`, () => {
-      onClick();
+  setEvent(callback) {
+    this.$createButton.addEventListener('click', () => {
+      callback?.();
     });
   }
 }

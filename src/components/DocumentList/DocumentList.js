@@ -2,34 +2,34 @@ import { createDocument, deleteDocument } from '@api/document';
 
 import { history } from '@utils/router';
 
-import Component from '@core/Component';
-
 import DocumentListItem from '@components/DocumentList/Item/DocumentListItem';
 
 import './DocumentList.css';
 
-export default class DocumentList extends Component {
-  setup() {
-    this.state = {
-      documentList: [],
-    };
+export default class DocumentList {
+  constructor({ $target }) {
+    this.$documentList = document.createElement('ul');
+    this.$documentList.className = 'document-list';
+
+    $target.appendChild(this.$documentList);
+
+    this.setEvent();
   }
 
-  render() {
-    super.render();
+  handleCreateIndsideButtonClick = async (id) => {
+    const newDocument = await createDocument({ title: 'Untitled', parent: id });
+    history.push(`/documents/${newDocument.id}`);
+  };
 
-    const { documentList } = this.props;
-    if (documentList.length === 0) return;
-
-    documentList.forEach((document) => {
-      const $documentItem = this.createDocumentItem(document);
-      this.$target.appendChild($documentItem);
-    });
-  }
+  hanldeDeleteButtonClick = async (id) => {
+    await deleteDocument(id);
+    history.push('/');
+  };
 
   setEvent() {
-    this.addEvent('click', 'li', ({ target }) => {
+    this.$documentList.addEventListener('click', ({ target }) => {
       const $li = target.closest('li');
+      if (!$li) return;
 
       const { id } = $li.dataset;
       const { className } = target;
@@ -47,15 +47,10 @@ export default class DocumentList extends Component {
     });
   }
 
-  handleCreateIndsideButtonClick = async (id) => {
-    const newDocument = await createDocument({ title: 'Untitled', parent: id });
-    history.push(`/documents/${newDocument.id}`);
-  };
-
-  hanldeDeleteButtonClick = async (id) => {
-    await deleteDocument(id);
-    history.push('/');
-  };
+  setState(nextState) {
+    this.state = nextState;
+    this.render();
+  }
 
   createDocumentItem(item, depth = 1) {
     const $div = document.createElement('div');
@@ -77,5 +72,14 @@ export default class DocumentList extends Component {
     }
 
     return $div;
+  }
+
+  render() {
+    const { documentList } = this.state;
+    this.$documentList.innerHTML = '';
+    documentList.forEach((document) => {
+      const $documentItem = this.createDocumentItem(document);
+      this.$documentList.appendChild($documentItem);
+    });
   }
 }

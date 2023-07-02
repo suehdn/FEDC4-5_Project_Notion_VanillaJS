@@ -1,38 +1,59 @@
-import Component from '@core/Component';
+import { updateDocument } from '@api/document';
+
+import { setItem } from '@utils/localStorage';
 
 import NotionEditor from '@components/Editor/NotionEditor';
 
 import './NotionDocument.css';
 
-export default class NotionDocument extends Component {
-  setup() {
-    this.state = {
-      isVisible: false,
-    };
+export default class NotionDocument {
+  constructor({ $target }) {
+    this.$document = document.createElement('div');
+    this.$document.className = 'notion-document';
+
+    $target.appendChild(this.$document);
+
+    this.$editor = new NotionEditor({
+      $target: this.$document,
+      onEdit: this.onEdit.bind(this),
+    });
+
+    this.timer = null;
   }
 
-  template() {
-    return `
-      <header class="current-path-wrapper"></header>
-      <section class="notion-editor-wrapper"></section>
-      <footer class="child-path-wrapper"></footer>
-    `;
+  onEdit(document) {
+    if (this.timer !== null) {
+      clearTimeout(this.timer);
+    }
+    this.timer = setTimeout(async () => {
+      setItem(`temp-post-${document.id}`, {
+        ...document,
+        tempSaveDate: new Date(),
+      });
+
+      const updatedDocument = await updateDocument(document.id, document);
+      this.setState({
+        ...this.state,
+        ...updatedDocument,
+      });
+    }, 1000);
+  }
+
+  setState(nextState) {
+    this.state = {
+      ...this.state,
+      ...nextState,
+    };
+
+    const { id, title, content } = this.state;
+    this.$editor.setState({ id, title, content });
+
+    this.render();
   }
 
   render() {
-    super.render();
-
     const { isVisible } = this.state;
-    this.$target.style.visibility = isVisible ? 'visible' : 'hidden';
-  }
 
-  mount() {
-    const { documentData, onEdit } = this.props;
-    const $editor = this.$target.querySelector('.notion-editor-wrapper');
-
-    this.$editor = new NotionEditor($editor, {
-      documentData,
-      onEdit,
-    });
+    this.$document.style.visibility = isVisible ? 'visible' : 'hidden';
   }
 }
