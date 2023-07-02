@@ -28,14 +28,37 @@ export default class DocumentList {
     this.render();
   }
 
+  createDocumentItem(item, depth = 1) {
+    const $div = document.createElement('div');
+
+    const $li = document.createElement('li');
+    $li.dataset.id = item.id;
+    $li.innerHTML = `
+      <a>${item.title}</a>
+      <button>+</button>
+    `;
+    $li.style.paddingLeft = `${depth * 5}px`;
+
+    $div.appendChild($li);
+
+    const { documents: childItems } = item;
+
+    if (childItems.length > 0) {
+      const $ul = document.createElement('ul');
+      childItems.forEach((childItem) => {
+        $ul.appendChild(this.createDocumentItem(childItem, depth + 1));
+      });
+      $div.appendChild($ul);
+    }
+
+    return $div;
+  }
+
   render() {
     const { documentList } = this.state;
-    this.$documentList.innerHTML = documentList
-      .map(
-        (document) => `
-        <li data-id="${document.id}">${document.title}</li>
-      `
-      )
-      .join('');
+    documentList.forEach((document) => {
+      const $documentItem = this.createDocumentItem(document);
+      this.$documentList.appendChild($documentItem);
+    });
   }
 }
