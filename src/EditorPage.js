@@ -1,4 +1,4 @@
-export default function EditorPage({ $target, initialState }) {
+export default function EditorPage({ $target, initialState, onEditing }) {
   const $page = document.createElement("div");
 
   $target.appendChild($page);
@@ -7,15 +7,23 @@ export default function EditorPage({ $target, initialState }) {
 
   this.setState = (newState) => {
     this.state = newState;
-    this.render();
+    $page.querySelector("[name=title]").value = this.state.title;
+    $page.querySelector("[name=content]").value = this.state.content;
   };
 
   this.render = () => {
     $page.innerHTML = `
-    <h2>${this.state.title}</h2>
-    <textarea>${this.state.content}</textarea>
+    <input class="editor-title" name="title" value="${this.state.title}"/>
+    <textarea name="content">${this.state.content}</textarea>
     `;
   };
 
   this.render();
+
+  $page.addEventListener("input", (event) => {
+    const name = event.target.getAttribute("name");
+
+    this.setState({ ...this.state, [name]: event.target.value });
+    onEditing(this.state);
+  });
 }
