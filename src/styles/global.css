@@ -1,0 +1,49 @@
+html,
+body,
+#app {
+    height: 100%;
+    width: 100vw;
+    position: relative;
+    display: flex;
+    flex: 1 1 0%;
+    background: white;
+    cursor: text;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+.sidebar-header {
+    text-align: center;
+    font-size: 200%;
+}
+
+.sidebar {
+    flex: 2; /* this will take up 20% of the total width */
+}
+
+.editor {
+    flex: 8; /* this will take up 80% of the total width */
+}
+
+
+
+/*.sidebar {*/
+/*    display: flex;*/
+/*    background-color: blue;*/
+/*}*/
+/*.notion-sidebar-container {*/
+/*    !*display: none !important;*!*/
+/*    cursor: default;*/
+/*    background-color: red;*/
+/*}*/
+
+/*.notion-main-container {*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    width: 100%;*/
+/*    overflow: hidden;*/
+/*    background-color: blue;*/
+/*}*/
