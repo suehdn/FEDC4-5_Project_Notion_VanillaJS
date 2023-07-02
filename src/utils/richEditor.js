@@ -8,36 +8,42 @@ export const makeRichText = ($editor, key) => {
   const $anchorNode = selection.anchorNode;
   const text = $anchorNode.textContent;
 
-  // 첫 번째 줄에서 입력한 경우 div 요소로 감싸줌
-  if ($parentNode === $editor) {
-    if ($anchorNode.nodeType === Node.TEXT_NODE) {
-      // 텍스트 입력한 경우
-      $parentNode.innerHTML = `<div class="editor__line">${text}</div>`;
-      setCaret($parentNode.firstChild, 1);
-    } else if (!$parentNode.firstChild.classList.contains('editor__line')) {
-      // 비어있는 상태에서 개행해서 클래스가 없는 div 요소가 두 개 생성된 경우
-      $parentNode.innerHTML = `<div class="editor__line"><br/></div><div class="editor__line"><br/></div>`;
-      setCaret($parentNode.lastChild, 0);
-    }
+  // 첫 번째 줄에서 텍스트를 입력한 경우 div 요소로 감싸줌
+  if ($parentNode === $editor && $anchorNode.nodeType === Node.TEXT_NODE) {
+    $parentNode.innerHTML = `<div class="editor__line">${text}</div>`;
+    setCaret($parentNode.firstChild, 1);
   }
+
+  // // 첫 번째 줄에서 입력한 경우 div 요소로 감싸줌
+  // if ($parentNode === $editor) {
+  //   if ($anchorNode.nodeType === Node.TEXT_NODE) {
+  //     // 텍스트 입력한 경우
+  //     $parentNode.innerHTML = `<div class="editor__line">${text}</div>`;
+  //     setCaret($parentNode.firstChild, 1);
+  //   } else if (!$parentNode.firstChild.classList.contains('editor__line')) {
+  //     // 비어있는 상태에서 개행해서 클래스가 없는 div 요소가 두 개 생성된 경우
+  //     $parentNode.innerHTML = `<div class="editor__line"><br/></div><div class="editor__line"><br/></div>`;
+  //     setCaret($parentNode.lastChild, 0);
+  //   }
+  // }
 
   if ($editor.innerHTML === '<br>') $editor.innerHTML = '';
 
-  // headings 태그에서 개행한 경우 다음 줄로 넘어가기
-  if (key === 'Enter') {
-    console.log($anchorNode);
-    if ($line) {
-      const $newLine = document.createElement('div');
-      $newLine.classList.add('editor__line');
-      $newLine.innerHTML = '<br>';
+  // // headings 태그에서 개행한 경우 다음 줄로 넘어가기
+  // if (key === 'Enter') {
+  //   console.log($anchorNode);
+  //   if ($line) {
+  //     const $newLine = document.createElement('div');
+  //     $newLine.classList.add('editor__line');
+  //     $newLine.innerHTML = '<br>';
 
-      $parentNode.removeChild($parentNode.lastChild);
+  //     $parentNode.removeChild($parentNode.lastChild);
 
-      const currentNode = [...$editor.childNodes].find((n) => n === $line);
-      $editor.insertBefore($newLine, currentNode.nextSibling);
-      setCaret($newLine.firstChild, 0);
-    }
-  }
+  //     const currentNode = [...$editor.childNodes].find((n) => n === $line);
+  //     $editor.insertBefore($newLine, currentNode.nextSibling);
+  //     setCaret($newLine.firstChild, 0);
+  //   }
+  // }
 
   if (key === ' ' && $line) {
     if (text.startsWith('### ')) {
@@ -51,4 +57,29 @@ export const makeRichText = ($editor, key) => {
       $line.innerHTML = `<h1>${newText}</h1>`;
     }
   }
+};
+
+export const makeNewLine = ($editor) => {
+  const $parentNode = selection.anchorNode.parentNode;
+  const $anchorNode = selection.anchorNode;
+  const text = $anchorNode.textContent;
+
+  // 비어있는 상태에서 개행하는 경우
+  if ($anchorNode === $editor) {
+    $anchorNode.innerHTML = `<div class="editor__line"><br/></div><div class="editor__line"><br/></div>`;
+    setCaret($anchorNode.lastChild, 0);
+    return;
+  }
+
+  console.log(selection);
+
+  let $line = $parentNode.closest('.editor__line');
+  $line = !$line ? $anchorNode : $parentNode;
+
+  const $nextLine = document.createElement('div');
+  $nextLine.classList.add('editor__line');
+  $nextLine.innerHTML = '<br>';
+
+  $editor.insertBefore($nextLine, $line.nextSibling);
+  setCaret($nextLine.firstChild, 0);
 };

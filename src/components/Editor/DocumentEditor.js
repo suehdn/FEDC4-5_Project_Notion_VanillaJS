@@ -1,5 +1,5 @@
 import { saveCursorPointer, restoreCursorPointer } from '../../utils/cursor.js';
-import { makeRichText } from '../../utils/richEditor.js';
+import { makeRichText, makeNewLine } from '../../utils/richEditor.js';
 import './DocumentEditor.css';
 
 export default class DocumentEditor {
@@ -13,7 +13,6 @@ export default class DocumentEditor {
 
     this.initEvents();
     this.render();
-    // this.$content.innerHTML = `ㅎㅎ <div>메롱</div> <div><h1><span>첫번째노드는이녀석입니다</span><span>깊은 곳</span></h1></div>`;
   }
 
   setHidden(hidden) {
@@ -28,7 +27,7 @@ export default class DocumentEditor {
 
   initEvents() {
     this.$title.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') return e.preventDefault(); // 엔터 입력시 개행 방지
+      if (e.key === 'Enter') e.preventDefault(); // 엔터 입력시 개행 방지
     });
 
     this.$title.addEventListener('keyup', (e) => {
@@ -44,11 +43,16 @@ export default class DocumentEditor {
       makeRichText(this.$content);
     });
 
-    this.$content.addEventListener('keyup', (e) => {
-      const { $content } = this;
-      if (e.isComposing) return;
+    this.$content.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        makeNewLine(this.$content);
+      }
+    });
 
-      makeRichText($content, e.key);
+    this.$content.addEventListener('keyup', (e) => {
+      if (e.isComposing) return;
+      makeRichText(this.$content, e.key);
     });
 
     this.$target.addEventListener('input', (e) => {
