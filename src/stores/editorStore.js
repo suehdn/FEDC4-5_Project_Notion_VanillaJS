@@ -46,7 +46,7 @@ export default class EditorStore {
 
     debounce(async () => {
       await modifyDocument(document, documentId);
-      // storage.removeItem(DOCUMENT(documentId));
+      storage.removeItem(DOCUMENT(documentId));
     }, 1000);
   }
 }

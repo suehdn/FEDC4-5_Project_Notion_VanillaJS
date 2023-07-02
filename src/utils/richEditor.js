@@ -42,29 +42,20 @@ export const makeRichText = ($editor, key) => {
 
   // 헤딩 속성 지정
   if (key === ' ' && $line) {
+    const updateHtml = (level) => {
+      const nextHtml = $line.innerHTML.replace('#'.repeat(level) + ' ', '') || '<br>';
+      removeHeading($line);
+      
+      $line.classList.add(`editor__h${level}`);
+      $line.innerHTML = nextHtml;
+      $line.childNodes.forEach((node) => (node.style.fontSize = ''));
 
-    if (text.startsWith('### ')) {
-      const nextHtml = $parentNode.innerHTML.substring(4) || '<br>';
-      removeHeading($line);
-      $line.classList.add('editor__h3');
-      $line.innerHTML = nextHtml;
-      const $child = findDeepFirstChild($line);
-      setCaret($child, 0);
-    } else if (text.startsWith('## ')) {
-      const nextHtml = $parentNode.innerHTML.substring(3) || '<br>';
-      removeHeading($line);
-      $line.classList.add('editor__h2');
-      $line.innerHTML = nextHtml;
-      const $child = findDeepFirstChild($line);
-      setCaret($child, 0);
-    } else if (text.startsWith('# ')) {
-      const nextHtml = $parentNode.innerHTML.substring(2) || '<br>';
-      removeHeading($line);
-      $line.classList.add('editor__h1');
-      $line.innerHTML = nextHtml;
-      const $child = findDeepFirstChild($line);
-      setCaret($child, 0);
-    }
+      setCaret(findDeepFirstChild($line), 0);
+    };
+
+    if (text.startsWith('### ')) updateHtml(3);
+    else if (text.startsWith('## ')) updateHtml(2);
+    else if (text.startsWith('# ')) updateHtml(1);
   }
 };
 
