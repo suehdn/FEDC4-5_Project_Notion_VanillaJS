@@ -1,3 +1,5 @@
+import { createDocument } from '@api/document';
+
 import { history } from '@utils/router';
 
 import './DocumentList.css';
@@ -12,14 +14,25 @@ export default class DocumentList {
     this.setEvent();
   }
 
+  handleCreateIndsideButtonClick = async (id) => {
+    const newDocument = await createDocument({ title: 'Untitled', parent: id });
+    history.push(`/documents/${newDocument.id}`);
+  };
+
   setEvent() {
     this.$documentList.addEventListener('click', (e) => {
       const $li = e.target.closest('li');
 
-      if ($li) {
-        const { id } = $li.dataset;
-        history.push(`/documents/${id}`);
+      if (!$li) return;
+
+      const { id } = $li.dataset;
+      const { className } = e.target;
+
+      if (className === 'document-create-inside-button') {
+        this.handleCreateIndsideButtonClick(id);
+        return;
       }
+      history.push(`/documents/${id}`);
     });
   }
 
@@ -35,9 +48,9 @@ export default class DocumentList {
     $li.dataset.id = item.id;
     $li.innerHTML = `
       <a>${item.title}</a>
-      <button>+</button>
+      <button class="document-create-inside-button">+</button>
     `;
-    $li.style.paddingLeft = `${depth * 5}px`;
+    $li.style.paddingLeft = `${depth * 10}px`;
 
     $div.appendChild($li);
 
@@ -56,6 +69,7 @@ export default class DocumentList {
 
   render() {
     const { documentList } = this.state;
+    this.$documentList.innerHTML = '';
     documentList.forEach((document) => {
       const $documentItem = this.createDocumentItem(document);
       this.$documentList.appendChild($documentItem);
