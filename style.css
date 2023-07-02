@@ -13,7 +13,9 @@ div.document-list {
   display: flex;
   position: relative;
   flex-direction: column;
-  height: 100%;
+  height: 100vh;
+  width: 240px;
+
   overflow: hidden;
 }
 
@@ -25,5 +27,27 @@ div.document-list {
 }
 
 input.editor-title {
+  width: 100%;
   height: 80px;
+  margin: 0 10px;
+  border: none;
+}
+
+input.editor-title:focus {
+  outline: none;
+}
+
+button {
+  display: flex;
+}
+
+div.document {
+  display: flex;
+}
+
+textarea {
+  width: 100%;
+  margin: 10px 10px;
+  border: none;
+  height: 100%;
 }
