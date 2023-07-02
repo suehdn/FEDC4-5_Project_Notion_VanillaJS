@@ -18,3 +18,6 @@ export const getItem = (key, defaultValue = {}) => {
         throw new Error("저장공간이 잘못되었습니다.")
     }
 }
+export const removeItem = (key) => {
+    storage.removeItem(key);
+}

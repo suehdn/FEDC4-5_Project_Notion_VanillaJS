@@ -20,6 +20,7 @@ export default function Editor({$target, initialState = {
     }
     this.render = () => {
         if(this.state.content === null){
+            this.state.content=''
             $editor.querySelector('[name=title]').value = this.state.title;
             $editor.querySelector('[name=content]').innerHTML = '';
             return
@@ -42,11 +43,18 @@ export default function Editor({$target, initialState = {
     $editor.querySelector('[name=title]').addEventListener('keyup', e => {
         const nextState  = {
             ...this.state, 
-            title: e.target
+            title: e.target.value
         }
         this.setState(nextState);
         onEditing(this.state)
     })
-    $editor.querySelector('[name=content]').addEventListener('input', e => { 
+    $editor.querySelector('[name=content]').addEventListener('input', e => {
+        //console.log(e.data);
+        const nextState  = {
+            ...this.state, 
+            content: this.state.content + e.data
+        }
+        this.setState(nextState);
+        onEditing(this.state)
     })
 }
