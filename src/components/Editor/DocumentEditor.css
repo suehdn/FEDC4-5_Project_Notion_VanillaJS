@@ -1,16 +1,16 @@
-.editor__line h1 {
+.editor__h1 {
   font-size: 2rem;
   line-height: 3.5rem;
   font-weight: bold;
 }
 
-.editor__line h2 {
+.editor__h2 {
   font-size: 1.5rem;
   line-height: 2.5rem;
   font-weight: bold;
 }
 
-.editor__line h3 {
+.editor__h3 {
   font-size: 1.25rem;
   line-height: 2rem;
   font-weight: bold;

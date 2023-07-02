@@ -14,72 +14,56 @@ export const makeRichText = ($editor, key) => {
     setCaret($parentNode.firstChild, 1);
   }
 
-  // // 첫 번째 줄에서 입력한 경우 div 요소로 감싸줌
-  // if ($parentNode === $editor) {
-  //   if ($anchorNode.nodeType === Node.TEXT_NODE) {
-  //     // 텍스트 입력한 경우
-  //     $parentNode.innerHTML = `<div class="editor__line">${text}</div>`;
-  //     setCaret($parentNode.firstChild, 1);
-  //   } else if (!$parentNode.firstChild.classList.contains('editor__line')) {
-  //     // 비어있는 상태에서 개행해서 클래스가 없는 div 요소가 두 개 생성된 경우
-  //     $parentNode.innerHTML = `<div class="editor__line"><br/></div><div class="editor__line"><br/></div>`;
-  //     setCaret($parentNode.lastChild, 0);
-  //   }
-  // }
-
+  // 에디터가 비어있으면 내용 초기화
   if ($editor.innerHTML === '<br>') $editor.innerHTML = '';
 
-  // // headings 태그에서 개행한 경우 다음 줄로 넘어가기
-  // if (key === 'Enter') {
-  //   console.log($anchorNode);
-  //   if ($line) {
-  //     const $newLine = document.createElement('div');
-  //     $newLine.classList.add('editor__line');
-  //     $newLine.innerHTML = '<br>';
-
-  //     $parentNode.removeChild($parentNode.lastChild);
-
-  //     const currentNode = [...$editor.childNodes].find((n) => n === $line);
-  //     $editor.insertBefore($newLine, currentNode.nextSibling);
-  //     setCaret($newLine.firstChild, 0);
-  //   }
-  // }
-
+  // # 으로 헤딩 속성 지정
   if (key === ' ' && $line) {
     if (text.startsWith('### ')) {
       const newText = text.substring(4) || '<br>';
-      $line.innerHTML = `<h3>${newText}</h3>`;
+      $line.classList.add('editor__h3');
+      $line.classList.remove('editor__h2');
+      $line.classList.remove('editor__h1');
+      $line.innerHTML = `<span>${newText}</span>`;
     } else if (text.startsWith('## ')) {
       const newText = text.substring(3) || '<br>';
-      $line.innerHTML = `<h2>${newText}</h2>`;
+      $line.classList.remove('editor__h3');
+      $line.classList.add('editor__h2');
+      $line.classList.remove('editor__h1');
+      $line.innerHTML = `<span>${newText}</span>`;
     } else if (text.startsWith('# ')) {
       const newText = text.substring(2) || '<br>';
-      $line.innerHTML = `<h1>${newText}</h1>`;
+      $line.classList.remove('editor__h3');
+      $line.classList.remove('editor__h2');
+      $line.classList.add('editor__h1');
+      $line.innerHTML = `<span>${newText}</span>`;
     }
   }
 };
 
-export const makeNewLine = ($editor) => {
+export const handleNewLine = ($editor, event) => {
   const $parentNode = selection.anchorNode.parentNode;
   const $anchorNode = selection.anchorNode;
-  const text = $anchorNode.textContent;
+  const $line = $parentNode.closest('.editor__line');
 
   // 비어있는 상태에서 개행하는 경우
   if ($anchorNode === $editor) {
+    event.preventDefault();
     $anchorNode.innerHTML = `<div class="editor__line"><br/></div><div class="editor__line"><br/></div>`;
     setCaret($anchorNode.lastChild, 0);
     return;
   }
 
-  console.log(selection);
-
-  let $line = $parentNode.closest('.editor__line');
-  $line = !$line ? $anchorNode : $parentNode;
-
-  const $nextLine = document.createElement('div');
-  $nextLine.classList.add('editor__line');
-  $nextLine.innerHTML = '<br>';
-
-  $editor.insertBefore($nextLine, $line.nextSibling);
-  setCaret($nextLine.firstChild, 0);
+  // headings 태그에서 개행하는 경우
+  if ($line) {
+    if (
+      $line.classList.contains('editor__h1') ||
+      $line.classList.contains('editor__h2') ||
+      $line.classList.contains('editor__h3')
+    ) {
+      setTimeout(() => {
+        $line.nextSibling.className = 'editor__line';
+      }, 0);
+    }
+  }
 };

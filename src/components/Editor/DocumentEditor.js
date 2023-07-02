@@ -1,5 +1,4 @@
-import { saveCursorPointer, restoreCursorPointer } from '../../utils/cursor.js';
-import { makeRichText, makeNewLine } from '../../utils/richEditor.js';
+import { makeRichText, handleNewLine } from '../../utils/richEditor.js';
 import './DocumentEditor.css';
 
 export default class DocumentEditor {
@@ -40,14 +39,11 @@ export default class DocumentEditor {
     });
 
     this.$content.addEventListener('compositionend', (e) => {
-      makeRichText(this.$content);
+      makeRichText(this.$content); // 한글 입력 처리
     });
 
     this.$content.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        makeNewLine(this.$content);
-      }
+      if (e.key === 'Enter') handleNewLine(this.$content, e); // 개행 처리
     });
 
     this.$content.addEventListener('keyup', (e) => {
