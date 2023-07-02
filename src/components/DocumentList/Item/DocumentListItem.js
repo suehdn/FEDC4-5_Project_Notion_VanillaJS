@@ -18,6 +18,7 @@ export default class DocumentListItem {
     this.$documentListItem.dataset.id = documentItem.id;
     this.$documentListItem.innerHTML = `
       <a>${documentItem.title}</a>
+      <button class="document-delete-button">x</button>
       <button class="document-create-inside-button">+</button>
     `;
     this.$documentListItem.style.paddingLeft = `${depth * 10}px`;

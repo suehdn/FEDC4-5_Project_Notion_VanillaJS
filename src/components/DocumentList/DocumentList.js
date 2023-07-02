@@ -1,4 +1,4 @@
-import { createDocument } from '@api/document';
+import { createDocument, deleteDocument } from '@api/document';
 
 import { history } from '@utils/router';
 
@@ -21,6 +21,11 @@ export default class DocumentList {
     history.push(`/documents/${newDocument.id}`);
   };
 
+  hanldeDeleteButtonClick = async (id) => {
+    await deleteDocument(id);
+    history.push('/');
+  };
+
   setEvent() {
     this.$documentList.addEventListener('click', ({ target }) => {
       const $li = target.closest('li');
@@ -28,6 +33,11 @@ export default class DocumentList {
 
       const { id } = $li.dataset;
       const { className } = target;
+
+      if (className === 'document-delete-button') {
+        this.hanldeDeleteButtonClick(id);
+        return;
+      }
 
       if (className === 'document-create-inside-button') {
         this.handleCreateIndsideButtonClick(id);
