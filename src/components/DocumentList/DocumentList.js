@@ -2,6 +2,8 @@ import { createDocument } from '@api/document';
 
 import { history } from '@utils/router';
 
+import DocumentListItem from '@components/DocumentList/Item/DocumentListItem';
+
 import './DocumentList.css';
 
 export default class DocumentList {
@@ -20,13 +22,12 @@ export default class DocumentList {
   };
 
   setEvent() {
-    this.$documentList.addEventListener('click', (e) => {
-      const $li = e.target.closest('li');
-
+    this.$documentList.addEventListener('click', ({ target }) => {
+      const $li = target.closest('li');
       if (!$li) return;
 
       const { id } = $li.dataset;
-      const { className } = e.target;
+      const { className } = target;
 
       if (className === 'document-create-inside-button') {
         this.handleCreateIndsideButtonClick(id);
@@ -44,15 +45,11 @@ export default class DocumentList {
   createDocumentItem(item, depth = 1) {
     const $div = document.createElement('div');
 
-    const $li = document.createElement('li');
-    $li.dataset.id = item.id;
-    $li.innerHTML = `
-      <a>${item.title}</a>
-      <button class="document-create-inside-button">+</button>
-    `;
-    $li.style.paddingLeft = `${depth * 10}px`;
-
-    $div.appendChild($li);
+    const $documentItem = new DocumentListItem({ $target: $div });
+    $documentItem.setState({
+      documentItem: item,
+      depth,
+    });
 
     const { documents: childItems } = item;
 
