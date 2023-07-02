@@ -1,6 +1,25 @@
+.editor__line h1 {
+  font-size: 2rem;
+  line-height: 3.5rem;
+  font-weight: bold;
+}
+
+.editor__line h2 {
+  font-size: 1.5rem;
+  line-height: 2.5rem;
+  font-weight: bold;
+}
+
+.editor__line h3 {
+  font-size: 1.25rem;
+  line-height: 2rem;
+  font-weight: bold;
+}
+
 .main__editor [contenteditable='true'] {
   line-height: 1.75em;
   word-break: break-all;
+  white-space: pre-wrap;
   outline: none;
 }
 

@@ -1,4 +1,5 @@
 import { saveCursorPointer, restoreCursorPointer } from '../../utils/cursor.js';
+import { makeRichText } from '../../utils/richEditor.js';
 import './Editor.css';
 
 export default class DocumentEditor {
@@ -26,17 +27,6 @@ export default class DocumentEditor {
   }
 
   initEvents() {
-    // let isComposing = false;
-
-    // this.$content.addEventListener('compositionstart', (e) => {
-    //   isComposing = true;
-    // });
-
-    // this.$content.addEventListener('compositionend', (e) => {
-    //   isComposing = false;
-    //   this.onChange(e.target.innerHTML);
-    // });
-
     this.$title.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') return e.preventDefault(); // 엔터 입력시 개행 방지
     });
@@ -50,10 +40,20 @@ export default class DocumentEditor {
       }
     });
 
+    this.$content.addEventListener('compositionend', (e) => {
+      makeRichText(this.$content);
+    });
+
+    this.$content.addEventListener('keyup', (e) => {
+      const { $content } = this;
+      if (e.isComposing) return;
+
+      makeRichText($content, e.key);
+    });
+
     this.$target.addEventListener('input', (e) => {
       const role = e.target.dataset.role;
       if (!role || !['title', 'content'].includes(role)) return;
-      // if (isComposing) return;
 
       this.onChange({ name: role, value: e.target.innerHTML });
     });
