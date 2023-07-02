@@ -1,4 +1,4 @@
-import LeftNavListBoxMaker from "./LeftNavListBoxMaker.js" // 칸 하나 만드는 함수
+import LeftNavListBoxMaker from "./LeftNavListBoxMaker.js" // 네브 글칸 하나 만드는 함수
 
 export default function LeftNavList({ $target , initState}){
   const $LeftNavList = document.createElement('div')
@@ -11,14 +11,9 @@ export default function LeftNavList({ $target , initState}){
     this.state = newState
     this.render()
   }
-  const defaultPadding = 0 // 시작 기본 패딩량 
-  const addPadding = 25    // 재귀시 더해질 패딩량
+  const defaultPadding = 0 
+  const addPadding = 25    
   
-  /**
-   * @param $target 
-   * @param paddingLeft 초기패딩값. 하위요소로 재귀할수록 증가
-   * @param initDocuments Nav트리 데이터
-   */
   this.makeLeftNav = ( $target , paddingLeft, doms )=>{
 
     doms.forEach( ({ title, documents, id }) => {
@@ -34,12 +29,9 @@ export default function LeftNavList({ $target , initState}){
   }
 
   this.render = () => {
-
     $LeftNavList.innerHTML =  ''
-
     this.makeLeftNav( $LeftNavList, defaultPadding , this.state )
   }
-
   this.render()
 }
 

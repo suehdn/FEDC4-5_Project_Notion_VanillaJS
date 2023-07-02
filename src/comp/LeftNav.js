@@ -3,7 +3,6 @@ import LeftNavList from "./LeftNavList.js"
 
 export default function LeftNav({ $target , initState, userName, pageLoadToId, addNavSubDom, deleteNavDom }){
 
-  // 기본 양식
   const $LeftNav = document.createElement('div')
   $LeftNav.className = 'LeftNav'
   $target.appendChild($LeftNav)
@@ -27,9 +26,9 @@ export default function LeftNav({ $target , initState, userName, pageLoadToId, a
   this.NavFocusBox = undefined
 
   this.setNavFocusBox = $nextNavFocusBox => {
-    if (this.NavFocusBox !== undefined) this.NavFocusBox.classList.remove('포커스됨')
+    if (this.NavFocusBox !== undefined) this.NavFocusBox.classList.remove('focusNav')
     this.NavFocusBox  = $nextNavFocusBox
-    this.NavFocusBox.classList.add('포커스됨')
+    this.NavFocusBox.classList.add('focusNav')
   }
 
   this.FindNavDomToId = id => {
@@ -51,9 +50,9 @@ export default function LeftNav({ $target , initState, userName, pageLoadToId, a
       if ( !!buttonOption ){ 
 
         switch( buttonOption ) {
-          case 'closeNavTabButton': 
-            target.classList.toggle('폴더닫힘')
-            target.parentNode.nextElementSibling.classList.toggle('숨기기')
+          case 'hideNavTabButton': 
+            target.classList.toggle('hideSubNav')
+            target.parentNode.nextElementSibling.classList.toggle('hide')
             break
         
           case 'navAddSubDomButton': addNavSubDom($navDocument)

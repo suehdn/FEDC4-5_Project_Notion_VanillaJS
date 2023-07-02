@@ -1,6 +1,5 @@
 const startUrl = 'https://kdt-frontend.programmers.co.kr/documents'
 
-
 export const getApi = async (username, id = '') => {
   const data = await fetch(startUrl + `/${'' + id }`,{
     headers : {'x-username': username }
@@ -29,7 +28,6 @@ export const postApi = async (username , id = null) => {
   return data
 }
 
-
 export const putApi = async (username , id , title, content) => {
   const data = await fetch(startUrl + `/${'' + id }`,{
     headers : {
@@ -47,8 +45,6 @@ export const putApi = async (username , id , title, content) => {
 
   return data
 }
-
-
 
 export const deleteApi = async (username, id) => {
   await fetch(startUrl + `/${'' + id }`,{
