@@ -8,6 +8,9 @@ module.exports = (_, argv) => {
     entry: "./src/main.js",
     resolve: {
       extensions: [".js"],
+      alias: {
+        "@Components": path.resolve(__dirname, "./src/components"),
+      },
     },
     output: {
       path: path.resolve(__dirname, "./dist"),

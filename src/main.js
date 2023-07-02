@@ -1,4 +1,4 @@
-import App from "./App";
+import App from "@Components/App";
 
 const $app = document.querySelector(".app");
 
