@@ -1,4 +1,4 @@
-import { makeRichText, handleNewLine } from '../../utils/richEditor.js';
+import { makeRichText, handleNewLine, handleBackspace } from '../../utils/richEditor.js';
 import './DocumentEditor.css';
 
 export default class DocumentEditor {
@@ -44,6 +44,7 @@ export default class DocumentEditor {
 
     this.$content.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') handleNewLine(this.$content, e); // 개행 처리
+      if (e.key === 'Backspace') handleBackspace(this.$content, e); // 백스페이스 처리
     });
 
     this.$content.addEventListener('keyup', (e) => {
@@ -55,7 +56,10 @@ export default class DocumentEditor {
       const role = e.target.dataset.role;
       if (!role || !['title', 'content'].includes(role)) return;
 
-      this.onChange({ name: role, value: e.target.innerHTML });
+      makeRichText(this.$content, e.key);
+      setTimeout(() => {
+        this.onChange({ name: role, value: e.target.innerHTML });
+      }, 100);
     });
   }
 

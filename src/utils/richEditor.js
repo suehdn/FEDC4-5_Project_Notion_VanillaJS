@@ -14,6 +14,17 @@ const findDeepFirstChild = ($node) => {
   return currentNode;
 };
 
+const isHeading = ($node) =>
+  $node.classList.contains('editor__h1') ||
+  $node.classList.contains('editor__h2') ||
+  $node.classList.contains('editor__h3');
+
+const removeHeading = ($node) => {
+  $node.classList.remove('editor__h1');
+  $node.classList.remove('editor__h2');
+  $node.classList.remove('editor__h3');
+};
+
 export const makeRichText = ($editor, key) => {
   const $parentNode = selection.anchorNode.parentNode;
   const $line = $parentNode.closest('.editor__line');
@@ -31,24 +42,28 @@ export const makeRichText = ($editor, key) => {
 
   // 헤딩 속성 지정
   if (key === ' ' && $line) {
+
     if (text.startsWith('### ')) {
       const nextHtml = $parentNode.innerHTML.substring(4) || '<br>';
+      removeHeading($line);
       $line.classList.add('editor__h3');
-      $line.classList.remove('editor__h2');
-      $line.classList.remove('editor__h1');
       $line.innerHTML = nextHtml;
+      const $child = findDeepFirstChild($line);
+      setCaret($child, 0);
     } else if (text.startsWith('## ')) {
       const nextHtml = $parentNode.innerHTML.substring(3) || '<br>';
-      $line.classList.remove('editor__h3');
+      removeHeading($line);
       $line.classList.add('editor__h2');
-      $line.classList.remove('editor__h1');
       $line.innerHTML = nextHtml;
+      const $child = findDeepFirstChild($line);
+      setCaret($child, 0);
     } else if (text.startsWith('# ')) {
       const nextHtml = $parentNode.innerHTML.substring(2) || '<br>';
-      $line.classList.remove('editor__h3');
-      $line.classList.remove('editor__h2');
+      removeHeading($line);
       $line.classList.add('editor__h1');
       $line.innerHTML = nextHtml;
+      const $child = findDeepFirstChild($line);
+      setCaret($child, 0);
     }
   }
 };
@@ -68,11 +83,7 @@ export const handleNewLine = ($editor, event) => {
 
   if ($line) {
     // headings 태그에서 개행하는 경우
-    if (
-      $line.classList.contains('editor__h1') ||
-      $line.classList.contains('editor__h2') ||
-      $line.classList.contains('editor__h3')
-    ) {
+    if (isHeading($line)) {
       setTimeout(() => {
         $line.nextSibling.className = 'editor__line';
       }, 0);
@@ -88,5 +99,16 @@ export const handleNewLine = ($editor, event) => {
       const $nextChild = findDeepFirstChild($nextLine);
       if ($nextChild && $nextChild.nodeType !== Node.TEXT_NODE) $nextLine.innerHTML = '<br>';
     }, 0);
+  }
+};
+
+export const handleBackspace = ($editor, event) => {
+  const $parentNode = selection.anchorNode.parentNode;
+  const $heading = $parentNode.closest('.editor__h1, .editor__h2, .editor__h3');
+
+  // headings 태그의 시작 위치에서 백스페이스를 누른 경우
+  if ($heading && selection.anchorOffset === 0) {
+    event.preventDefault();
+    removeHeading($heading);
   }
 };
