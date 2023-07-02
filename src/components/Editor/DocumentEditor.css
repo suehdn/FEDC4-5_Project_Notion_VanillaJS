@@ -21,6 +21,7 @@
   word-break: break-all;
   white-space: pre-wrap;
   outline: none;
+  transition: padding ease-out 0.15s;
 }
 
 .main__editor [contenteditable='true']:empty:before {

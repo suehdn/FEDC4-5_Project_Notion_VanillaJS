@@ -1,6 +1,6 @@
 import { saveCursorPointer, restoreCursorPointer } from '../../utils/cursor.js';
 import { makeRichText } from '../../utils/richEditor.js';
-import './Editor.css';
+import './DocumentEditor.css';
 
 export default class DocumentEditor {
   constructor({ $target, initialState, onChange }) {
