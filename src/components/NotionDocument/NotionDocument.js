@@ -1,59 +1,38 @@
-import { updateDocument } from '@api/document';
-
-import { setItem } from '@utils/localStorage';
+import Component from '@core/Component';
 
 import NotionEditor from '@components/Editor/NotionEditor';
 
 import './NotionDocument.css';
 
-export default class NotionDocument {
-  constructor({ $target }) {
-    this.$document = document.createElement('div');
-    this.$document.className = 'notion-document';
-
-    $target.appendChild(this.$document);
-
-    this.$editor = new NotionEditor({
-      $target: this.$document,
-      onEdit: this.onEdit.bind(this),
-    });
-
-    this.timer = null;
-  }
-
-  onEdit(document) {
-    if (this.timer !== null) {
-      clearTimeout(this.timer);
-    }
-    this.timer = setTimeout(async () => {
-      setItem(`temp-post-${document.id}`, {
-        ...document,
-        tempSaveDate: new Date(),
-      });
-
-      const updatedDocument = await updateDocument(document.id, document);
-      this.setState({
-        ...this.state,
-        ...updatedDocument,
-      });
-    }, 1000);
-  }
-
-  setState(nextState) {
+export default class NotionDocument extends Component {
+  setup() {
     this.state = {
-      ...this.state,
-      ...nextState,
+      isVisible: false,
     };
+  }
 
-    const { id, title, content } = this.state;
-    this.$editor.setState({ id, title, content });
-
-    this.render();
+  template() {
+    return `
+      <header class="current-path-wrapper"></header>
+      <section class="notion-editor-wrapper"></section>
+      <footer class="child-path-wrapper"></footer>
+    `;
   }
 
   render() {
-    const { isVisible } = this.state;
+    super.render();
 
-    this.$document.style.visibility = isVisible ? 'visible' : 'hidden';
+    const { isVisible } = this.state;
+    this.$target.style.visibility = isVisible ? 'visible' : 'hidden';
+  }
+
+  mount() {
+    const { documentData, onEdit } = this.props;
+    const $editor = this.$target.querySelector('.notion-editor-wrapper');
+
+    this.$editor = new NotionEditor($editor, {
+      documentData,
+      onEdit,
+    });
   }
 }

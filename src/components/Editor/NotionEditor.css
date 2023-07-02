@@ -1,7 +1,8 @@
-.notion-editor {
-  display: flex;
-  flex-direction: column;
+.notion-editor-title-wrapper {
+  width: 100%;
+}
+
+.notion-editor-content-wrapper {
   width: 100%;
   height: 100%;
-  padding: 20px 10px;
 }

@@ -8,6 +8,7 @@ module.exports = {
     '^@consts/(.*)$',
     '^@api/(.*)$',
     '^@utils/(.*)$',
+    '^@core/(.*)$',
     '^@components/(.*)$',
     '^@pages/(.*)$',
     '^[./]',

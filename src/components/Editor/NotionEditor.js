@@ -1,42 +1,57 @@
+import Component from '@core/Component';
+
 import NotionEditorTitle from '@components//Editor/Title/NotionEditorTitle';
 import NotionEditorContent from '@components/Editor/Content/NotionEditorContent';
 
 import './NotionEditor.css';
 
-export default class NotionEditor {
-  constructor({ $target, onEdit }) {
-    this.$editor = document.createElement('section');
-    this.$editor.className = 'notion-editor';
-    $target.appendChild(this.$editor);
-
-    this.$title = new NotionEditorTitle({ $target: this.$editor });
-    this.$content = new NotionEditorContent({ $target: this.$editor });
-
-    this.setEvent(onEdit);
+export default class NotionEditor extends Component {
+  template() {
+    return `
+      <div class="notion-editor-title-wrapper"></div>
+      <div class="notion-editor-content-wrapper"></div>
+    `;
   }
 
-  getNextStateWithTarget(target) {
-    const name = target.getAttribute('name');
-    const { value } = target;
+  mount() {
+    const { title, content } = this;
+    const $titleEditor = this.$target.querySelector(
+      '.notion-editor-title-wrapper'
+    );
+    const $contentEditor = this.$target.querySelector(
+      '.notion-editor-content-wrapper'
+    );
 
-    return {
-      ...this.state,
-      [name]: value,
-    };
+    this.$titleEditor = new NotionEditorTitle($titleEditor, { title });
+    this.$contentEditor = new NotionEditorContent($contentEditor, { content });
   }
 
-  setEvent(callback) {
-    this.$editor.addEventListener('input', (e) => {
-      const nextState = this.getNextStateWithTarget(e.target);
-      callback?.(nextState);
+  get title() {
+    const { documentData } = this.props;
+    const { title } = documentData;
+
+    return title;
+  }
+
+  get content() {
+    const { documentData } = this.props;
+    const { content } = documentData;
+
+    return content;
+  }
+
+  setEvent() {
+    const { onEdit } = this.props;
+
+    this.$target.addEventListener('input', ({ target }) => {
+      const { name } = target;
+      const { documentData } = this.props;
+
+      if (documentData[name] === undefined) return;
+      onEdit({
+        ...documentData,
+        [name]: target.value,
+      });
     });
-  }
-
-  setState(nextState) {
-    this.state = nextState;
-
-    const { title, content } = this.state;
-    this.$title.setState({ title });
-    this.$content.setState({ content });
   }
 }

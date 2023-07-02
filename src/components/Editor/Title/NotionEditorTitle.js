@@ -1,25 +1,19 @@
+import Component from '@core/Component';
+
 import './NotionEditorTitle.css';
 
-export default class NotionEditorTitle {
-  constructor({ $target }) {
-    this.$title = document.createElement('input');
+export default class NotionEditorTitle extends Component {
+  template() {
+    const { title } = this.props;
 
-    this.$title.className = 'notion-editor-title';
-    this.$title.type = 'text';
-    this.$title.name = 'title';
-    this.$title.placeholder = 'undefined';
-
-    $target.appendChild(this.$title);
-  }
-
-  setState(nextState) {
-    this.state = nextState;
-    this.render();
-  }
-
-  render() {
-    const { title } = this.state;
-
-    this.$title.value = title ?? '';
+    return `
+      <input
+        class="notion-editor-title"
+        name="title"
+        type="text"
+        placeholder="undefined"
+        value="${title}"
+      />
+    `;
   }
 }

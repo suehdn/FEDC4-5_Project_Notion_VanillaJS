@@ -1,7 +1,7 @@
 .notion-sidebar {
   display: flex;
   flex-direction: column;
-  width: 250px;
+  width: 100%;
   height: 100%;
   padding: 20px 0;
   border-right: 1px solid #f5f6f5;
