@@ -2,6 +2,18 @@ import { setCaret } from './cursor.js';
 
 const selection = window.getSelection();
 
+const findDeepFirstChild = ($node) => {
+  let currentNode = $node;
+
+  while (currentNode) {
+    const nextNode = currentNode.firstChild;
+    if (!nextNode) break;
+    currentNode = nextNode;
+  }
+
+  return currentNode;
+};
+
 export const makeRichText = ($editor, key) => {
   const $parentNode = selection.anchorNode.parentNode;
   const $line = $parentNode.closest('.editor__line');
@@ -54,8 +66,8 @@ export const handleNewLine = ($editor, event) => {
     return;
   }
 
-  // headings 태그에서 개행하는 경우
   if ($line) {
+    // headings 태그에서 개행하는 경우
     if (
       $line.classList.contains('editor__h1') ||
       $line.classList.contains('editor__h2') ||
@@ -65,5 +77,16 @@ export const handleNewLine = ($editor, event) => {
         $line.nextSibling.className = 'editor__line';
       }, 0);
     }
+
+    // 개행된 라인의 텍스트가 비어 있으면 모든 스타일 초기화
+    setTimeout(() => {
+      const $previousLine = $line.previousSibling;
+      const $previousChild = findDeepFirstChild($previousLine);
+      if ($previousChild && $previousChild.nodeType !== Node.TEXT_NODE) $previousLine.innerHTML = '<br>';
+
+      const $nextLine = $line.nextSibling;
+      const $nextChild = findDeepFirstChild($nextLine);
+      if ($nextChild && $nextChild.nodeType !== Node.TEXT_NODE) $nextLine.innerHTML = '<br>';
+    }, 0);
   }
 };
