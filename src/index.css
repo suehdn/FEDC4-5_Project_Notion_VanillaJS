@@ -7,7 +7,7 @@ body {
 }
 
 .main {
-  width: 100%;
+  width: calc(100% - 18em);
   margin-left: 18em;
 }
 
@@ -28,6 +28,10 @@ a {
 
 ::-webkit-scrollbar-thumb {
   background: #D3D1CB;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(174, 172, 166);
 }
 
 ::-webkit-scrollbar-track {
