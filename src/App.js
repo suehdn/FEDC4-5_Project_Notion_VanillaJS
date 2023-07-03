@@ -14,7 +14,7 @@ export default class App extends Component {
 
     const $documentTree = this.$target.querySelector("#documentTree");
     const $editor = this.$target.querySelector("#editor");
-    new DocumentTree({
+    this.documentTree = new DocumentTree({
       $target: $documentTree,
       initialState: DOCUMENT_TREE_DUMMY_DATA,
       props: {
@@ -34,7 +34,30 @@ export default class App extends Component {
             tag: "button",
             target: "li",
             callback: ({ event, target }) => {
-              target.appendChild(document.createElement("input"));
+              const [, , $childUl] = target.children;
+              target.insertBefore(document.createElement("input"), $childUl);
+            },
+          },
+          {
+            action: "change",
+            tag: "input",
+            target: "li",
+            callback: ({ event, target }) => {
+              const { value } = event.target;
+              const newDocumentPerentTree = this.findObjectById(
+                target.id,
+                this.documentTree.state
+              );
+              newDocumentPerentTree.documents.unshift({
+                id:
+                  target.id +
+                  "-" +
+                  (newDocumentPerentTree.documents.length + 1),
+                title: value,
+                documents: [],
+              });
+              console.log(this.documentTree.state);
+              this.documentTree.state = this.documentTree.state;
             },
           },
         ],
@@ -78,6 +101,21 @@ export default class App extends Component {
         ],
       },
     });
+  }
+
+  findObjectById(id, arr) {
+    const foundObject = arr.find((obj) => obj.id === id);
+
+    if (foundObject) {
+      return foundObject;
+    }
+
+    return arr.reduce((found, obj) => {
+      if (!found && obj.documents.length > 0) {
+        return this.findObjectById(id, obj.documents);
+      }
+      return found;
+    }, null);
   }
 
   async route() {
