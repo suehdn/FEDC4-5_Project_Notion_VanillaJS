@@ -30,32 +30,54 @@ export default class DocumentPage {
       },
     });
 
+    this.initialize();
+    // this.fetchData();
+    // this.initComponents();
+    // this.render();
+  }
+
+  async initialize() {
+    this.fetchData();
     this.initComponents();
-    this.render();
+    // this.render();
   }
 
   async setState(nextState) {
     const { editorStore, documentStore } = this;
-
     editorStore.setState({ ...editorStore.state, documentId: nextState.documentId });
 
-    if (documentStore.state.documents.length === 0) await documentStore.fetchDocuments();
-    if (this.state.documentId !== nextState.documentId) {
-      const { documentId, document, isLocalData } = await editorStore.fetchDocument(nextState.documentId);
+    // if (documentStore.state.documents.length === 0) await documentStore.fetchDocuments();
+    // if (this.state.documentId !== nextState.documentId) {
+    //   const { documentId, document, isLocalData } = await editorStore.fetchDocument(nextState.documentId);
 
-      if (isLocalData) {
-        documentStore.updateDocument(documentId, document);
-        editorStore.saveDocument(() => {
-          this.render();
-        }, 0);
-      }
-    }
+    //   // if (isLocalData) {
+    //   //   documentStore.updateDocument(documentId, document);
+    //   //   editorStore.saveDocument(() => {
+    //   //     // this.render();
+    //   //   }, 0);
+    //   // }
+    // }
 
     this.state = nextState;
+    await editorStore.fetchDocument(this.state.documentId);
     this.render();
   }
 
-  async initComponents() {
+  async fetchData() {
+    const { editorStore, documentStore } = this;
+
+    if (documentStore.state.documents.length === 0) await documentStore.fetchDocuments();
+    if (this.state.documentId !== 0) await editorStore.fetchDocument(this.state.documentId);
+
+    (await editorStore.pushStorageDocuments(documentStore.state.documents)).forEach(({ documentId, document }) => {
+      // TODO: 문서 목록에서 해당 문서를 찾아서 업데이트하기.
+      documentStore.updateDocument(documentId, document);
+    });
+
+    this.render();
+  }
+
+  initComponents() {
     const { $target, documentStore, editorStore } = this;
 
     this.sidebar = new Sidebar({
@@ -100,7 +122,6 @@ export default class DocumentPage {
         };
 
         editorStore.setState({ ...editorStore.state, document: newDocument });
-
         editorStore.saveDocument();
         documentStore.updateDocument(editorStore.state.documentId, newDocument);
 
@@ -108,10 +129,6 @@ export default class DocumentPage {
         this.renderNavbar();
       },
     });
-
-    await documentStore.fetchDocuments();
-    editorStore.pushStorageDocuments(documentStore.state.documents);
-    this.render();
   }
 
   renderEditor() {

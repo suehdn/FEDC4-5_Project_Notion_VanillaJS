@@ -1,6 +1,7 @@
 import storage from '../utils/storage.js';
 import { DOCUMENT } from '../constants/storageKeys.js';
 import { debounce } from '../utils/debounce.js';
+import { findDocument } from '../helpers/documentHelper.js';
 import { getDocument, modifyDocument } from '../apis/api.js';
 
 export const initialDocument = {
@@ -45,17 +46,31 @@ export default class EditorStore {
       await modifyDocument(document, documentId);
       storage.removeItem(DOCUMENT(documentId));
       onSuccess();
-    }, timeout);
+    }, 10000);
   }
 
   // TODO: 스토리지에 존재하는 모든 데이터 읽어서 최신일 경우 서버에 modify 요청하기.
   pushStorageDocuments(documents = []) {
-    console.log(documents);
-    Object.keys(localStorage).filter(key => key.startsWith(DOCUMENT())).forEach(key => {
-      const id = key.split('_')[1];
-      const value = localStorage.getItem(key);
+    const promises = Object.keys(localStorage)
+      .filter((key) => key.startsWith(DOCUMENT()))
+      .map((key) => {
+        const documentId = Number(key.split('_')[1]);
+        const remoteDocument = findDocument(documentId, documents);
+        const localDocument = JSON.parse(localStorage.getItem(key));
 
-      // id번 문서의 내용이 로컬이 최신인 경우에 modify 한다.
-    });
+        return remoteDocument.updatedAt < localDocument.updatedAt ? { key, documentId, localDocument } : null;
+      })
+      .filter((item) => item !== null)
+      .map((item) => {
+        const { key, documentId, localDocument } = item;
+
+        return new Promise(async (resolve) => {
+          await modifyDocument(localDocument, documentId);
+          localStorage.removeItem(key);
+          resolve({ documentId, document: localDocument });
+        });
+      });
+
+    return Promise.all(promises);
   }
 }

@@ -15,6 +15,7 @@ export const findDocumentRoute = (documentId, documents = []) => {
 
   return [];
 };
+
 /**
  * 문서 목록에서 특정 문서의 내용을 수정한 결과 목록을 반환합니다.
  * @param {number} documentId 수정할 문서의 ID
@@ -34,3 +35,20 @@ export const findModifiedDocuments = (documentId, newDocument, documents) => {
     return currentDocument;
   });
 };
+
+/**
+ * 문서 목록에서 특정 문서를 찾아 반환합니다.
+ * @param {number} documentId 찾을 문서의 ID
+ * @param {array} documents 문서 목록
+ */
+export const findDocument = (documentId, documents = []) => {
+  for (const currentDocument of documents) {
+    if (currentDocument.id === documentId) return currentDocument;
+    if (currentDocument.documents.length > 0) {
+      const document = findDocument(documentId, currentDocument.documents);
+      if (document) return document;
+    }
+  }
+
+  return null;
+}
