@@ -11,6 +11,8 @@ module.exports = {
       '@components': path.resolve(__dirname, 'src/components/'),
       '@api': path.resolve(__dirname, 'src/api/'),
       '@router': path.resolve(__dirname, 'src/router'),
+      '@storage': path.resolve(__dirname, 'src/storage'),
+      '@constants': path.resolve(__dirname, 'src/constants'),
     },
   },
   output: {
