@@ -77,9 +77,21 @@ export const handleNewLine = ($editor, event) => {
   if ($line) {
     // headings 태그에서 개행하는 경우
     if (isHeading($line)) {
-      setTimeout(() => {
-        if ($line.nextSibling) $line.nextSibling.className = 'editor__line';
-      }, 0);
+      if (selection.anchorOffset === 0) {
+        // headings 태그의 첫 텍스트에서 개행하는 경우
+        event.preventDefault();
+        const $newLine = document.createElement('div');
+        $newLine.className = 'editor__line';
+        $editor.insertBefore($newLine, $line);
+      } else {
+        // headings 태그의 첫 번째 이후의 텍스트에서 개행하는 경우
+        setTimeout(() => {
+          const $deepChild = findDeepFirstChild($line.nextSibling);
+          if (!$deepChild) return;
+          if (!$line.nextSibling) return;
+          removeHeading($line.nextSibling);
+        }, 0);
+      }
     }
 
     // 개행된 라인의 텍스트가 비어 있으면 모든 스타일 초기화
