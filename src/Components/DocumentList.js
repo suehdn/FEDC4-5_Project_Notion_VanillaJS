@@ -18,6 +18,12 @@ export function DocumentList({$target, data =[], initialState, onSubmit}) {
     }
           
     this.onSelect = (data, $li) => {
+        if(data.length === 0){
+            const $haveNothing = document.createElement('div');
+            $haveNothing.classList.add('nothing')
+            $haveNothing.textContent = '하위 페이지 없음'
+            $li.append($haveNothing)
+        }
         data.forEach((data => {
             const $parentNode = document.createElement('div')
             $parentNode.className = `doc-${this.state.selectedNode}`
@@ -46,8 +52,12 @@ export function DocumentList({$target, data =[], initialState, onSubmit}) {
         if(e.target.classList.contains('createDoc')){
             return
         }
+        if(e.target.classList.contains('nothing')){
+            return
+        }
         if(this.state.isOpen){
             while(e.target.querySelector('div')){
+                e.target.classList.remove("open");
                 const $removeTarget = e.target.querySelector('div')
                 e.target.removeChild($removeTarget);
             }
@@ -63,6 +73,7 @@ export function DocumentList({$target, data =[], initialState, onSubmit}) {
             const { id } = $li.dataset;
             if(data){
                 const childrenData = data.map(data => data.documents)
+                $li.classList.add('open')
                 if(childrenData[0].length > 0){
                     this.setState({
                         parent: this.state.depth === 0 ? id : parseInt(this.state.parent),
@@ -71,6 +82,13 @@ export function DocumentList({$target, data =[], initialState, onSubmit}) {
                         depth: this.state.depth + 1
                     })
                     this.onSelect(childrenData[0], $li)
+                } 
+                else {
+                    this.setState({
+                        ...this.state,
+                        isOpen: !this.state.isOpen,
+                    })
+                    this.onSelect([], $li)
                 }
                 push(`/documents/${id}`);
             }

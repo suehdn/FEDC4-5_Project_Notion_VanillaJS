@@ -1,6 +1,6 @@
 .documentPage {
     background-color: #F7F7F5;
-    width: 230px;
+    min-width: 230px;
     height: 100%;
     border-right: 1px solid #e7e7e7;
     font-family: 'Pretandard-Regular', sans-serif;
@@ -11,12 +11,21 @@
     padding-top:50px;
     position: relative;
     order: 0;
+    overflow-y: scroll;
+    height:100vh;
 }
 
+li::before{
+    content: "＞ "
+}
+
+.open::before{
+    content: "⌵ ";
+}
 .doc{
     list-style: none;
     cursor:pointer;
-    padding: 10px 0px;
+    padding: 12px 0px;
     position:relative;
     width:100%;
 }
@@ -39,4 +48,13 @@
     height: 20px;
     text-align: center;
     z-index:1;
+    background-color: transparent;
+    border: none;
+    color:#72716D;
+}
+.rootCreate{
+    background-color: transparent;
+    border: none;
+    color:#72716D;
+    font-size: 20px;
 }

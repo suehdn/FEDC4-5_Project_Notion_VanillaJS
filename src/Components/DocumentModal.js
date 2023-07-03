@@ -7,9 +7,9 @@ export function DocumentModal(id , onSubmit){
         $modalContainer.innerHTML = `
                 <div class="modal-content">
                     <form>
-                        <input type="text" placeholder='문서의 제목을 작성해주세요'/>
+                        <input class ="modalText" type="text" placeholder='문서의 제목을 작성해주세요'/>
                     </form>
-                    <button id="close-modal">닫기</button>
+                    <button class="closeBtn" id="close-modal">닫기</button>
                 </div>
         `
         const $form = document.querySelector('form');
