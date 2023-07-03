@@ -1,3 +1,6 @@
+import { findId } from "./findId.js";
+import { getItem, setItem } from "./storage.js";
+
 export default function DocumentsPage({
   $target,
   initialState,
@@ -9,6 +12,8 @@ export default function DocumentsPage({
 
   $target.appendChild($page);
 
+  let isClicked = {};
+
   this.state = initialState;
 
   this.setState = (newState) => {
@@ -16,73 +21,109 @@ export default function DocumentsPage({
     this.render();
   };
 
-  this.appendDocuments = (selectedDocument, $targetElement) => {
+  this.appendDocuments = (selectedDocument, id) => {
     const $div = document.createElement("div");
+    const $targetElement = id
+      ? $page.querySelector(`div[data-document-id="${id}"]`)
+      : $page;
 
+    $div.setAttribute("class", "list");
     $targetElement.appendChild($div);
     $div.innerHTML = `
       ${selectedDocument
-        .map(
-          (document) =>
-            `
-            <div class="outliner" data-child-created="false" data-document-id="${document.id}">
+        .map((document) => {
+          return `
+            <div class="outliner" data-document-id="${
+              document.id
+            }" style="display:${
+            selectedDocument === this.state
+              ? "block"
+              : isClicked[String(document.id)]
+              ? "block"
+              : "none"
+          }">
               <div class="document">
                 <button class="document-view-button">></button>
                 <div class="document-title"  >
                   ${document.title}
                 </div>
-                <button class="see-more-button">...</button>
                 <button class="remove-button">삭제</button>
                 <button class="add-button">추가</button>
               </div>
             </div>
-            `
-        )
+            `;
+        })
         .join("")}
     `;
   };
 
-  this.render = () => {
-    this.appendDocuments(this.state, $page);
+  this.createDocuments = () => {
+    $page.innerHTML = "";
+    const stack = [{ documents: this.state, id: null }];
+    let documents = null;
+
+    while (stack.length > 0) {
+      documents = stack.shift();
+      documents.documents.forEach((document) => {
+        if (!isClicked[String(document.id)])
+          isClicked[String(document.id)] = false;
+        if (document.documents.length > 0) {
+          stack.push({
+            documents: document.documents,
+            id: document.id,
+          });
+        }
+      });
+      this.appendDocuments(documents.documents, documents.id);
+    }
+    $page.innerHTML += `<button class="add-button">+</button>`;
   };
 
-  $page.addEventListener("submit", (event) => {
-    const content = event.target.value;
-    this.setState(...this.state, { id: 9, content });
-  });
+  this.render = () => {
+    isClicked = getItem("isClicked", null) ?? {};
+    this.createDocuments();
+  };
 
-  //클릭 이벤트에 해당내용을 넣어서 클릭 할 때마다 많은 내용을 실행하게 되어 비효율적인 코드인지 궁금합니다..!
+  //클릭 할 때마다 하위 컴포넌트가 있는지, 많은 내용을 실행하게 되어 비효율적인 코드인지 궁금합니다..!
   $page.addEventListener("click", (event) => {
     const { className } = event.target;
     const $div = event.target.closest(`div[class=outliner]`);
-    const { documentId, childCreated } = $div.dataset;
 
-    if (className === "remove-button") {
-      onRemove(documentId);
-      return;
-    } else if (className === "add-button") {
-      onAdd(documentId);
-      return;
-    } else if (className === "document-view-button") {
-      if (childCreated === "true") {
-        $div.lastChild.style.display =
-          $div.lastChild.style.display === "none" ? "block" : "none";
-      } else if (childCreated === "false") {
-        const stack = [];
-        let documents = this.state;
-        let selectedDocument = null;
-        while (!selectedDocument) {
-          selectedDocument = documents.find((document) => {
-            if (document.documents.length > 0) stack.push(document.documents);
-            return document.id === +documentId;
-          });
-          if (stack.length > 0) documents = stack.pop();
+    if ($div) {
+      const { documentId } = $div.dataset;
+
+      if (className === "remove-button") {
+        onRemove(documentId);
+        return;
+      } else if (className === "add-button") {
+        const children = $div.lastChild.children;
+        console.log(children);
+        if (children) {
+          for (let i = 0; i < children.length; i++) {
+            isClicked[children[i].dataset.documentId] =
+              !isClicked[children[i].dataset.documentId];
+          }
+          setItem("isClicked", JSON.stringify(isClicked));
+          this.createDocuments();
         }
-        this.appendDocuments(selectedDocument.documents, $div);
-        $div.dataset.childCreated = "true";
+        onAdd(documentId);
+        return;
+      } else if (className === "document-view-button") {
+        const children = $div.lastChild.children;
+        if (children) {
+          for (let i = 0; i < children.length; i++) {
+            isClicked[children[i].dataset.documentId] =
+              !isClicked[children[i].dataset.documentId];
+          }
+          setItem("isClicked", JSON.stringify(isClicked));
+          this.createDocuments();
+        }
+      } else if (className === "document-title") {
+        onContentView(documentId);
       }
-    } else if (className === "document-title") {
-      onContentView(documentId);
+    } else if (className === "add-button") {
+      onAdd(null);
+      return;
     }
   });
 
