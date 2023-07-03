@@ -1,5 +1,6 @@
 import { OPENED_DOCUMENTS } from '../constants/storageKeys.js';
 import { navigate } from '../utils/navigate.js';
+import { addDocument, removeDocument } from '../apis/api.js';
 import storage from '../utils/storage.js';
 import Sidebar from '../components/Sidebar/Sidebar.js';
 import Navbar from '../components/Navbar/Navbar.js';
@@ -33,7 +34,7 @@ export default class DocumentPage {
   }
 
   async setState(nextState) {
-    this.editorStore.setDocumentId(nextState.documentId);
+    this.editorStore.setState({ ...this.editorStore.state, documentId: nextState.documentId });
 
     if (this.documentStore.state.documents.length === 0) await this.documentStore.fetchDocuments();
     if (this.state.documentId !== nextState.documentId) {
@@ -61,14 +62,14 @@ export default class DocumentPage {
       onAppend: async (id) => {
         this.documentStore.setOpened(id, true);
 
-        const newDocument = await documentStore.addDocument('', id);
+        const newDocument = await addDocument('', id);
         await documentStore.fetchDocuments();
 
         navigate(`/documents/${newDocument.id}`);
         this.render();
       },
       onRemove: async (id) => {
-        await documentStore.removeDocument(id);
+        await removeDocument(id);
         await documentStore.fetchDocuments();
         this.render();
       },
@@ -93,10 +94,11 @@ export default class DocumentPage {
           updateAt: new Date(),
         };
 
-        editorStore.setDocument(newDocument);
-        editorStore.saveDocument();
+        this.editorStore.setState({ ...this.editorStore.state, document: newDocument });
 
+        editorStore.saveDocument();
         documentStore.updateDocument(editorStore.state.documentId, newDocument);
+        
         this.renderSidebar();
         this.renderNavbar();
       },

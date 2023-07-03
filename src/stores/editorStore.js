@@ -18,12 +18,8 @@ export default class EditorStore {
     this.state = initialState;
   }
 
-  setDocumentId(documentId) {
-    this.state.documentId = documentId;
-  }
-
-  setDocument(document) {
-    this.state.document = document;
+  setState(nextState) {
+    this.state = nextState;
   }
 
   async fetchDocument(documentId) {
@@ -31,7 +27,7 @@ export default class EditorStore {
     const localDocument = storage.getItem(DOCUMENT(documentId), initialDocument);
     const recentDocument = remoteDocument.updatedAt > localDocument.updatedAt ? remoteDocument : localDocument;
 
-    this.setDocument(recentDocument);
+    this.setState({ ...this.state, document: recentDocument });
     return { document: recentDocument, documentId, isLocalData: recentDocument === localDocument };
   }
 

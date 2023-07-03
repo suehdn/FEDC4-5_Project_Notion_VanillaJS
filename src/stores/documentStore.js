@@ -1,4 +1,4 @@
-import { getDocuments, addDocument, removeDocument } from '../apis/api.js';
+import { getDocuments } from '../apis/api.js';
 import storage from '../utils/storage.js';
 import { OPENED_DOCUMENTS } from '../constants/storageKeys.js';
 
@@ -31,14 +31,6 @@ export default class DocumentStore {
       ...this.state,
       documents: documents || [],
     });
-  }
-
-  addDocument(title, parent) {
-    return addDocument(title, parent);
-  }
-
-  removeDocument(documentId) {
-    return removeDocument(documentId);
   }
 
   /**
