@@ -1,5 +1,5 @@
-import DocumentList from './DocumentList.js';
+import NotionPage from './pages/NotionPage.js';
 
-export default function App({ $target, initialState }) {
-  new DocumentList({ $target, initialState });
+export default function App({ $target }) {
+  new NotionPage({ $target });
 }
