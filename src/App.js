@@ -2,9 +2,8 @@ import DocumentsPage from "./DocumentsPage.js";
 import EditorPage from "./EditorPage.js";
 import { request } from "./api.js";
 import { initRoute, push } from "./router.js";
-import { setItem } from "./storage.js";
 
-export default function App({ $target, documentsList }) {
+export default function App({ $target }) {
   const $documentListPage = document.createElement("div");
   const $documentContentPage = document.createElement("div");
 
@@ -51,6 +50,7 @@ export default function App({ $target, documentsList }) {
         }),
       });
       await fetchDocumentList();
+      push(`/documents/${result.id}`);
     },
     onContentView: async (selectedDocumentId) => {
       push(`/documents/${selectedDocumentId}`);
@@ -74,7 +74,9 @@ export default function App({ $target, documentsList }) {
     onEditing: (documentInfo) => {
       const { id, title, content } = documentInfo;
 
-      $target.querySelector(`div[data-document-id="${id}"]`).innerText = title;
+      $target.querySelector(
+        `div[data-document-id="${id}"]`
+      ).children[0].children[1].textContent = title;
       if (timer !== null) {
         clearTimeout(timer);
       }
