@@ -8,6 +8,7 @@ export default function App({ targetElement }) {
   this.init = () => {
     const router = new RouteService();
     this.targetElement = targetElement;
+    this.setEvent();
     this.render();
     router
       .addRoute({
