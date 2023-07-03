@@ -47,4 +47,15 @@ export default class EditorStore {
       onSuccess();
     }, timeout);
   }
+
+  // TODO: 스토리지에 존재하는 모든 데이터 읽어서 최신일 경우 서버에 modify 요청하기.
+  pushStorageDocuments(documents = []) {
+    console.log(documents);
+    Object.keys(localStorage).filter(key => key.startsWith(DOCUMENT())).forEach(key => {
+      const id = key.split('_')[1];
+      const value = localStorage.getItem(key);
+
+      // id번 문서의 내용이 로컬이 최신인 경우에 modify 한다.
+    });
+  }
 }

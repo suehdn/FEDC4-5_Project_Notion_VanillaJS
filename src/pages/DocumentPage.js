@@ -1,6 +1,7 @@
 import { OPENED_DOCUMENTS } from '../constants/storageKeys.js';
 import { navigate } from '../utils/navigate.js';
 import { addDocument, removeDocument } from '../apis/api.js';
+import { findDocumentRoute } from '../helpers/documentHelper.js';
 import storage from '../utils/storage.js';
 import Sidebar from '../components/Sidebar/Sidebar.js';
 import Navbar from '../components/Navbar/Navbar.js';
@@ -109,6 +110,7 @@ export default class DocumentPage {
     });
 
     await documentStore.fetchDocuments();
+    editorStore.pushStorageDocuments(documentStore.state.documents);
     this.render();
   }
 
@@ -134,7 +136,7 @@ export default class DocumentPage {
     const { navbar } = this;
     const { editorStore, documentStore } = this;
 
-    navbar.setState({ routes: documentStore.findDocumentRoute(editorStore.state.documentId) });
+    navbar.setState({ routes: findDocumentRoute(editorStore.state.documentId, documentStore.state.documents) });
   }
 
   render() {
