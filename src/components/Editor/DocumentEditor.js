@@ -2,7 +2,17 @@ import { makeRichText, handleNewLine, handleBackspace } from '../../utils/richEd
 import './DocumentEditor.css';
 
 export default class DocumentEditor {
-  constructor({ $target, initialState, onChange }) {
+  constructor({
+    $target,
+    initialState = {
+      documentId: 0,
+      document: {
+        title: '',
+        content: '',
+      },
+    },
+    onChange,
+  }) {
     this.$target = $target;
     this.$title = document.querySelector('.main__title-editor');
     this.$content = document.querySelector('.main__content-editor');

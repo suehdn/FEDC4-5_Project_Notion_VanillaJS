@@ -1,4 +1,4 @@
-import App from './components/App.js';
+import App from './App.js';
 import './index.css';
 
 const $app = document.getElementById('app');

@@ -1,79 +1,20 @@
-import { OPENED_DOCUMENTS } from '../constants/storageKeys.js';
 import { navigate } from '../utils/navigate.js';
 import { addDocument, removeDocument } from '../apis/api.js';
 import { findDocumentRoute } from '../helpers/documentHelper.js';
-import storage from '../utils/storage.js';
 import Sidebar from '../components/Sidebar/Sidebar.js';
 import Navbar from '../components/Navbar/Navbar.js';
 import DocumentEditor from '../components/Editor/DocumentEditor.js';
-import EditorStore, { initialDocument } from '../stores/editorStore.js';
-import DocumentStore from '../stores/documentStore.js';
 import html from './DocumentPage.html';
 
 export default class DocumentPage {
-  constructor({ $target, initialState }) {
+  constructor({ $target, editorStore, documentStore }) {
     this.$target = $target;
     this.$target.innerHTML = html;
-    this.state = initialState;
 
-    this.editorStore = new EditorStore({
-      initialState: {
-        documentId: this.state.documentId,
-        document: initialDocument,
-      },
-    });
+    this.editorStore = editorStore;
+    this.documentStore = documentStore;
 
-    this.documentStore = new DocumentStore({
-      initialState: {
-        openedDocuments: storage.getItem(OPENED_DOCUMENTS, {}),
-        documents: [],
-      },
-    });
-
-    this.initialize();
-    // this.fetchData();
-    // this.initComponents();
-    // this.render();
-  }
-
-  async initialize() {
-    this.fetchData();
     this.initComponents();
-    // this.render();
-  }
-
-  async setState(nextState) {
-    const { editorStore, documentStore } = this;
-    editorStore.setState({ ...editorStore.state, documentId: nextState.documentId });
-
-    // if (documentStore.state.documents.length === 0) await documentStore.fetchDocuments();
-    // if (this.state.documentId !== nextState.documentId) {
-    //   const { documentId, document, isLocalData } = await editorStore.fetchDocument(nextState.documentId);
-
-    //   // if (isLocalData) {
-    //   //   documentStore.updateDocument(documentId, document);
-    //   //   editorStore.saveDocument(() => {
-    //   //     // this.render();
-    //   //   }, 0);
-    //   // }
-    // }
-
-    this.state = nextState;
-    await editorStore.fetchDocument(this.state.documentId);
-    this.render();
-  }
-
-  async fetchData() {
-    const { editorStore, documentStore } = this;
-
-    if (documentStore.state.documents.length === 0) await documentStore.fetchDocuments();
-    if (this.state.documentId !== 0) await editorStore.fetchDocument(this.state.documentId);
-
-    (await editorStore.pushStorageDocuments(documentStore.state.documents)).forEach(({ documentId, document }) => {
-      // TODO: 문서 목록에서 해당 문서를 찾아서 업데이트하기.
-      documentStore.updateDocument(documentId, document);
-    });
-
     this.render();
   }
 
@@ -132,15 +73,17 @@ export default class DocumentPage {
   }
 
   renderEditor() {
-    const { documentEditor } = this;
-    const { editorStore } = this;
+    const { documentEditor, editorStore } = this;
 
-    documentEditor.setState(editorStore.state);
+    documentEditor.setState({
+      documentId: editorStore.state.documentId,
+      document: editorStore.state.document,
+    });
   }
 
   renderSidebar() {
     const { sidebar } = this;
-    const { editorStore, documentStore } = this;
+    const { documentStore, editorStore } = this;
 
     sidebar.setState({
       documents: documentStore.state.documents,
