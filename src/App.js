@@ -81,8 +81,12 @@ export default class App {
 
       // 새로운 문서를 열면 데이터 가져오기
       if (editorStore.state.documentId !== documentId) {
-        await editorStore.fetchDocument(documentId);
-        editorStore.setState({ ...editorStore.state, documentId: Number(documentId) });
+        try {
+          await editorStore.fetchDocument(documentId);
+          editorStore.setState({ ...editorStore.state, documentId: Number(documentId) });
+        } catch (err) {
+          console.error(err);
+        }
       }
     }
     this.documentPage.render();

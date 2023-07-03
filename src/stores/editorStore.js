@@ -25,8 +25,9 @@ export default class EditorStore {
 
   async fetchDocument(documentId) {
     const remoteDocument = await getDocument(documentId);
+    if (!remoteDocument) throw new Error('존재하지 않는 문서입니다.');
     const localDocument = storage.getItem(DOCUMENT(documentId), initialDocument);
-    const recentDocument = remoteDocument.updatedAt > localDocument.updatedAt ? remoteDocument : localDocument;
+    const recentDocument = remoteDocument.updatedAt < localDocument.updatedAt ? localDocument : remoteDocument;
 
     this.setState({ ...this.state, document: recentDocument });
     return { document: recentDocument, documentId, isLocalData: recentDocument === localDocument };
@@ -67,7 +68,7 @@ export default class EditorStore {
         const remoteDocument = findDocument(documentId, documents);
         const localDocument = JSON.parse(localStorage.getItem(key));
 
-        return remoteDocument.updatedAt < localDocument.updatedAt ? { key, documentId, localDocument } : null;
+        return remoteDocument && remoteDocument.updatedAt < localDocument.updatedAt ? { key, documentId, localDocument } : null;
       })
       .filter((item) => item !== null)
       .map((item) => {

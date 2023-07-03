@@ -39,6 +39,7 @@ export default class DocumentPage {
       onRemove: async (id) => {
         await removeDocument(id);
         await documentStore.fetchDocuments();
+        editorStore.setState({ ...editorStore.state, documentId: 0 });
         this.render();
       },
       onNavigate: (id) => navigate(`/documents/${id}`),
