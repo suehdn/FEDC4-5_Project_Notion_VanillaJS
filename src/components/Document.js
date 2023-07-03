@@ -1,18 +1,11 @@
-import { getDocument, putDocument } from '../api';
+import { putDocument } from '../api';
 import debounce from '../utils/debounce';
 import { RouteService } from '../utils/RouteService';
 
-export default function Document({ targetElement }) {
+export default function Document({ targetElement, documentData }) {
   this.init = () => {
     this.targetElement = targetElement;
     this.setEvent();
-    this.render();
-  };
-
-  this.state = { documentId: null };
-
-  this.setState = (nextState) => {
-    this.state = { ...nextState };
     this.render();
   };
 
@@ -20,7 +13,7 @@ export default function Document({ targetElement }) {
     const debouncedKeyupHandler = debounce(async (e) => {
       const [titleElement, contentElement] = targetElement.children;
 
-      await putDocument(this.state.documentId, {
+      await putDocument(documentData.id, {
         title: titleElement.value,
         content: contentElement.value,
       });
@@ -36,7 +29,7 @@ export default function Document({ targetElement }) {
         targetElement.dispatchEvent(
           new CustomEvent('editTitle', {
             detail: {
-              documentId: this.state.documentId,
+              documentId: documentData.id,
               title: titleElement.value,
             },
             bubbles: true,
@@ -53,14 +46,8 @@ export default function Document({ targetElement }) {
     });
   };
 
-  this.render = async () => {
-    const { documentId } = this.state;
-    if (!documentId) {
-      targetElement.innerHTML = '';
-      return;
-    }
-
-    const { title, content, documents } = await getDocument(documentId);
+  this.render = () => {
+    const { title, content, documents } = documentData;
     targetElement.innerHTML = `
       <input class="document-title"/>
       <textarea class="document-content"></textarea>

@@ -2,7 +2,7 @@ import { getDocuments, postDocument, deleteDocument } from '../api';
 import { RouteService } from '../utils/RouteService';
 import DocumentTree from './DocumentTree';
 
-export default function DocumentTreeRoot({ targetElement }) {
+export default function DocumentTreeRoot({ targetElement, documents }) {
   this.init = () => {
     this.targetElement = targetElement;
     this.setEvent();
@@ -12,6 +12,7 @@ export default function DocumentTreeRoot({ targetElement }) {
   this.state = {
     invisibleTreeSet: new Set(),
     foldedTreeSet: new Set(),
+    documents,
   };
 
   this.setState = (nextState) => {
@@ -84,24 +85,17 @@ export default function DocumentTreeRoot({ targetElement }) {
     targetElement.addEventListener('click', async (e) => {
       if (!e.target.closest('.delete-document-btn')) return;
       const router = new RouteService();
-      const { pathname } = window.location;
-      const documentIdParam = Number(pathname.split('/')[2]);
       const documentTree = e.target.parentNode.parentNode;
       await deleteDocument(documentTree.dataset.id);
-      if (documentIdParam === Number(documentTree.dataset.id)) {
-        router.replace('/');
-      } else {
-        router.replace(`/documents/${documentIdParam}`);
-      }
+      router.start();
     });
   };
 
-  this.render = async () => {
-    const documents = await getDocuments();
+  this.render = () => {
     targetElement.innerHTML = '';
     new DocumentTree({
       targetElement,
-      childDocuments: documents,
+      childDocuments: this.state.documents,
       invisibleTreeSet: this.state.invisibleTreeSet,
       foldedTreeSet: this.state.foldedTreeSet,
     });
