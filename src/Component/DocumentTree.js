@@ -2,14 +2,9 @@ import Component from "./Component.js";
 
 export default class DocumentTree extends Component {
   render() {
-    console.log(this.state);
-    if (this.state.length === 0) {
-      this.$target.innerHTML = `
-        <button id="addDocumentButton">+</button>
-      `;
-      return;
-    }
-    this.$target.innerHTML = "";
+    this.$target.innerHTML = `
+      <button id="addDocumentButton">+</button>
+    `;
     this.getTemplate(this.state).forEach((child) =>
       this.$target.appendChild(child)
     );
