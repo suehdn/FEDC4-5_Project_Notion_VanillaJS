@@ -1,7 +1,8 @@
-import { getDocument, getDocuments } from '../api';
+import { getDocument, getDocuments, postDocument } from '../api';
 import Button from '../components/Button';
 import DocumentTreeRoot from '../components/DocumentTreeRoot';
 import Document from '../components/Document';
+import { RouteService } from '../utils/RouteService';
 
 export default function EditPage({ targetElement }) {
   this.init = () => {
@@ -17,12 +18,7 @@ export default function EditPage({ targetElement }) {
       const documentTitleElement = documentTreeElement.querySelector('.document-blob-title');
       documentTitleElement.textContent = title;
     });
-    window.addEventListener('asyncEditTitle', async () => {
-      const documents = await getDocuments();
-      const [sideBarElement] = targetElement.children;
-      const [documentTreeRootElement] = sideBarElement.children;
-      this.documentTreeRoot = new DocumentTreeRoot({ targetElement: documentTreeRootElement, documents });
-    });
+    window.addEventListener('asyncEditTitle', () => this.render());
   };
 
   this.render = async () => {
@@ -38,12 +34,12 @@ export default function EditPage({ targetElement }) {
       <div class="selected-document"></div>
     `;
     const [sideBarElement, selectedDocumentElement] = targetElement.children;
-    const [documentTreeRootElement, newRootDocumentBtn] = sideBarElement.children;
+    const [documentTreeRootElement, newRootDocumentBtnElement] = sideBarElement.children;
 
-    new DocumentTreeRoot({ targetElement: documentTreeRootElement, documents });
-    new Document({ targetElement: selectedDocumentElement, documentData });
-    new Button({
-      targetElement: newRootDocumentBtn,
+    this.documentTreeRoot = new DocumentTreeRoot({ targetElement: documentTreeRootElement, documents });
+    this.selectedDocument = new Document({ targetElement: selectedDocumentElement, documentData });
+    this.newRootDocumentBtn = new Button({
+      targetElement: newRootDocumentBtnElement,
       textContent: '새 문서',
       onClick: async () => {
         const router = new RouteService();

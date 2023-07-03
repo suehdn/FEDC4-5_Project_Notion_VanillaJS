@@ -1,6 +1,7 @@
-import { getDocuments } from '../api';
+import { getDocuments, postDocument } from '../api';
 import Button from '../components/Button';
 import DocumentTreeRoot from '../components/DocumentTreeRoot';
+import { RouteService } from '../utils/RouteService';
 
 export default function HomePage({ targetElement }) {
   this.init = () => {
@@ -17,11 +18,11 @@ export default function HomePage({ targetElement }) {
       </div>
     `;
     const [sideBarElement] = targetElement.children;
-    const [documentTreeRootElement, newRootDocumentBtn] = sideBarElement.children;
+    const [documentTreeRootElement, newRootDocumentBtnElement] = sideBarElement.children;
 
-    new DocumentTreeRoot({ targetElement: documentTreeRootElement, documents });
-    new Button({
-      targetElement: newRootDocumentBtn,
+    this.documentTreeRoot = new DocumentTreeRoot({ targetElement: documentTreeRootElement, documents });
+    this.newRootDocumentBtn = new Button({
+      targetElement: newRootDocumentBtnElement,
       textContent: '새 문서',
       onClick: async () => {
         const router = new RouteService();
