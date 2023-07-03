@@ -14,13 +14,10 @@ export default class DocumentEditor {
     this.render();
   }
 
-  setHidden(hidden) {
-    if (hidden) this.$target.classList.add('hidden');
-    else this.$target.classList.remove('hidden');
-  }
-
   setState(nextState) {
     this.state = nextState;
+    if (this.state.documentId === 0) this.$target.classList.add('hidden');
+    else this.$target.classList.remove('hidden');
     this.render();
   }
 
@@ -63,11 +60,11 @@ export default class DocumentEditor {
   }
 
   render() {
-    const { title, content } = this.state;
+    const { documentId, document } = this.state;
+    if (!documentId || !document) return;
+    const { title, content } = document;
 
-    // const cursor = saveCursorPointer(this.$target);
     this.$title.innerHTML = title;
     this.$content.innerHTML = content;
-    // restoreCursorPointer(this.$target, cursor);
   }
 }

@@ -29,12 +29,13 @@ export default class EditorStore {
   async fetchDocument(documentId) {
     const remoteDocument = await getDocument(documentId);
     const localDocument = storage.getItem(DOCUMENT(documentId), initialDocument);
+    const recentDocument = remoteDocument.updatedAt > localDocument.updatedAt ? remoteDocument : localDocument;
 
-    if (remoteDocument.updatedAt > localDocument.updatedAt) this.setDocument(remoteDocument);
-    else this.setDocument(localDocument);
+    this.setDocument(recentDocument);
+    return { document: recentDocument, documentId, isLocalData: recentDocument === localDocument };
   }
 
-  saveDocument() {
+  saveDocument(timeout = 1000) {
     const { documentId, document } = this.state;
     const { title, content } = document;
     if (title === '' && content === '') return;
@@ -47,6 +48,6 @@ export default class EditorStore {
     debounce(async () => {
       await modifyDocument(document, documentId);
       storage.removeItem(DOCUMENT(documentId));
-    }, 1000);
+    }, timeout);
   }
 }

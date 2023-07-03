@@ -29,21 +29,28 @@ export default class DocumentPage {
     });
 
     this.initComponents();
+    this.render();
   }
 
   async setState(nextState) {
-    if (this.state.documentId !== nextState.documentId) await this.documentStore.fetchDocuments();
+    this.editorStore.setDocumentId(nextState.documentId);
+
+    if (this.documentStore.state.documents.length === 0) await this.documentStore.fetchDocuments();
+    if (this.state.documentId !== nextState.documentId) {
+      const { documentId, document, isLocalData } = await this.editorStore.fetchDocument(nextState.documentId);
+
+      if (isLocalData) {
+        this.documentStore.updateDocument(documentId, document);
+        this.editorStore.saveDocument(0);
+      }
+    }
 
     this.state = nextState;
-    this.editorStore.setDocumentId(nextState.documentId);
-    await this.editorStore.fetchDocument(nextState.documentId);
-
     this.render();
   }
 
   async initComponents() {
     const { $target, documentStore, editorStore } = this;
-    await documentStore.fetchDocuments();
 
     this.sidebar = new Sidebar({
       $target: $target.querySelector('.sidebar'),
@@ -84,28 +91,26 @@ export default class DocumentPage {
           ...editorStore.state.document,
           [name]: value,
           updateAt: new Date(),
-        }
+        };
 
         editorStore.setDocument(newDocument);
         editorStore.saveDocument();
 
-        // TODO: documentStore 에서 editorStore.state.documentId 의 문서 내용을 변경해야 함.
         documentStore.updateDocument(editorStore.state.documentId, newDocument);
         this.renderSidebar();
         this.renderNavbar();
       },
     });
 
-    if (editorStore.state.documentId === 0) this.documentEditor.setHidden(true);
+    await documentStore.fetchDocuments();
+    this.render();
   }
 
   renderEditor() {
     const { documentEditor } = this;
     const { editorStore } = this;
 
-    documentEditor.setState(editorStore.state.document);
-    if (editorStore.state.documentId === 0) documentEditor.setHidden(true);
-    else documentEditor.setHidden(false);
+    documentEditor.setState(editorStore.state);
   }
 
   renderSidebar() {
