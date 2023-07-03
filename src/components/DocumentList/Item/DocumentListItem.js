@@ -1,19 +1,16 @@
+import Component from '@core/Component';
+
 import './DocumentListItem.css';
 
-export default class DocumentListItem {
-  constructor({ $target }) {
+export default class DocumentListItem extends Component {
+  initComponent() {
     this.$documentListItem = document.createElement('li');
 
-    $target.appendChild(this.$documentListItem);
-  }
-
-  setState(nextState) {
-    this.state = nextState;
-    this.render();
+    this.$target.appendChild(this.$documentListItem);
   }
 
   render() {
-    const { documentItem, depth } = this.state;
+    const { documentItem, depth } = this.props;
 
     this.$documentListItem.dataset.id = documentItem.id;
     this.$documentListItem.innerHTML = `

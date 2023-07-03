@@ -2,18 +2,24 @@ import { createDocument, deleteDocument } from '@api/document';
 
 import { history } from '@utils/router';
 
+import Component from '@core/Component';
+
 import DocumentListItem from '@components/DocumentList/Item/DocumentListItem';
 
 import './DocumentList.css';
 
-export default class DocumentList {
-  constructor({ $target }) {
+export default class DocumentList extends Component {
+  setup() {
+    this.state = {
+      documentList: [],
+    };
+  }
+
+  initComponent() {
     this.$documentList = document.createElement('ul');
     this.$documentList.className = 'document-list';
 
-    $target.appendChild(this.$documentList);
-
-    this.setEvent();
+    this.$target.appendChild(this.$documentList);
   }
 
   handleCreateIndsideButtonClick = async (id) => {
@@ -47,16 +53,10 @@ export default class DocumentList {
     });
   }
 
-  setState(nextState) {
-    this.state = nextState;
-    this.render();
-  }
-
   createDocumentItem(item, depth = 1) {
     const $div = document.createElement('div');
 
-    const $documentItem = new DocumentListItem({ $target: $div });
-    $documentItem.setState({
+    new DocumentListItem($div, {
       documentItem: item,
       depth,
     });
@@ -76,6 +76,7 @@ export default class DocumentList {
 
   render() {
     const { documentList } = this.state;
+
     this.$documentList.innerHTML = '';
     documentList.forEach((document) => {
       const $documentItem = this.createDocumentItem(document);

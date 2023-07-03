@@ -1,7 +1,15 @@
+import Component from '@core/Component';
+
 import './NotionEditorTitle.css';
 
-export default class NotionEditorTitle {
-  constructor({ $target }) {
+export default class NotionEditorTitle extends Component {
+  setup() {
+    this.state = {
+      title: '',
+    };
+  }
+
+  initComponent() {
     this.$title = document.createElement('input');
 
     this.$title.className = 'notion-editor-title';
@@ -9,12 +17,7 @@ export default class NotionEditorTitle {
     this.$title.name = 'title';
     this.$title.placeholder = 'undefined';
 
-    $target.appendChild(this.$title);
-  }
-
-  setState(nextState) {
-    this.state = nextState;
-    this.render();
+    this.$target.appendChild(this.$title);
   }
 
   render() {

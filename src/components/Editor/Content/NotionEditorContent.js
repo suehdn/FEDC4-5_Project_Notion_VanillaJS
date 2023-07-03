@@ -1,18 +1,21 @@
+import Component from '@core/Component';
+
 import './NotionEditorContent.css';
 
-export default class NotionEditorContent {
-  constructor({ $target }) {
+export default class NotionEditorContent extends Component {
+  setup() {
+    this.state = {
+      content: '',
+    };
+  }
+
+  initComponent() {
     this.$content = document.createElement('textarea');
 
     this.$content.className = 'notion-editor-content';
     this.$content.name = 'content';
 
-    $target.appendChild(this.$content);
-  }
-
-  setState(nextState) {
-    this.state = nextState;
-    this.render();
+    this.$target.appendChild(this.$content);
   }
 
   render() {

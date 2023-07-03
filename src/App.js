@@ -1,30 +1,33 @@
-import Pathname from '@utils/pathname';
 import { initRouter } from '@utils/router';
+
+import Component from '@core/Component';
 
 import NotionPage from '@pages/NotionPage';
 
 import './App.css';
 
-export default class App {
-  constructor({ $target }) {
-    this.$notionPage = new NotionPage({ $target });
+export default class App extends Component {
+  constructor($target) {
+    super($target);
 
     initRouter(this.route.bind(this));
     this.route();
   }
 
-  route() {
+  initChildComponents() {
+    this.$notionPage = new NotionPage(this.$target, {
+      getDocumentId: this.getDocumentId.bind(this),
+    });
+  }
+
+  getDocumentId() {
     const { pathname } = window.location;
+    const [, , documentId] = pathname.split('/');
 
-    if (Pathname.isRoot(pathname)) {
-      return this.$notionPage.setState({ documentId: null });
-    }
+    return documentId ?? null;
+  }
 
-    if (Pathname.isDocument(pathname)) {
-      const [, , documentId] = pathname.split('/');
-      return this.$notionPage.setState({ documentId });
-    }
-
-    return null;
+  route() {
+    this.$notionPage.setState();
   }
 }

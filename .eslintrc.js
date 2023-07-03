@@ -12,5 +12,6 @@ module.exports = {
   rules: {
     'import/no-unresolved': 'off',
     'class-methods-use-this': 'off',
+    'no-new': 'off',
   },
 };

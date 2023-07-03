@@ -1,58 +1,50 @@
-import { updateDocument } from '@api/document';
-
-import { setItem } from '@utils/localStorage';
+import Component from '@core/Component';
 
 import NotionEditor from '@components/Editor/NotionEditor';
 
 import './NotionDocument.css';
 
-export default class NotionDocument {
-  constructor({ $target }) {
+export default class NotionDocument extends Component {
+  setup() {
+    this.state = {
+      documentData: {
+        id: this.props.getDocumentId(),
+        title: '',
+        createdAt: '',
+        updatedAt: '',
+        content: null,
+        documents: [],
+      },
+    };
+  }
+
+  initComponent() {
     this.$document = document.createElement('div');
     this.$document.className = 'notion-document';
 
-    $target.appendChild(this.$document);
-
-    this.$editor = new NotionEditor({
-      $target: this.$document,
-      onEdit: this.onEdit.bind(this),
-    });
-
-    this.timer = null;
+    this.$target.appendChild(this.$document);
   }
 
-  onEdit(document) {
-    if (this.timer !== null) {
-      clearTimeout(this.timer);
-    }
-    this.timer = setTimeout(async () => {
-      setItem(`temp-post-${document.id}`, {
-        ...document,
-        tempSaveDate: new Date(),
-      });
+  initChildComponents() {
+    const { onEdit } = this.props;
 
-      const updatedDocument = await updateDocument(document.id, document);
-      this.setState({
-        ...this.state,
-        ...updatedDocument,
-      });
-    }, 1000);
+    this.$editor = new NotionEditor(this.$document, { onEdit });
   }
 
   setState(nextState) {
-    this.state = {
-      ...this.state,
-      ...nextState,
-    };
+    super.setState(nextState);
 
-    const { id, title, content } = this.state;
+    const { documentData } = this.state;
+
+    if (documentData.id === null) return;
+
+    const { id, title, content } = documentData;
     this.$editor.setState({ id, title, content });
-
-    this.render();
   }
 
   render() {
-    const { isVisible } = this.state;
+    const { id: documentId } = this.state.documentData;
+    const isVisible = documentId !== null;
 
     this.$document.style.visibility = isVisible ? 'visible' : 'hidden';
   }

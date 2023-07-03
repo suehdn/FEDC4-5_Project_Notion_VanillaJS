@@ -2,27 +2,37 @@ import { createDocument } from '@api/document';
 
 import { history } from '@utils/router';
 
+import Component from '@core/Component';
+
 import Button from '@components/Button/Button';
 import DocumentList from '@components/DocumentList/DocumentList';
 
 import './NotionSidebar.css';
 
-export default class NotionSidebar {
-  constructor({ $target }) {
+export default class NotionSidebar extends Component {
+  setup() {
+    this.state = {
+      documentList: [],
+    };
+  }
+
+  initComponent() {
     this.$sidebar = document.createElement('nav');
     this.$sidebar.className = 'notion-sidebar';
 
-    $target.appendChild(this.$sidebar);
+    this.$target.appendChild(this.$sidebar);
+  }
 
-    this.$createButton = new Button({
-      $target: this.$sidebar,
+  initChildComponents() {
+    this.$createButton = new Button(this.$sidebar, {
       className: 'document-create-button',
       textContent: 'add a document',
       onClick: () => {
         this.handleCreateButtonClick();
       },
     });
-    this.$documentList = new DocumentList({ $target: this.$sidebar });
+
+    this.$documentList = new DocumentList(this.$sidebar);
   }
 
   handleCreateButtonClick = async () => {
@@ -31,7 +41,7 @@ export default class NotionSidebar {
   };
 
   setState(nextState) {
-    this.state = nextState;
+    super.setState(nextState);
 
     const { documentList } = this.state;
     this.$documentList.setState({ documentList });
