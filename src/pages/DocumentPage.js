@@ -24,8 +24,9 @@ export default class DocumentPage {
     this.sidebar = new Sidebar({
       $target: $target.querySelector('.sidebar'),
       initialState: {
-        currentDocumentId: editorStore.state.documentId,
         documents: documentStore.state.documents,
+        openedDocuments: documentStore.state.openedDocuments,
+        currentDocumentId: editorStore.state.documentId,
       },
       onAppend: async (id) => {
         this.documentStore.setOpened(id, true);

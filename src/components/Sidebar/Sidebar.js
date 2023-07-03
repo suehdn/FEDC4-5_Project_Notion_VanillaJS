@@ -4,7 +4,18 @@ import html from './Sidebar.html';
 import './Sidebar.css';
 
 export default class Sidebar {
-  constructor({ $target, initialState, onNavigate, onAppend, onRemove, onToggleOpened }) {
+  constructor({
+    $target,
+    initialState = {
+      documents: [],
+      openedDocuments: {},
+      currentDocumentId: 0,
+    },
+    onNavigate,
+    onAppend,
+    onRemove,
+    onToggleOpened,
+  }) {
     this.$target = $target;
     $target.innerHTML = html;
     this.$nav = $target.querySelector('.sidebar__nav');
