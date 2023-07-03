@@ -109,11 +109,22 @@ export const handleNewLine = ($editor, event) => {
 
 export const handleBackspace = ($editor, event) => {
   const $parentNode = selection.anchorNode.parentNode;
+  const $line = $parentNode.closest('.editor__line');
+  const $previousLine = $line?.previousSibling;
   const $heading = $parentNode.closest('.editor__h1, .editor__h2, .editor__h3');
 
   // headings 태그의 시작 위치에서 백스페이스를 누른 경우
   if ($heading && selection.anchorOffset === 0) {
     event.preventDefault();
     removeHeading($heading);
+  }
+
+  // 지우려는 라인의 이전 라인이 headings 태그인 경우
+  if ($previousLine && isHeading($previousLine) && selection.anchorOffset === 0) {
+    setTimeout(() => {
+      [...$previousLine.childNodes]
+        .filter((node) => node.nodeType === Node.ELEMENT_NODE)
+        .forEach((node) => (node.style.fontSize = ''));
+    }, 0);
   }
 };
