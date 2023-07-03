@@ -1,3 +1,5 @@
+import Document from "./Document";
+
 export default function App({ $target }) {
-  $target.innerHTML = "test";
+  new Document({ $target });
 }

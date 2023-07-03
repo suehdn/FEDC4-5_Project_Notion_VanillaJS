@@ -10,6 +10,7 @@ module.exports = (_, argv) => {
       extensions: [".js"],
       alias: {
         "@Components": path.resolve(__dirname, "./src/components"),
+        "@Utils": path.resolve(__dirname, "./src/utils"),
       },
     },
     output: {
