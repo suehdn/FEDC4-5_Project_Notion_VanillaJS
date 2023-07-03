@@ -1,6 +1,6 @@
 import { getDocument, putDocument } from '../api';
 import debounce from '../utils/debounce';
-import { RouteService } from '../domain/RouteService';
+import { RouteService } from '../utils/RouteService';
 
 export default function Document({ targetElement }) {
   this.init = () => {

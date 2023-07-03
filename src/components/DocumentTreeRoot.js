@@ -1,5 +1,5 @@
 import { getDocuments, postDocument, deleteDocument } from '../api';
-import { RouteService } from '../domain/RouteService';
+import { RouteService } from '../utils/RouteService';
 import DocumentTree from './DocumentTree';
 
 export default function DocumentTreeRoot({ targetElement }) {
