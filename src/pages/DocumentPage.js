@@ -34,15 +34,19 @@ export default class DocumentPage {
   }
 
   async setState(nextState) {
-    this.editorStore.setState({ ...this.editorStore.state, documentId: nextState.documentId });
+    const { editorStore, documentStore } = this;
 
-    if (this.documentStore.state.documents.length === 0) await this.documentStore.fetchDocuments();
+    editorStore.setState({ ...editorStore.state, documentId: nextState.documentId });
+
+    if (documentStore.state.documents.length === 0) await documentStore.fetchDocuments();
     if (this.state.documentId !== nextState.documentId) {
-      const { documentId, document, isLocalData } = await this.editorStore.fetchDocument(nextState.documentId);
+      const { documentId, document, isLocalData } = await editorStore.fetchDocument(nextState.documentId);
 
       if (isLocalData) {
-        this.documentStore.updateDocument(documentId, document);
-        this.editorStore.saveDocument(0);
+        documentStore.updateDocument(documentId, document);
+        editorStore.saveDocument(() => {
+          this.render();
+        }, 0);
       }
     }
 
@@ -94,11 +98,11 @@ export default class DocumentPage {
           updateAt: new Date(),
         };
 
-        this.editorStore.setState({ ...this.editorStore.state, document: newDocument });
+        editorStore.setState({ ...editorStore.state, document: newDocument });
 
         editorStore.saveDocument();
         documentStore.updateDocument(editorStore.state.documentId, newDocument);
-        
+
         this.renderSidebar();
         this.renderNavbar();
       },

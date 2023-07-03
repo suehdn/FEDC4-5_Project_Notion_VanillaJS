@@ -31,7 +31,7 @@ export default class EditorStore {
     return { document: recentDocument, documentId, isLocalData: recentDocument === localDocument };
   }
 
-  saveDocument(timeout = 1000) {
+  saveDocument(onSuccess = () => {}, timeout = 1000) {
     const { documentId, document } = this.state;
     const { title, content } = document;
     if (title === '' && content === '') return;
@@ -44,6 +44,7 @@ export default class EditorStore {
     debounce(async () => {
       await modifyDocument(document, documentId);
       storage.removeItem(DOCUMENT(documentId));
+      onSuccess();
     }, timeout);
   }
 }
