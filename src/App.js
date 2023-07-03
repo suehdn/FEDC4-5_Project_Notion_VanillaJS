@@ -4,6 +4,7 @@ import Editor from "./Component/Editor.js";
 import { request } from "./api.js";
 import { getItem, setItem, removeItem } from "./storage/storage.js";
 import { DOCUMENT_DUMMY_DATA, DOCUMENT_TREE_DUMMY_DATA } from "./DUMMY_DATA.js";
+import createUUID from "./utils/createUUID.js";
 
 export default class App extends Component {
   async render() {
@@ -47,35 +48,63 @@ export default class App extends Component {
             },
           },
           {
+            action: "click",
+            tag: "#deleteDocumentButton",
+            target: "li",
+            callback: async ({ event, target }) => {
+              const { id } = target;
+              await request(`/documents/${id}`, {
+                method: "DELETE",
+              });
+
+              await request("/documents").then(
+                (res) => (this.documentTree.state = res)
+              );
+            },
+          },
+          {
             action: "change",
             tag: "input",
             target: "li",
-            callback: ({ event, target }) => {
+            callback: async ({ event, target }) => {
               const { value } = event.target;
               if (target === null) {
-                this.documentTree.state.unshift({
-                  id: "document-123",
+                const rootDocument = {
+                  id: createUUID(),
                   title: value,
-                  documents: [],
+                  parent: null,
+                };
+
+                await request("/documents", {
+                  method: "POST",
+                  body: JSON.stringify(rootDocument),
                 });
-                this.documentTree.state = this.documentTree.state;
+
+                await request("/documents").then(
+                  (res) => (this.documentTree.state = res)
+                );
                 return;
               }
+
               const newDocumentPerentTree = this.findObjectById(
                 target.id,
                 this.documentTree.state
               );
-              console.log(newDocumentPerentTree);
-              newDocumentPerentTree.documents.unshift({
-                id:
-                  target.id +
-                  "-" +
-                  (newDocumentPerentTree.documents.length + 1),
+
+              const newDocument = {
+                id: createUUID(),
                 title: value,
-                documents: [],
+                parent: target.id,
+              };
+
+              await request("/documents", {
+                method: "POST",
+                body: JSON.stringify(newDocument),
               });
-              console.log(this.documentTree.state);
-              this.documentTree.state = this.documentTree.state;
+
+              await request("/documents").then(
+                (res) => (this.documentTree.state = res)
+              );
             },
           },
         ],
@@ -93,7 +122,6 @@ export default class App extends Component {
             target: "div",
             callback: ({ target }) => {
               const { dataset, innerHTML } = target;
-              console.log(dataset.id, innerHTML);
               const key = "document/" + dataset.id;
               setItem(key, {
                 ...this.editor.state,
