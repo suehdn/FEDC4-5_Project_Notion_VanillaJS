@@ -56,7 +56,6 @@ export default class DocumentEditor {
       const role = e.target.dataset.role;
       if (!role || !['title', 'content'].includes(role)) return;
 
-      makeRichText(this.$content, e.key);
       setTimeout(() => {
         this.onChange({ name: role, value: e.target.innerHTML });
       }, 100);

@@ -45,10 +45,12 @@ export const makeRichText = ($editor, key) => {
     const updateHtml = (level) => {
       const nextHtml = $line.innerHTML.replace('#'.repeat(level) + ' ', '') || '<br>';
       removeHeading($line);
-      
+
       $line.classList.add(`editor__h${level}`);
       $line.innerHTML = nextHtml;
-      $line.childNodes.forEach((node) => (node.style.fontSize = ''));
+      [...$line.childNodes]
+        .filter((node) => node.nodeType === Node.ELEMENT_NODE)
+        .forEach((node) => (node.style.fontSize = ''));
 
       setCaret(findDeepFirstChild($line), 0);
     };
@@ -76,7 +78,7 @@ export const handleNewLine = ($editor, event) => {
     // headings 태그에서 개행하는 경우
     if (isHeading($line)) {
       setTimeout(() => {
-        $line.nextSibling.className = 'editor__line';
+        if ($line.nextSibling) $line.nextSibling.className = 'editor__line';
       }, 0);
     }
 
