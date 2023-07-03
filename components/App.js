@@ -27,11 +27,18 @@ export default function App({ $target }) {
     onAdd: (id) => {
       fetchAddNotion(id);
     },
+    onDelete: async (id) => {
+      await request(`/documents/${id}`, {
+        method: "DELETE",
+      });
+      history.replaceState(null, null, "/");
+      this.route();
+    },
   });
 
   const editorPage = new NotionEditPage({
     $target: $notionEditPageContainer,
-    initialState: "new",
+    initialState: "",
     onRender: () => {
       notionPage.render();
     },
@@ -45,6 +52,7 @@ export default function App({ $target }) {
       notionPage.render();
     } else if (pathname.indexOf("/documents/") === 0) {
       const [, , notionId] = pathname.split("/");
+      console.log(notionId);
       editorPage.setState({ notionId });
     }
   };

@@ -16,6 +16,11 @@ export default function Editor({ $target, initialState, onEditing }) {
   };
 
   this.render = () => {
+    if (this.state === "") {
+      $editor.style.display = "none";
+    } else {
+      $editor.style = "";
+    }
     if (!isInitialize) {
       $editor.innerHTML = `
         <input type="text" name="title" placeholder="제목 없음" value="${this.state.title}" />
@@ -36,8 +41,6 @@ export default function Editor({ $target, initialState, onEditing }) {
     this.setState(nextState);
     onEditing(this.state);
   });
-
-  let timer = null;
 
   $editor.querySelector("[name=content]").addEventListener("input", (e) => {
     const nextState = {

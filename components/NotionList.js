@@ -23,32 +23,36 @@ export default function NotionList({
     const renderNotion = (id, title, documents) => {
       if (documents.length > 0) {
         return `
+        <div>
           <li class="list" data-id="${id}">
-            ${title.length > 10 ? title.slice(0, 10) + "..." : title}
+            ${title.length > 7 ? title.slice(0, 7) + "..." : title}
             <div class="btnContainer">
               <button class="removeBtn" data-id="${id}">❌</button>
               <button class="addBtn" data-id="${id}">➕</button>
             </div>
-          </li>
+          </li> 
           <ul>
-            ${documents
-              .map(
-                ({ id, title, documents }) => `
-              ${renderNotion(id, title, documents)}
-            `
-              )
-              .join("")}
-          </ul>
+              ${documents
+                .map(
+                  ({ id, title, documents }) => `
+                ${renderNotion(id, title, documents)}
+              `
+                )
+                .join("")}
+            </ul>
+        </div>
         `;
       } else {
         return `
+        <div>
           <li class="list" data-id="${id}">
-          ${title.length > 10 ? title.slice(0, 10) + "..." : title}
+          ${title.length > 7 ? title.slice(0, 7) + "..." : title}
             <div class="btnContainer">
               <button class="removeBtn" data-id="${id}">❌</button>
               <button class="addBtn" data-id="${id}">➕</button>
             </div>
           </li>
+        </div>
         `;
       }
     };

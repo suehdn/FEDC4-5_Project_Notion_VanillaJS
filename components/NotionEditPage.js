@@ -17,6 +17,7 @@ export default function NotionEditPage({ $target, initialState, onRender }) {
       return;
     }
     this.render();
+    console.log(this.state.notion);
     editor.setState(
       this.state.notion || {
         title: "",
@@ -34,6 +35,9 @@ export default function NotionEditPage({ $target, initialState, onRender }) {
       if (timer !== null) {
         clearTimeout(timer);
       }
+      if (notion.title === "") {
+        notion.title = "제목 없음";
+      }
       timer = setTimeout(async () => {
         await request(`/documents/${this.state.notionId}`, {
           method: "PUT",
@@ -48,10 +52,12 @@ export default function NotionEditPage({ $target, initialState, onRender }) {
     editor.render();
   };
 
+  this.render();
+
   const fetchNotion = async () => {
     const { notionId } = this.state;
 
-    if (notionId !== "new") {
+    if (notionId !== "") {
       const notion = await request(`/documents/${notionId}`);
       this.setState({
         ...this.state,

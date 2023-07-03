@@ -2,7 +2,13 @@ import NotionList from "./NotionList.js";
 import { request } from "../utils/api.js";
 import { push } from "../utils/router.js";
 
-export default function NotionPage({ $target, initialState, onClick, onAdd }) {
+export default function NotionPage({
+  $target,
+  initialState,
+  onClick,
+  onAdd,
+  onDelete,
+}) {
   const $page = document.createElement("div");
   $page.className = "notionPage";
 
@@ -20,13 +26,7 @@ export default function NotionPage({ $target, initialState, onClick, onAdd }) {
     initialState: this.state,
     onClick,
     onAdd,
-    onDelete: async (id) => {
-      await request(`/documents/${id}`, {
-        method: "DELETE",
-      });
-      // previous history로 넘어가기
-      this.render();
-    },
+    onDelete,
   });
 
   this.render = () => {
