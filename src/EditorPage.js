@@ -1,6 +1,7 @@
 
 import { request } from './request.js';
 import Editor from './Components/Editor.js';
+import DocumentDelete from './Components/DocumentDelete.js';
 
 export function EditorPage($target) {
     const $editorPage = document.createElement('div');
@@ -28,14 +29,15 @@ export function EditorPage($target) {
                 })
             }, 1000)
         }
-})
-
+    })
+    const documentDelete = new DocumentDelete({$target: $editorPage, id : this.state.id})
     this.render = () => {
         $target.appendChild($editorPage);
     }
     this.setState = async nextState => {
         if (this.state.id !== nextState.id){
             this.state = nextState
+            documentDelete.setState({id: this.state.id})
             await fetchPost();
             return    
         }
@@ -45,6 +47,7 @@ export function EditorPage($target) {
             title:'',
             content:''
         });
+        documentDelete.setState({id: this.state.id})
     }
 
     const fetchPost = async() => {

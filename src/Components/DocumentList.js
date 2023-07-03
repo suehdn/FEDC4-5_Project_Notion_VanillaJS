@@ -1,7 +1,7 @@
 import { DocumentCreate } from "./DocumentCreate.js"
 import { push } from '../router.js';
 
-export function DocumentList({$target, data =[], depth = 0, initialState, onSubmit}) {
+export function DocumentList({$target, data =[], initialState, onSubmit}) {
     
     this.state = initialState
     this.setState = (nextState) => {
@@ -25,9 +25,6 @@ export function DocumentList({$target, data =[], depth = 0, initialState, onSubm
             const createBtn = new DocumentCreate({
                 $target: $parentNode, 
                 parentId: this.state.parent, 
-                onClick: () => {
-                    console.log("클릭클릭")
-            },
                 onSubmit: onSubmit
             })
             createBtn.render();
@@ -68,7 +65,7 @@ export function DocumentList({$target, data =[], depth = 0, initialState, onSubm
                 const childrenData = data.map(data => data.documents)
                 if(childrenData[0].length > 0){
                     this.setState({
-                        parent: depth === 0 ? id : parseInt(this.state.parent),
+                        parent: this.state.depth === 0 ? id : parseInt(this.state.parent),
                         selectedNode: parseInt(id),
                         isOpen: !this.state.isOpen,
                         depth: this.state.depth + 1

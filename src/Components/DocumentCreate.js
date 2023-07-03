@@ -1,14 +1,6 @@
 import { DocumentModal } from "./DocumentModal.js";
-export function DocumentCreate({$target, parentId, onClick, onSubmit}){
 
-    // $form.addEventListener('submit', (e) => {
-    //     e.preventDefault();
-    //     const $input = $form.querySelector('input');
-    //     const content = $input.value;
-    //     onSubmit(content);
-    //     $input.value =''
-    // })
-
+export function DocumentCreate({$target, parentId, onSubmit}){
     this.state = {
         parentId :null,
     }
@@ -31,7 +23,6 @@ export function DocumentCreate({$target, parentId, onClick, onSubmit}){
                 e.stopImmediatePropagation();
             }
             const { id }  = $createBtn.nextElementSibling.dataset
-            console.log(id)
             if(id === undefined){
                 const modal = new DocumentModal(null , onSubmit)
                 modal.modalOpen();
@@ -39,7 +30,6 @@ export function DocumentCreate({$target, parentId, onClick, onSubmit}){
             }
             const modal = new DocumentModal(id , onSubmit)
             modal.modalOpen();
-            onClick(parentId);
         }
     })
 }

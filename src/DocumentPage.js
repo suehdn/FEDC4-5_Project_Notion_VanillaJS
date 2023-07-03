@@ -1,6 +1,7 @@
 import { DocumentList } from "./Components/DocumentList.js";
-import { request } from './request.js';
 import { DocumentCreate } from "./Components/DocumentCreate.js";
+import { getDocuments, createDocuments } from "./api.js";
+import { push } from "./router.js";
 
 export function DocumentPage ($target) {
     const $documentPage = document.createElement('div');
@@ -15,9 +16,7 @@ export function DocumentPage ($target) {
     }
     
     const fetchDocuments = async() => {
-      const documentData = await request('/documents', {
-        method: "GET",
-      });
+      const documentData = await getDocuments();
       this.setState({
         ...this.state,
         documentData
@@ -30,17 +29,10 @@ export function DocumentPage ($target) {
           const createBtn = new DocumentCreate({
             $target: $documentPage, 
             parentId: null,
-            onClick: () => {
-               console.log('클릭함ㅋ');
-          },
             onSubmit: async (content, parent) => {
-              await request(`/documents`, {
-                  method: "POST",
-                  body: JSON.stringify({
-                      title: content,
-                      parent: parent,
-                  })
-              }) 
+              const createdData = await createDocuments(content, parent)
+              const { id } = createdData;
+              push(`/documents/${id}`);
               await fetchDocuments();
           }
       })
@@ -52,30 +44,18 @@ export function DocumentPage ($target) {
           const createBtn = new DocumentCreate({
             $target: $documentList, 
             parentId: data.id, 
-            onClick: () => {
-                console.log("클릭클릭")
-            },
               onSubmit: async (content, parent) => {
-                const document = {
-                    title : content,
-                    parent,
-                }
-                await request(`/documents`, {
-                    method: "POST",
-                    body: JSON.stringify({
-                        title: content,
-                        parent: parent,
-                    })
-                }) 
+                const createdData = await createDocuments(content, parent)
+                const { id } = createdData;
+                push(`/documents/${id}`);
                 await fetchDocuments();
-                }
+              }
           })
           createBtn.render();
           $documentPage.appendChild($documentList);
           const documentList = new DocumentList({
             $target: $documentList,
             data: [data],
-            depth: 0,
             initialState:{
               parent: data.id,
               selectedNode: data.id,
@@ -83,18 +63,8 @@ export function DocumentPage ($target) {
               depth: 0
             },
             onSubmit: async (content, parent) => {
-              const document = {
-                  title : content,
-                  parent,
-              }
-              await request(`/documents`, {
-                  method: "POST",
-                  body: JSON.stringify({
-                      title: content,
-                      parent: parent,
-                  })
-              })
-              await fetchDocuments();
+                await createDocuments(content, parent)
+                await fetchDocuments();
               }
             })
             documentList.render()
