@@ -1,23 +1,3 @@
-// ex props
-// {
-//   $target : $app,
-//   initialState : localStorage.getItem("ex"),
-//   props : {
-//     events : {
-//       {
-//         action : 'click',
-//         tag : 'button',
-//         callback : pushUrl,
-//       },
-//       {
-//         action : 'submit',
-//         tag : 'button',
-//         callback : addPost,
-//       },
-//     }
-//   }
-// }
-
 export default class Component {
   _$target;
   _state;

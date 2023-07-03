@@ -6,7 +6,7 @@ import { getItem, setItem, removeItem } from "./storage/storage.js";
 import { DOCUMENT_DUMMY_DATA, DOCUMENT_TREE_DUMMY_DATA } from "./DUMMY_DATA.js";
 
 export default class App extends Component {
-  render() {
+  async render() {
     this.$target.innerHTML = `
       <aside id='documentTree'></aside>
       <section id='editor'>편집하는 곳</section>
@@ -16,7 +16,7 @@ export default class App extends Component {
     const $editor = this.$target.querySelector("#editor");
     this.documentTree = new DocumentTree({
       $target: $documentTree,
-      initialState: DOCUMENT_TREE_DUMMY_DATA,
+      initialState: await this.getDocumentTree(),
       props: {
         events: [
           {
@@ -31,9 +31,17 @@ export default class App extends Component {
           },
           {
             action: "click",
-            tag: "button",
+            tag: "#addDocumentButton",
             target: "li",
             callback: ({ event, target }) => {
+              if (target === null) {
+                event.target.parentNode.insertBefore(
+                  document.createElement("input"),
+                  event.target
+                );
+                return;
+              }
+
               const [, , $childUl] = target.children;
               target.insertBefore(document.createElement("input"), $childUl);
             },
@@ -44,10 +52,20 @@ export default class App extends Component {
             target: "li",
             callback: ({ event, target }) => {
               const { value } = event.target;
+              if (target === null) {
+                this.documentTree.state.unshift({
+                  id: "document-123",
+                  title: value,
+                  documents: [],
+                });
+                this.documentTree.state = this.documentTree.state;
+                return;
+              }
               const newDocumentPerentTree = this.findObjectById(
                 target.id,
                 this.documentTree.state
               );
+              console.log(newDocumentPerentTree);
               newDocumentPerentTree.documents.unshift({
                 id:
                   target.id +
@@ -116,6 +134,10 @@ export default class App extends Component {
       }
       return found;
     }, null);
+  }
+
+  async getDocumentTree() {
+    return await request("/documents", { mothod: "GET" });
   }
 
   async route() {

@@ -2,6 +2,13 @@ import Component from "./Component.js";
 
 export default class DocumentTree extends Component {
   render() {
+    console.log(this.state);
+    if (this.state.length === 0) {
+      this.$target.innerHTML = `
+        <button id="addDocumentButton">+</button>
+      `;
+      return;
+    }
     this.$target.innerHTML = "";
     this.getTemplate(this.state).forEach((child) =>
       this.$target.appendChild(child)
@@ -16,7 +23,7 @@ export default class DocumentTree extends Component {
 
       $li.innerHTML = `
         <a href="/document/${doc.id}">${doc.title}</a>
-        <button data-id="${doc.id}">+</button>
+        <button id="addDocumentButton" data-id="${doc.id}">+</button>
       `;
 
       if (doc.documents.length > 0) {
