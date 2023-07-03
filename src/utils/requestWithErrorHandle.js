@@ -1,4 +1,4 @@
-export async function requestWithErrorHandle(url, option) {
+export async function requestWithErrorHandle(url, option, handler) {
   try {
     const res = await fetch(url, option);
     if (res.ok) {
@@ -7,6 +7,6 @@ export async function requestWithErrorHandle(url, option) {
       throw new Error(`${res.status} Error`);
     }
   } catch (error) {
-    console.log(error.message);
+    handler(error);
   }
 }
