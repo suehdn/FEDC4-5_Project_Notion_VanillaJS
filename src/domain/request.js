@@ -11,10 +11,11 @@ export function request(url, option) {
         'x-username': `${import.meta.env.VITE_X_USERNAME}`,
       },
     },
-    (error) => {
-      const router = new RouteService();
-      router.replace('/');
-      alert(error.message);
+    () => {
+      if (confirm(`존재하지 않는 페이지 입니다.`)) {
+        const router = new RouteService();
+        router.replace('/');
+      }
     },
   );
 }
