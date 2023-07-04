@@ -1,6 +1,8 @@
 import { navigate } from '../utils/navigate.js';
 import { addDocument, removeDocument } from '../apis/api.js';
 import { findDocumentRoute } from '../helpers/documentHelper.js';
+import { foreColors, backColors } from '../constants/colors.js';
+import template from './templates.js';
 import Sidebar from '../components/Sidebar/Sidebar.js';
 import Navbar from '../components/Navbar/Navbar.js';
 import DocumentEditor from '../components/Editor/DocumentEditor.js';
@@ -14,8 +16,15 @@ export default class DocumentPage {
     this.editorStore = editorStore;
     this.documentStore = documentStore;
 
+    this.initStyleMenu();
     this.initComponents();
     this.render();
+  }
+
+  initStyleMenu() {
+    const $textMenu = this.$target.querySelector('.main__text-style-menu');
+    $textMenu.innerHTML += template.colorList({ colors: foreColors, title: '색' });
+    $textMenu.innerHTML += template.colorList({ colors: backColors, title: '배경' });
   }
 
   initComponents() {
