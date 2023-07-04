@@ -15,14 +15,26 @@ export default function DocumentTree({ targetElement, childDocuments, invisibleT
             <div class="document-tree" data-id="${id}" 
               style="margin-left: ${15}px; display: ${invisibleTreeSet.has(id) ? 'none' : 'block'}"
             >
-              <span class="document-blob">
-                <span class="document-toggle">
-                  ${foldedTreeSet.has(id) ? '>' : 'v'}
-                </span>
-                <span class="document-blob-title">${title === '' ? '제목없음' : title}</span>
-                <span class="new-document-btn">+</span>
-                <span class="delete-document-btn">삭제</span>
-              </span>
+              <div class="document-blob">
+                <div class="document-blob-left">
+                  <span class="document-toggle document-blob-btn">
+                    ${
+                      foldedTreeSet.has(id)
+                        ? '<span class="material-symbols-outlined">chevron_right</span>'
+                        : '<span class="material-symbols-outlined">expand_more</span>'
+                    }
+                  </span>
+                  <span class="document-blob-title">${title === '' ? '제목없음' : title}</span>
+                </div>
+                <div class="document-blob-right">
+                  <span class="delete-document-btn document-blob-btn">
+                    <span class="material-symbols-outlined">delete</span>
+                  </span>
+                  <span class="new-document-btn document-blob-btn">
+                    <span class="material-symbols-outlined">add</span>
+                  </span>
+                </div>
+              </div>
             </div>
           `;
         })

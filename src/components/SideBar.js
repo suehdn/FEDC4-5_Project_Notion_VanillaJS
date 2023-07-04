@@ -22,10 +22,11 @@ export default function SideBar({ targetElement, documents }) {
 
   this.render = () => {
     targetElement.innerHTML = `
+      <div class="side-bar-header">📘 ${import.meta.env.VITE_X_USERNAME}의 Notion</div>
       <div class="document-tree-root"></div>
       <button class="new-root-document-btn"></button>
     `;
-    const [documentTreeRootElement, newRootDocumentBtnElement] = targetElement.children;
+    const [_, documentTreeRootElement, newRootDocumentBtnElement] = targetElement.children;
 
     this.documentTreeRoot = new DocumentTreeRoot({
       targetElement: documentTreeRootElement,

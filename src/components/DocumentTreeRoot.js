@@ -32,7 +32,7 @@ export default function DocumentTreeRoot({ targetElement, documents }) {
     targetElement.addEventListener('click', (e) => {
       if (!e.target.closest('.document-toggle')) return;
 
-      const treeElement = e.target.parentNode.parentNode;
+      const treeElement = e.target.closest('.document-tree');
       const foldedTreeId = Number(treeElement.dataset.id);
       const foldedTreeSet = new Set(this.state.foldedTreeSet.values());
       toggleSet(foldedTreeSet, foldedTreeId);
@@ -50,9 +50,9 @@ export default function DocumentTreeRoot({ targetElement, documents }) {
 
     // 문서 이름 클릭 이벤트리스너
     targetElement.addEventListener('click', (e) => {
-      if (!e.target.classList.contains('document-blob-title')) return;
+      if (!e.target.classList.contains('document-blob')) return;
       const router = new RouteService();
-      const documentId = e.target.parentNode.parentNode.dataset.id;
+      const documentId = e.target.closest('.document-tree').dataset.id;
       router.push(`/documents/${documentId}`);
     });
 
@@ -60,7 +60,7 @@ export default function DocumentTreeRoot({ targetElement, documents }) {
     targetElement.addEventListener('click', async (e) => {
       if (!e.target.closest('.new-document-btn')) return;
       const router = new RouteService();
-      const documentTree = e.target.parentNode.parentNode;
+      const documentTree = e.target.closest('.document-tree');
       const newDocument = await postDocument({ title: '', parent: documentTree.dataset.id });
 
       if (this.state.foldedTreeSet.has(Number(documentTree.dataset.id))) {
@@ -82,7 +82,7 @@ export default function DocumentTreeRoot({ targetElement, documents }) {
     targetElement.addEventListener('click', async (e) => {
       if (!e.target.closest('.delete-document-btn')) return;
       const router = new RouteService();
-      const documentTree = e.target.parentNode.parentNode;
+      const documentTree = e.target.closest('.document-tree');
       if (confirm('페이지를 삭제하시겠습니까?')) {
         await deleteDocument(documentTree.dataset.id);
         router.start();

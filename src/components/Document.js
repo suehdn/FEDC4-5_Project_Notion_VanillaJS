@@ -43,7 +43,7 @@ export default function Document({ targetElement, documentData, handleEditTitle,
   this.render = () => {
     const { title, content, documents } = documentData;
     targetElement.innerHTML = `
-      <input class="document-title"/>
+      <input class="document-title" type="text" placeholder="제목 없음"/>
       <textarea class="document-content"></textarea>
       <div class="sub-document-links"></div>
     `;
