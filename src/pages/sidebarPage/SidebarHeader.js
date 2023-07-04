@@ -1,6 +1,9 @@
 import { push } from '../../domain/router';
+import { validateComponent } from '../../utils/validation';
 
 export default function SidebarHeader({ $target, initialState }) {
+  validateComponent(new.target);
+
   const $sidebarHeader = document.createElement('div');
   $sidebarHeader.classList.add('sidebar-header');
   $target.appendChild($sidebarHeader);

@@ -1,13 +1,18 @@
 import { push } from '../../domain/router';
+import { validateArray, validateComponent } from '../../utils/validation';
 
 export default function MainDocumentTree({ $target, initialState }) {
+  validateComponent(new.target);
+
   const $mainDocumentTree = document.createElement('div');
   $mainDocumentTree.classList.add('main-document__area');
   $target.appendChild($mainDocumentTree);
 
+  validateArray(initialState);
   this.state = initialState;
 
   this.setState = (nextState) => {
+    validateArray([nextState]);
     this.state = [nextState];
     this.render();
   };

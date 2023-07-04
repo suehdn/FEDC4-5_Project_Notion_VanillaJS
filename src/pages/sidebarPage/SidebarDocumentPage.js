@@ -4,8 +4,11 @@ import { push } from '../../domain/router';
 import { createDocument, deleteDocument } from '../../domain/apiCall';
 import SidebarDocumentTree from './SidebarDocumentTree';
 import SidebarHeader from './SidebarHeader';
+import { validateComponent } from '../../utils/validation';
 
 export default function SidebarDocumentPage({ $target }) {
+  validateComponent(new.target);
+
   const $sidebarDocumentPage = document.createElement('div');
   $sidebarDocumentPage.classList.add('sidebar-document');
 

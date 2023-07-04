@@ -4,11 +4,15 @@ import debounce from '../../domain/debounce';
 import Editor from './Editor';
 import MainDocumentTree from './MainDocumentTree';
 import { TEMP_DATA_MESSAGE } from '../../constants';
+import { validateComponent, validateString } from '../../utils/validation';
 
 export default function DocumentEditPage({ $target, initialState, renderDocumentTree }) {
+  validateComponent(new.target);
+
   const $documentEditPage = document.createElement('div');
   $documentEditPage.classList.add('edit-document');
 
+  validateString(initialState.documents);
   this.state = initialState;
 
   let documentLocalSaveKey = `temp-document-${this.state.documentId}`;

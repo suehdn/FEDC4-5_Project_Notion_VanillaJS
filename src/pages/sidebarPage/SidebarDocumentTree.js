@@ -1,13 +1,18 @@
 import { push } from '../../domain/router';
+import { validateArray, validateComponent } from '../../utils/validation';
 
 export default function SidebarDocumentTree({ $target, initialState, addDocument, deleteDocument }) {
+  validateComponent(new.target);
+
   const $sidebarDocumentTree = document.createElement('div');
   $sidebarDocumentTree.classList.add('sidebar-document__tree');
   $target.appendChild($sidebarDocumentTree);
 
+  validateArray(initialState);
   this.state = initialState;
 
   this.setState = (nextState) => {
+    validateArray(nextState);
     this.state = nextState;
     this.render();
   };

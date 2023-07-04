@@ -2,8 +2,11 @@ import DocumentEditPage from './pages/mainPage/DocumentEditPage';
 import HomePage from './pages/mainPage/HomePage';
 import SidebarDocumentPage from './pages/sidebarPage/SidebarDocumentPage';
 import { initRouter } from './domain/router';
+import { validateComponent } from './utils/validation';
 
 export default function App({ $target }) {
+  validateComponent(new.target);
+
   // 페이지 및 컴포넌트 초기화
   const $sidebarDocumentArea = document.createElement('div');
   $sidebarDocumentArea.classList.add('document-sidebar__area');

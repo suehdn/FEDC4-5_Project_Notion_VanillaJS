@@ -1,6 +1,9 @@
 import { homePageMessages } from '../../constants';
+import { validateComponent } from '../../utils/validation';
 
 export default function HomePage({ $target }) {
+  validateComponent(new.target);
+
   const $homePage = document.createElement('div');
   $homePage.classList.add('home-page');
 

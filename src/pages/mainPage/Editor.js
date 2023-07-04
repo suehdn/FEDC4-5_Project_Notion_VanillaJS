@@ -1,4 +1,5 @@
 import { editDocumentMessages } from '../../constants';
+import { validateComponent, validateString } from '../../utils/validation';
 
 export default function Editor({
   $target,
@@ -8,10 +9,13 @@ export default function Editor({
   },
   editDocument,
 }) {
+  validateComponent(new.target);
+
   const $editor = document.createElement('div');
   $editor.classList.add('main-editor');
   $target.appendChild($editor);
 
+  validateString(initialState);
   this.state = initialState;
 
   // 초기 상태에서 메시지가 표시되고, 클릭 시 해당 메시지가 사라지도록 처리
@@ -25,6 +29,7 @@ export default function Editor({
   window.handleTitleInputClick = handleTitleInputClick;
 
   this.setState = (nextState) => {
+    // validateString(nextState); 이 부분 검사 오류
     this.state = nextState;
     const { title, content } = this.state;
     // 요기도
