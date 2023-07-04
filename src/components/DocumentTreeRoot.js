@@ -50,7 +50,9 @@ export default function DocumentTreeRoot({ targetElement, documents }) {
 
     // 문서 이름 클릭 이벤트리스너
     targetElement.addEventListener('click', (e) => {
-      if (!e.target.classList.contains('document-blob')) return;
+      if (!e.target.classList.contains('document-blob') && !e.target.classList.contains('document-blob-title')) {
+        return;
+      }
       const router = new RouteService();
       const documentId = e.target.closest('.document-tree').dataset.id;
       router.push(`/documents/${documentId}`);
