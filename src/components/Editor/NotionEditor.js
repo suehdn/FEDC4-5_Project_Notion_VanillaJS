@@ -13,20 +13,20 @@ export default class NotionEditor extends Component {
   }
 
   initChildComponents() {
-    this.$title = new NotionEditorTitle(this.$editor);
-    this.$content = new NotionEditorContent(this.$editor);
+    this.$title = new NotionEditorTitle(this.$editor, {
+      onEdit: this.handleEditorInputChange.bind(this),
+    });
+    this.$content = new NotionEditorContent(this.$editor, {
+      onEdit: this.handleEditorInputChange.bind(this),
+    });
   }
 
-  setEvent() {
+  handleEditorInputChange(name, value) {
     const { onEdit } = this.props;
-    this.$editor.addEventListener('input', ({ target }) => {
-      const name = target.getAttribute('name');
-      const { value } = target;
 
-      onEdit(name, {
-        ...this.state,
-        [name]: value,
-      });
+    onEdit(name, {
+      ...this.state,
+      [name]: value,
     });
   }
 

@@ -10,8 +10,6 @@ import NotionSidebar from '@components/NotionSidebar/NotionSidebar';
 import './NotionPage.css';
 
 export default class NotionPage extends Component {
-  timer = null;
-
   initComponent() {
     this.$page = document.createElement('div');
     this.$page.className = 'notion-page';
@@ -51,23 +49,18 @@ export default class NotionPage extends Component {
     this.$document.setState({ documentData });
   }
 
-  onEdit(name, document) {
-    if (this.timer !== null) {
-      clearTimeout(this.timer);
+  async onEdit(name, document) {
+    setItem(`temp-post-${document.id}`, {
+      ...document,
+      tempSaveDate: new Date(),
+    });
+
+    const updatedDocument = await updateDocument(document.id, document);
+    if (name === 'title') {
+      this.fetchDocumentList();
     }
-    this.timer = setTimeout(async () => {
-      setItem(`temp-post-${document.id}`, {
-        ...document,
-        tempSaveDate: new Date(),
-      });
 
-      const updatedDocument = await updateDocument(document.id, document);
-      if (name === 'title') {
-        this.fetchDocumentList();
-      }
-
-      this.$document.setState({ documentData: updatedDocument });
-    }, 1000);
+    this.$document.setState({ documentData: updatedDocument });
   }
 
   setState(newState) {

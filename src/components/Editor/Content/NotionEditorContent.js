@@ -1,8 +1,12 @@
+import { Document } from '@utils/editor';
+
 import Component from '@core/Component';
 
 import './NotionEditorContent.css';
 
 export default class NotionEditorContent extends Component {
+  timer = null;
+
   setup() {
     this.state = {
       content: '',
@@ -10,17 +14,32 @@ export default class NotionEditorContent extends Component {
   }
 
   initComponent() {
-    this.$content = document.createElement('textarea');
+    this.$contentEditor = document.createElement('div');
 
-    this.$content.className = 'notion-editor-content';
-    this.$content.name = 'content';
+    this.$contentEditor.contentEditable = true;
+    this.$contentEditor.className = 'notion-editor-content';
+    this.$contentEditor.dataset.name = 'content';
 
-    this.$target.appendChild(this.$content);
+    this.$target.appendChild(this.$contentEditor);
+  }
+
+  setEvent() {
+    const { onEdit } = this.props;
+
+    this.$contentEditor.addEventListener('input', ({ target }) => {
+      if (this.timer !== null) {
+        clearTimeout(this.timer);
+      }
+      this.timer = setTimeout(async () => {
+        const value = Document.stringify(target.innerHTML);
+        onEdit('content', value);
+      }, 1000);
+    });
   }
 
   render() {
     const { content } = this.state;
 
-    this.$content.value = content;
+    this.$contentEditor.innerHTML = Document.parse(content ?? '');
   }
 }

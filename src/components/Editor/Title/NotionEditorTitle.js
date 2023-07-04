@@ -3,6 +3,8 @@ import Component from '@core/Component';
 import './NotionEditorTitle.css';
 
 export default class NotionEditorTitle extends Component {
+  timer = null;
+
   setup() {
     this.state = {
       title: '',
@@ -10,19 +12,32 @@ export default class NotionEditorTitle extends Component {
   }
 
   initComponent() {
-    this.$title = document.createElement('input');
+    this.$titleEditor = document.createElement('input');
 
-    this.$title.className = 'notion-editor-title';
-    this.$title.type = 'text';
-    this.$title.name = 'title';
-    this.$title.placeholder = 'undefined';
+    this.$titleEditor.className = 'notion-editor-title';
+    this.$titleEditor.type = 'text';
+    this.$titleEditor.dataset.name = 'title';
+    this.$titleEditor.placeholder = 'undefined';
 
-    this.$target.appendChild(this.$title);
+    this.$target.appendChild(this.$titleEditor);
+  }
+
+  setEvent() {
+    const { onEdit } = this.props;
+
+    this.$titleEditor.addEventListener('input', ({ target }) => {
+      if (this.timer !== null) {
+        clearTimeout(this.timer);
+      }
+      this.timer = setTimeout(async () => {
+        onEdit('title', target.value);
+      }, 1000);
+    });
   }
 
   render() {
     const { title } = this.state;
 
-    this.$title.value = title ?? '';
+    this.$titleEditor.value = title ?? '';
   }
 }

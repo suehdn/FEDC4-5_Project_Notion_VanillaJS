@@ -5,10 +5,10 @@ export default class Component {
 
     this.setup();
     this.initComponent();
+    this.initChildComponents();
+
     this.setEvent();
     this.render();
-
-    this.initChildComponents();
   }
 
   setup() {}
