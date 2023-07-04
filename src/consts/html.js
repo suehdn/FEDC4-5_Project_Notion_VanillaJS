@@ -1,4 +1,4 @@
-const reservedCharacters = {
+export const reservedCharacters = {
   '&amp;': '&',
   '&lt;': '<',
   '&gt;': '>',
@@ -7,4 +7,11 @@ const reservedCharacters = {
   '&ndash;': '-',
 };
 
-export default reservedCharacters;
+export const htmlEntities = {
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
+  ' ': '&nbsp;',
+  '-': '&ndash;',
+};
