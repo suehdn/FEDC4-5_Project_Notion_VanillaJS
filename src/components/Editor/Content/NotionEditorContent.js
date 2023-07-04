@@ -1,4 +1,4 @@
-import { Editor } from '@utils/editor';
+import Editor from '@utils/editor';
 
 import Component from '@core/Component';
 
@@ -31,9 +31,12 @@ export default class NotionEditorContent extends Component {
         clearTimeout(this.timer);
       }
       this.timer = setTimeout(async () => {
+        Editor.saveCaretPosition();
+
         const html = target.innerHTML;
-        const value = Editor.stringify(html);
-        onEdit('content', value);
+        const string = Editor.stringify(html);
+
+        onEdit('content', string);
       }, 1000);
     });
   }
@@ -41,6 +44,8 @@ export default class NotionEditorContent extends Component {
   render() {
     const { content } = this.state;
 
-    this.$contentEditor.innerHTML = Editor.parse(content ?? '');
+    this.$contentEditor.innerHTML = Editor.parse(content, this.caret);
+
+    Editor.restoreCaretPosition();
   }
 }

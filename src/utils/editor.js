@@ -1,13 +1,36 @@
+import CARET from '@consts/caret';
+
+import Caret from './caret';
 import HTMLString from './html';
 import MarkDownString from './markdown';
+import { getCaretSpanTagRegex } from './regex';
+
+let caretPosition = 0;
+
+const caretSpanTagRegex = getCaretSpanTagRegex();
+
+const getCaretPositionInString = (string) => {
+  const pos = caretSpanTagRegex.exec(string);
+  return pos === null ? 0 : pos.index;
+};
+
+const removeCaretFromString = (string) => string.replace(caretSpanTagRegex, '');
 
 const parse = (string) => {
   if (!string) return '';
 
-  const markDownString = new MarkDownString(string);
+  const headString = new MarkDownString(string.substring(0, caretPosition))
+    .replaceReservedCharacters()
+    .valueOf();
+
+  const tailString = new MarkDownString(string.substring(caretPosition))
+    .replaceReservedCharacters()
+    .valueOf();
+
+  const stringWithCaret = `${headString}${CARET.SPAN(CARET.ID)}${tailString}`;
+  const markDownString = new MarkDownString(stringWithCaret);
 
   const html = markDownString
-    .replaceReservedCharacters()
     .splitWithNewLine()
     .map((line) => {
       if (line.indexOf('# ') === 0) {
@@ -45,11 +68,21 @@ const stringify = (html) => {
       return line.replaceHTMLEntities().replaceAll('<br>', '\n');
     })
     .join('\n');
-  return string;
+
+  caretPosition = getCaretPositionInString(string);
+  const stringWithoutCaret = removeCaretFromString(string);
+
+  return stringWithoutCaret;
 };
 
-export const Editor = { parse, stringify };
+const saveCaretPosition = () => {
+  Caret.savePosition();
+};
 
-export const setCaret = () => {};
+const restoreCaretPosition = () => {
+  Caret.setPosition();
+};
 
-export const getCaret = () => {};
+const Editor = { parse, stringify, saveCaretPosition, restoreCaretPosition };
+
+export default Editor;

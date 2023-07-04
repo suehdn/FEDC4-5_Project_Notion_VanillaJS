@@ -1,3 +1,4 @@
+import CARET from '@consts/caret';
 import { htmlEntities, reservedCharacters } from '@consts/html';
 
 export const getHTMLTagRegex = (tagName, options = 'g') =>
@@ -8,3 +9,5 @@ export const getHTMLEntityRegex = (options = 'g') =>
 
 export const getReservedCharacterRegex = (options = 'g') =>
   new RegExp(Object.keys(htmlEntities).join('|'), options);
+
+export const getCaretSpanTagRegex = () => new RegExp(CARET.SPAN(CARET.ID));
