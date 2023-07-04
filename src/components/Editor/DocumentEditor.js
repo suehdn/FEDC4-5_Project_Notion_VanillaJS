@@ -1,4 +1,3 @@
-import { makeRichText, handleNewLine, handleBackspace } from '../../utils/richEditor.js';
 import {
   handlePreventNewLine,
   handleCursorToContent,
@@ -8,8 +7,6 @@ import {
   handleShowStyleMenu,
 } from './events.js';
 import './DocumentEditor.css';
-
-const selection = window.getSelection();
 
 export default class DocumentEditor {
   constructor({
