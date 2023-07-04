@@ -86,11 +86,14 @@ export default function DocumentTreeRoot({ targetElement, documents }) {
       const router = new RouteService();
       const documentTreeElement = e.target.closest('.document-tree');
       if (confirm('페이지를 삭제하시겠습니까?')) {
+        const foldedTreeSet = new Set(this.state.foldedTreeSet.values());
         const invisibleTreeSet = new Set(this.state.invisibleTreeSet.values());
         const [_, ...subTreeElements] = documentTreeElement.children;
+        foldedTreeSet.delete(Number(documentTreeElement.dataset.id));
         subTreeElements.forEach((subTreeElement) => {
           invisibleTreeSet.delete(Number(subTreeElement.dataset.id));
         });
+        setItem(localStorageKeys.FOLDED_TREES, Array.from(foldedTreeSet));
         setItem(localStorageKeys.INVISIBLE_TREES, Array.from(invisibleTreeSet));
         await deleteDocument(documentTreeElement.dataset.id);
         router.start();
