@@ -21,8 +21,12 @@ export default function App({ $target }) {
     $target: $notionPageContainer,
     initialState: [],
     onClick: (id) => {
-      history.pushState(null, null, `/documents/${id}`);
-      this.route();
+      const { pathname } = window.location;
+      const [, , notionId] = pathname.split("/");
+      if (id !== notionId) {
+        history.pushState(null, null, `/documents/${id}`);
+        this.route();
+      }
     },
     onAdd: (id) => {
       fetchAddNotion(id);
@@ -53,7 +57,6 @@ export default function App({ $target }) {
       editorPage.setState("");
     } else if (pathname.indexOf("/documents/") === 0) {
       const [, , notionId] = pathname.split("/");
-      console.log(notionId);
       editorPage.setState({ notionId });
     }
   };

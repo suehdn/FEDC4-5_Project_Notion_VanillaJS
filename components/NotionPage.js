@@ -1,6 +1,5 @@
 import NotionList from "./NotionList.js";
 import { request } from "../utils/api.js";
-import { push } from "../utils/router.js";
 
 export default function NotionPage({
   $target,

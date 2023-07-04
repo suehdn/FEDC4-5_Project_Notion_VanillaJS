@@ -1,5 +1,3 @@
-import { request } from "../utils/api.js";
-
 export default function NotionList({
   $target,
   initialState,
@@ -32,21 +30,21 @@ export default function NotionList({
             </div>
           </li> 
           <ul>
-              ${documents
-                .map(
-                  ({ id, title, documents }) => `
-                ${renderNotion(id, title, documents)}
-              `
-                )
-                .join("")}
-            </ul>
+            ${documents
+              .map(
+                ({ id, title, documents }) => `
+              ${renderNotion(id, title, documents)}
+            `
+              )
+              .join("")}
+          </ul>
         </div>
         `;
       } else {
         return `
         <div>
           <li class="list" data-id="${id}">
-          ${title.length > 7 ? title.slice(0, 7) + "..." : title}
+            ${title.length > 7 ? title.slice(0, 7) + "..." : title}
             <div class="btnContainer">
               <button class="removeBtn" data-id="${id}">❌</button>
               <button class="addBtn" data-id="${id}">➕</button>
