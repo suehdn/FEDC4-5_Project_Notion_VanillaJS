@@ -1,5 +1,4 @@
-import { makeRichText } from '../../utils/richEditor.js';
-import { handleNewLine, handleBackspace } from '../../utils/richEditor.js';
+import { applyRichContent, onBackspace, onEnter } from './richLogics.js';
 
 const selection = window.getSelection();
 
@@ -11,14 +10,14 @@ export const handleCursorToContent = (e, { $content }) => {
   $content.focus();
 };
 
-export const handleRichText = (e, { $content }) => {
+export const handleRichContent = (e, { $content }) => {
   if (e.isComposing) return;
-  makeRichText($content, e.key);
+  applyRichContent($content, e.key);
 };
 
 export const handleKeyDown = (e, { $content }) => {
-  if (e.key === 'Enter') handleNewLine($content, e); // 개행 처리
-  if (e.key === 'Backspace') handleBackspace($content, e); // 백스페이스 처리
+  if (e.key === 'Enter') onEnter(e, { $editor: $content }); // 개행 처리
+  if (e.key === 'Backspace') onBackspace(e, { $editor: $content }); // 백스페이스 처리
 };
 
 export const handleChangeInput = (e, { onChange }) => {

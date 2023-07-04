@@ -1,7 +1,7 @@
 import {
   handlePreventNewLine,
   handleCursorToContent,
-  handleRichText,
+  handleRichContent,
   handleChangeInput,
   handleKeyDown,
   handleShowStyleMenu,
@@ -33,8 +33,10 @@ export default class DocumentEditor {
 
   setState(nextState) {
     this.state = nextState;
+
     if (this.state.documentId === 0) this.$target.classList.add('hidden');
     else this.$target.classList.remove('hidden');
+
     this.render();
   }
 
@@ -42,9 +44,9 @@ export default class DocumentEditor {
     this.$title.addEventListener('keydown', (e) => handlePreventNewLine(e));
     this.$title.addEventListener('keyup', (e) => handleCursorToContent(e, { $content: this.$content }));
 
-    this.$content.addEventListener('compositionend', (e) => handleRichText(e, { $content: this.$content }));
+    this.$content.addEventListener('compositionend', (e) => handleRichContent(e, { $content: this.$content }));
     this.$content.addEventListener('keydown', (e) => handleKeyDown(e, { $content: this.$content }));
-    this.$content.addEventListener('keyup', (e) => handleRichText(e, { $content: this.$content }));
+    this.$content.addEventListener('keyup', (e) => handleRichContent(e, { $content: this.$content }));
     this.$content.addEventListener('pointerup', (e) => handleShowStyleMenu(e));
 
     this.$target.addEventListener('input', (e) => handleChangeInput(e, { onChange: this.onChange }));
@@ -53,9 +55,8 @@ export default class DocumentEditor {
   render() {
     const { documentId, document } = this.state;
     if (!documentId || !document) return;
-    const { title, content } = document;
 
-    this.$title.innerHTML = title;
-    this.$content.innerHTML = content;
+    this.$title.innerHTML = document.title;
+    this.$content.innerHTML = document.content;
   }
 }

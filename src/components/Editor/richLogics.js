@@ -1,9 +1,14 @@
-import { setCaret } from './cursor.js';
-import { findDeepestChild, isHeading, removeHeading } from './element.js';
+import { setCaret } from '../../utils/cursor.js';
+import { findDeepestChild, isHeading, removeHeading } from '../../utils/element.js';
 
 const selection = window.getSelection();
 
-export const makeRichText = ($editor, key) => {
+/**
+ * 에디터 요소에 입력한 키를 기반으로 리치 컨텐츠를 적용합니다.
+ * @param {Node} $editor 에디터 요소
+ * @param {string} key 이벤트로 입력된 키
+ */
+export const applyRichContent = ($editor, key) => {
   const $parentNode = selection.anchorNode.parentNode;
   const $line = $parentNode.closest('.editor__line');
   const $anchorNode = selection.anchorNode;
@@ -45,7 +50,7 @@ export const makeRichText = ($editor, key) => {
   }
 };
 
-export const handleNewLine = ($editor, event) => {
+export const onEnter = (event, { $editor }) => {
   const $parentNode = selection.anchorNode.parentNode;
   const $anchorNode = selection.anchorNode;
   const $line = $parentNode.closest('.editor__line');
@@ -92,7 +97,7 @@ export const handleNewLine = ($editor, event) => {
   }, 0);
 };
 
-export const handleBackspace = ($editor, event) => {
+export const onBackspace = (event) => {
   const $parentNode = selection.anchorNode.parentNode;
   const $line = $parentNode.closest('.editor__line');
   const $previousLine = $line?.previousSibling;
