@@ -1,4 +1,4 @@
-import { applyRichContent, toggleStyleMenu, onBackspace, onEnter } from './richLogics.js';
+import { applyRichContent, showStyleMenu, toggleTextStyleMenu, onBackspace, onEnter } from './richLogics.js';
 
 export const handlePreventNewLine = (e) => {
   if (e.key === 'Enter') e.preventDefault();
@@ -28,13 +28,21 @@ export const handleChangeInput = (e, { onChange }) => {
   }, 100);
 };
 
-export const handleShowStyleMenu = (e, { $menu }) => {
+export const handleCloseStyleMenu = (e, { $menu, $textMenu }) => {
+  $menu.classList.add('hidden');
+  $textMenu.classList.add('hidden');
+};
+
+export const handleShowStyleMenu = (e, { $menu, $textMenu }) => {
   setTimeout(() => {
-    toggleStyleMenu(e, { $menu });
+    showStyleMenu(e, { $menu, $textMenu });
   }, 0);
 };
 
-export const handleStyleAction = (e, { $menu }) => {
+export const handleStyleAction = (e, { $menu, $textMenu }) => {
   const command = e.target.closest('[data-command]')?.dataset.command;
+  const role = e.target.closest('[data-role]')?.dataset.role;
+
   if (command) document.execCommand(command, false, null);
+  if (role && role === 'toggleTextMenu') toggleTextStyleMenu(e, { $textMenu });
 };
