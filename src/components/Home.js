@@ -6,11 +6,13 @@ export default function Home({ $target }) {
   }
 
   const $home = document.createElement("div");
-  $target.appendChild($home);
 
-  this.render = () => {
-    $home.innerHTML = "home";
+  this.setState = () => {
+    this.render();
   };
 
-  this.render();
+  this.render = () => {
+    $target.appendChild($home);
+    $home.innerHTML = "home";
+  };
 }

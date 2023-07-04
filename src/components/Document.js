@@ -6,7 +6,6 @@ export default function Document({ $target }) {
   }
 
   const $textarea = document.createElement("textarea");
-  $target.appendChild($textarea);
 
   this.state = {
     documentId: 0,
@@ -18,8 +17,7 @@ export default function Document({ $target }) {
   };
 
   this.render = () => {
+    $target.appendChild($textarea);
     $textarea.value = this.state.documentId;
   };
-
-  this.render();
 }
