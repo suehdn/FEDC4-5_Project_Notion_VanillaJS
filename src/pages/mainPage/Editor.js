@@ -12,7 +12,7 @@ export default function Editor({
   validateComponent(new.target);
 
   const $editor = document.createElement('div');
-  $editor.classList.add('main-editor');
+  $editor.classList.add('editor');
   $target.appendChild($editor);
 
   validateString(initialState);
