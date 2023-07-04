@@ -11,13 +11,13 @@ export default function SideBar({ targetElement, documents }) {
   };
 
   this.setEvent = () => {
-    window.addEventListener('editTitle', (e) => {
+    targetElement.addEventListener('editTitle', (e) => {
       const { documentId, title } = e.detail;
       const documentTreeElement = document.querySelector(`.document-tree[data-id="${documentId}"]`);
       const documentTitleElement = documentTreeElement.querySelector('.document-blob-title');
       documentTitleElement.textContent = title;
     });
-    window.addEventListener('asyncEditTitle', async () => {
+    targetElement.addEventListener('asyncEditTitle', async () => {
       this.documentTreeRoot.setState({ ...this.documentTreeRoot.state, documents: await getDocuments() });
     });
   };
