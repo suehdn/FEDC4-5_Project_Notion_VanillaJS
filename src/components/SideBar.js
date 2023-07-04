@@ -22,7 +22,7 @@ export default function SideBar({ targetElement, documents }) {
 
   this.render = () => {
     targetElement.innerHTML = `
-      <div class="side-bar-header">📘 ${import.meta.env.VITE_X_USERNAME}의 Notion</div>
+      <div class="side-bar-header">📘 이진욱의 Notion</div>
       <div class="document-tree-root"></div>
       <button class="new-root-document-btn"></button>
     `;

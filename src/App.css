@@ -121,35 +121,51 @@ button:hover {
 .selected-document {
   flex-grow: 1;
   display: flex;
-  flex-wrap: wrap;
   flex-direction: column;
   background-color: FFFFFF;
   align-items: center;
+  margin-left: 20px;
 }
 
-.selected-document > input {
-  all: unset;
+.document-header {
+  display: flex;
   width: 100%;
   min-width: 500px;
   max-width: 1000px;
-  padding: 10px 10px 0 10px;
-  margin: 10px 10px 0 10px;
+  margin: 20px 20px 0 20px;
+}
+
+.document-title {
+  all: unset;
+  flex-grow: 1;
   font-size: 40px;
   font-weight: 600;
 }
 
-.selected-document > input::placeholder {
+.document-title::placeholder {
   color: #d9d9d9;
 }
 
-.selected-document > textarea {
+.preview-btn {
+  margin-right: 40px;
+}
+
+.document-content {
   all: unset;
   width: 100%;
   min-width: 500px;
   max-width: 1000px;
   flex-grow: 1;
-  padding: 10px;
-  margin: 10px;
+  margin: 20px 20px 0 20px;
+}
+
+.document-preview {
+  width: 100%;
+  min-width: 500px;
+  max-width: 1000px;
+  margin: 20px 20px 0 20px;
+  flex-grow: 1;
+  overflow-y: scroll;
 }
 
 .sub-document-links {
