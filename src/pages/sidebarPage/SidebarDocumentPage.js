@@ -18,7 +18,7 @@ export default function SidebarDocumentPage({ $target }) {
   });
 
   // 사이드바 문서 트리의 초기상태, 삭제, 추가 처리
-  const sidebarDocumentTree = SidebarDocumentTree({
+  const sidebarDocumentTree = new SidebarDocumentTree({
     $target: $sidebarDocumentPage,
     initialState: [],
     deleteDocument,
