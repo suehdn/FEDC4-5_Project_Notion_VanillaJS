@@ -51,7 +51,6 @@
 
 .sidebar__document-list {
   overflow: hidden;
-  padding-inline-start: 0px;
 }
 
 .sidebar__document-item {
@@ -102,12 +101,4 @@
 
 .sidebar__document--action-section {
   display: none;
-}
-
-.document-svg, .trash-svg, .plus-svg  {
-  width: 1em;
-}
-
-.chevron-right-svg {
-  width: 0.5em;
 }

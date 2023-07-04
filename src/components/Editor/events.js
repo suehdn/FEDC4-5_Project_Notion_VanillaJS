@@ -1,6 +1,4 @@
-import { applyRichContent, onBackspace, onEnter } from './richLogics.js';
-
-const selection = window.getSelection();
+import { applyRichContent, toggleStyleMenu, onBackspace, onEnter } from './richLogics.js';
 
 export const handlePreventNewLine = (e) => {
   if (e.key === 'Enter') e.preventDefault();
@@ -12,12 +10,12 @@ export const handleCursorToContent = (e, { $content }) => {
 
 export const handleRichContent = (e, { $content }) => {
   if (e.isComposing) return;
-  applyRichContent($content, e.key);
+  applyRichContent({ $editor: $content, key: e.key });
 };
 
 export const handleKeyDown = (e, { $content }) => {
   if (e.key === 'Enter') onEnter(e, { $editor: $content }); // 개행 처리
-  if (e.key === 'Backspace') onBackspace(e, { $editor: $content }); // 백스페이스 처리
+  else if (e.key === 'Backspace') onBackspace(e, { $editor: $content }); // 백스페이스 처리
 };
 
 export const handleChangeInput = (e, { onChange }) => {
@@ -29,10 +27,8 @@ export const handleChangeInput = (e, { onChange }) => {
   }, 100);
 };
 
-export const handleShowStyleMenu = (e) => {
+export const handleShowStyleMenu = (e, { $menu }) => {
   setTimeout(() => {
-    if (selection.toString().trim().length === 0) return;
-
-    console.log(selection.toString());
+    toggleStyleMenu(e, { $menu });
   }, 0);
 };

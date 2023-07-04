@@ -8,7 +8,7 @@ const selection = window.getSelection();
  * @param {Node} $editor 에디터 요소
  * @param {string} key 이벤트로 입력된 키
  */
-export const applyRichContent = ($editor, key) => {
+export const applyRichContent = ({ $editor, key }) => {
   const $parentNode = selection.anchorNode.parentNode;
   const $line = $parentNode.closest('.editor__line');
   const $anchorNode = selection.anchorNode;
@@ -47,6 +47,17 @@ export const applyRichContent = ($editor, key) => {
     if (text.startsWith('### ')) updateHtml(3);
     else if (text.startsWith('## ')) updateHtml(2);
     else if (text.startsWith('# ')) updateHtml(1);
+  }
+};
+
+export const toggleStyleMenu = (event, { $menu }) => {
+  if (selection.toString().trim().length > 0) {
+    const { pageX, pageY } = event;
+    $menu.style.left = `${pageX - 400}px`;
+    $menu.style.top = `${pageY - 30}px`;
+    $menu.classList.remove('hidden');
+  } else {
+    $menu.classList.add('hidden');
   }
 };
 

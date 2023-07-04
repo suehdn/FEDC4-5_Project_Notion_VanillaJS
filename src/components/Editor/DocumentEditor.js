@@ -23,6 +23,7 @@ export default class DocumentEditor {
     this.$target = $target;
     this.$title = document.querySelector('.main__title-editor');
     this.$content = document.querySelector('.main__content-editor');
+    this.$menu = document.querySelector('.main__style-menu');
 
     this.state = initialState;
     this.onChange = onChange;
@@ -47,7 +48,7 @@ export default class DocumentEditor {
     this.$content.addEventListener('compositionend', (e) => handleRichContent(e, { $content: this.$content }));
     this.$content.addEventListener('keydown', (e) => handleKeyDown(e, { $content: this.$content }));
     this.$content.addEventListener('keyup', (e) => handleRichContent(e, { $content: this.$content }));
-    this.$content.addEventListener('pointerup', (e) => handleShowStyleMenu(e));
+    this.$content.addEventListener('pointerup', (e) => handleShowStyleMenu(e, { $menu: this.$menu }));
 
     this.$target.addEventListener('input', (e) => handleChangeInput(e, { onChange: this.onChange }));
   }
@@ -58,5 +59,6 @@ export default class DocumentEditor {
 
     this.$title.innerHTML = document.title;
     this.$content.innerHTML = document.content;
+    this.$menu.classList.add('hidden');
   }
 }
