@@ -5,6 +5,7 @@ export const handlePreventNewLine = (e) => {
 };
 
 export const handleCursorToContent = (e, { $content }) => {
+  if (e.key !== 'Enter') return;
   $content.focus();
 };
 
