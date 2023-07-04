@@ -1,6 +1,7 @@
 import { postDocument, deleteDocument } from '../api';
 import { localStorageKeys } from '../constants/localStorageKeys';
 import { RouteService } from '../utils/RouteService';
+import debounce from '../utils/debounce';
 import { getItem, setItem } from '../utils/storage';
 import { toggleSet } from '../utils/toggleSet';
 import DocumentTree from './DocumentTree';
@@ -15,6 +16,7 @@ export default function DocumentTreeRoot({ targetElement, documents }) {
   this.state = {
     invisibleTreeSet: new Set(getItem(localStorageKeys.INVISIBLE_TREES, [])),
     foldedTreeSet: new Set(getItem(localStorageKeys.FOLDED_TREES, [])),
+    scrollPos: getItem(localStorageKeys.DOCUMENT_TREE_SCROLL, 0),
     documents,
   };
 
@@ -84,6 +86,14 @@ export default function DocumentTreeRoot({ targetElement, documents }) {
         router.start();
       }
     });
+
+    // 스크롤위치 기억을 위한 이벤트리스너
+    targetElement.addEventListener(
+      'scroll',
+      debounce((e) => {
+        setItem(localStorageKeys.DOCUMENT_TREE_SCROLL, e.target.scrollTop);
+      }, 200),
+    );
   };
 
   this.render = () => {
@@ -94,6 +104,7 @@ export default function DocumentTreeRoot({ targetElement, documents }) {
       invisibleTreeSet: this.state.invisibleTreeSet,
       foldedTreeSet: this.state.foldedTreeSet,
     });
+    requestAnimationFrame(() => targetElement.scrollTo({ top: this.state.scrollPos }));
   };
 
   this.init();
