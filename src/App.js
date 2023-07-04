@@ -3,7 +3,6 @@ import DocumentTree from "./Component/DocumentTree.js";
 import Editor from "./Component/Editor.js";
 import { request } from "./api.js";
 import { getItem, setItem, removeItem } from "./storage/storage.js";
-import { DOCUMENT_DUMMY_DATA, DOCUMENT_TREE_DUMMY_DATA } from "./DUMMY_DATA.js";
 import createUUID from "./utils/createUUID.js";
 
 export default class App extends Component {
@@ -86,11 +85,6 @@ export default class App extends Component {
                 return;
               }
 
-              const newDocumentPerentTree = this.findObjectById(
-                target.id,
-                this.documentTree.state
-              );
-
               const newDocument = {
                 id: createUUID(),
                 title: value,
@@ -113,7 +107,7 @@ export default class App extends Component {
 
     this.editor = new Editor({
       $target: $editor,
-      initialState: DOCUMENT_DUMMY_DATA,
+      initialState: [],
       props: {
         events: [
           {
@@ -147,21 +141,6 @@ export default class App extends Component {
         ],
       },
     });
-  }
-
-  findObjectById(id, arr) {
-    const foundObject = arr.find((obj) => obj.id === id);
-
-    if (foundObject) {
-      return foundObject;
-    }
-
-    return arr.reduce((found, obj) => {
-      if (!found && obj.documents.length > 0) {
-        return this.findObjectById(id, obj.documents);
-      }
-      return found;
-    }, null);
   }
 
   async getDocumentTree() {
