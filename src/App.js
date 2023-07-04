@@ -5,24 +5,24 @@ import { initRouter } from './domain/router';
 
 export default function App({ $target }) {
   // 페이지 및 컴포넌트 초기화
-  const $documentSidebarArea = document.createElement('div');
-  $documentSidebarArea.classList.add('document-sidebar__area');
-  $target.appendChild($documentSidebarArea);
+  const $sidebarDocumentArea = document.createElement('div');
+  $sidebarDocumentArea.classList.add('document-sidebar__area');
+  $target.appendChild($sidebarDocumentArea);
 
-  const $documentEditArea = document.createElement('div');
-  $documentEditArea.classList.add('document-edit__area');
-  $target.appendChild($documentEditArea);
+  const $editDocumentArea = document.createElement('div');
+  $editDocumentArea.classList.add('document-edit__area');
+  $target.appendChild($editDocumentArea);
 
   const sidebarDocumentPage = new SidebarDocumentPage({
-    $target: $documentSidebarArea,
+    $target: $sidebarDocumentArea,
   });
 
   const homePage = new HomePage({
-    $target: $documentEditArea,
+    $target: $editDocumentArea,
   });
 
   const documentEditPage = new DocumentEditPage({
-    $target: $documentEditArea,
+    $target: $editDocumentArea,
     initialState: {
       documentId: 'new',
       documents: {
@@ -37,7 +37,7 @@ export default function App({ $target }) {
 
   // 현재 URL 경로를 기반으로 페이지를 렌더링
   this.route = () => {
-    $documentEditArea.innerHTML = '';
+    $editDocumentArea.innerHTML = '';
     const { pathname } = window.location;
     if (pathname.indexOf('/documents/') === 0) {
       const [, , documentId] = pathname.split('/');
