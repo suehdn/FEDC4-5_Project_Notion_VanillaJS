@@ -1,8 +1,10 @@
 import { getDocument, getDocuments } from '../api';
 import Document from '../components/Document';
 import SideBar from '../components/SideBar';
+import validateComponent from '../utils/validateComponent';
 
 export default function EditPage({ targetElement }) {
+  validateComponent(this, EditPage);
   this.init = () => {
     this.targetElement = targetElement;
     this.render();

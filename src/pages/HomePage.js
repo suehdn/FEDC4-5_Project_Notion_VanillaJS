@@ -1,7 +1,9 @@
 import { getDocuments } from '../api';
 import SideBar from '../components/SideBar';
+import validateComponent from '../utils/validateComponent';
 
 export default function HomePage({ targetElement }) {
+  validateComponent(this, HomePage);
   this.init = () => {
     this.targetElement = targetElement;
     this.render();

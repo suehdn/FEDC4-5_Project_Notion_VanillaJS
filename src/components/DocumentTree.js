@@ -1,4 +1,7 @@
+import validateComponent from '../utils/validateComponent';
+
 export default function DocumentTree({ targetElement, childDocuments, invisibleTreeSet, foldedTreeSet }) {
+  validateComponent(this, DocumentTree);
   this.init = () => {
     this.targetElement = targetElement;
     this.render();

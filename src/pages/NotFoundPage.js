@@ -1,4 +1,7 @@
+import validateComponent from '../utils/validateComponent';
+
 export default function NotFoundPage({ targetElement }) {
+  validateComponent(this, NotFoundPage);
   this.init = () => {
     this.targetElement = targetElement;
     this.render();

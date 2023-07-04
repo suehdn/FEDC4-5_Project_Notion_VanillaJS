@@ -1,4 +1,7 @@
+import validateComponent from '../utils/validateComponent';
+
 export default function Button({ targetElement, textContent, onClick }) {
+  validateComponent(this, Button);
   this.init = () => {
     this.targetElement = targetElement;
     this.setEvent();

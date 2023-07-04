@@ -2,8 +2,10 @@ import { postDocument } from '../api';
 import Button from '../components/Button';
 import DocumentTreeRoot from '../components/DocumentTreeRoot';
 import { RouteService } from '../utils/RouteService';
+import validateComponent from '../utils/validateComponent';
 
 export default function SideBar({ targetElement, documents }) {
+  validateComponent(this, SideBar);
   this.init = () => {
     this.targetElement = targetElement;
     this.render();

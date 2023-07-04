@@ -1,8 +1,10 @@
 import { putDocument } from '../api';
 import debounce from '../utils/debounce';
 import { RouteService } from '../utils/RouteService';
+import validateComponent from '../utils/validateComponent';
 
 export default function Document({ targetElement, documentData, handleEditTitle, handleAsyncEditTitle }) {
+  validateComponent(this, Document);
   this.init = () => {
     this.targetElement = targetElement;
     this.setEvent();
