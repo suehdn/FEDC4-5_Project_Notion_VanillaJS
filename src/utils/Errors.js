@@ -7,4 +7,5 @@ export class ValidationError extends Error {
 
 export const ERROR = {
   NEW_MISSED: "Current component is declared without 'new' keyword.",
+  NONE_OBJECT_STATE: "Tried to set state using none object value.",
 };
