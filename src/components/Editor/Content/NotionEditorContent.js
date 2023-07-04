@@ -1,4 +1,4 @@
-import { Document } from '@utils/editor';
+import { Editor } from '@utils/editor';
 
 import Component from '@core/Component';
 
@@ -31,7 +31,8 @@ export default class NotionEditorContent extends Component {
         clearTimeout(this.timer);
       }
       this.timer = setTimeout(async () => {
-        const value = Document.stringify(target.innerHTML);
+        const html = target.innerHTML;
+        const value = Editor.stringify(html);
         onEdit('content', value);
       }, 1000);
     });
@@ -40,6 +41,6 @@ export default class NotionEditorContent extends Component {
   render() {
     const { content } = this.state;
 
-    this.$contentEditor.innerHTML = Document.parse(content ?? '');
+    this.$contentEditor.innerHTML = Editor.parse(content ?? '');
   }
 }
