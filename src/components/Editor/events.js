@@ -32,3 +32,8 @@ export const handleShowStyleMenu = (e, { $menu }) => {
     toggleStyleMenu(e, { $menu });
   }, 0);
 };
+
+export const handleStyleAction = (e, { $menu }) => {
+  const command = e.target.closest('[data-command]')?.dataset.command;
+  if (command) document.execCommand(command, false, null);
+};

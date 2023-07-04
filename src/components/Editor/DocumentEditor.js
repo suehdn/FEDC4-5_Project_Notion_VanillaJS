@@ -5,6 +5,7 @@ import {
   handleChangeInput,
   handleKeyDown,
   handleShowStyleMenu,
+  handleStyleAction,
 } from './events.js';
 import './DocumentEditor.css';
 
@@ -42,15 +43,18 @@ export default class DocumentEditor {
   }
 
   initEvents() {
-    this.$title.addEventListener('keydown', (e) => handlePreventNewLine(e));
-    this.$title.addEventListener('keyup', (e) => handleCursorToContent(e, { $content: this.$content }));
+    const { $target, $title, $content, $menu, onChange } = this;
 
-    this.$content.addEventListener('compositionend', (e) => handleRichContent(e, { $content: this.$content }));
-    this.$content.addEventListener('keydown', (e) => handleKeyDown(e, { $content: this.$content }));
-    this.$content.addEventListener('keyup', (e) => handleRichContent(e, { $content: this.$content }));
-    this.$content.addEventListener('pointerup', (e) => handleShowStyleMenu(e, { $menu: this.$menu }));
+    $title.addEventListener('keydown', (e) => handlePreventNewLine(e));
+    $title.addEventListener('keyup', (e) => handleCursorToContent(e, { $content }));
 
-    this.$target.addEventListener('input', (e) => handleChangeInput(e, { onChange: this.onChange }));
+    $content.addEventListener('compositionend', (e) => handleRichContent(e, { $content }));
+    $content.addEventListener('keydown', (e) => handleKeyDown(e, { $content }));
+    $content.addEventListener('keyup', (e) => handleRichContent(e, { $content }));
+    $content.addEventListener('pointerup', (e) => handleShowStyleMenu(e, { $menu }));
+
+    $target.addEventListener('input', (e) => handleChangeInput(e, { onChange }));
+    $menu.addEventListener('click', (e) => handleStyleAction(e, { $menu }));
   }
 
   render() {
