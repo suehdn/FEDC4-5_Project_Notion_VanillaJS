@@ -1,5 +1,15 @@
 import { makeRichText, handleNewLine, handleBackspace } from '../../utils/richEditor.js';
+import {
+  handlePreventNewLine,
+  handleCursorToContent,
+  handleRichText,
+  handleChangeInput,
+  handleKeyDown,
+  handleShowStyleMenu,
+} from './events.js';
 import './DocumentEditor.css';
+
+const selection = window.getSelection();
 
 export default class DocumentEditor {
   constructor({
@@ -32,41 +42,15 @@ export default class DocumentEditor {
   }
 
   initEvents() {
-    this.$title.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') e.preventDefault(); // 엔터 입력시 개행 방지
-    });
+    this.$title.addEventListener('keydown', (e) => handlePreventNewLine(e));
+    this.$title.addEventListener('keyup', (e) => handleCursorToContent(e, { $content: this.$content }));
 
-    this.$title.addEventListener('keyup', (e) => {
-      if (e.key === 'Enter') {
-        // 엔터 입력시 커서를 content로 이동
-        e.preventDefault();
-        this.$content.focus();
-        return;
-      }
-    });
+    this.$content.addEventListener('compositionend', (e) => handleRichText(e, { $content: this.$content }));
+    this.$content.addEventListener('keydown', (e) => handleKeyDown(e, { $content: this.$content }));
+    this.$content.addEventListener('keyup', (e) => handleRichText(e, { $content: this.$content }));
+    this.$content.addEventListener('pointerup', (e) => handleShowStyleMenu(e));
 
-    this.$content.addEventListener('compositionend', (e) => {
-      makeRichText(this.$content); // 한글 입력 처리
-    });
-
-    this.$content.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') handleNewLine(this.$content, e); // 개행 처리
-      if (e.key === 'Backspace') handleBackspace(this.$content, e); // 백스페이스 처리
-    });
-
-    this.$content.addEventListener('keyup', (e) => {
-      if (e.isComposing) return;
-      makeRichText(this.$content, e.key);
-    });
-
-    this.$target.addEventListener('input', (e) => {
-      const role = e.target.dataset.role;
-      if (!role || !['title', 'content'].includes(role)) return;
-
-      setTimeout(() => {
-        this.onChange({ name: role, value: e.target.innerHTML });
-      }, 100);
-    });
+    this.$target.addEventListener('input', (e) => handleChangeInput(e, { onChange: this.onChange }));
   }
 
   render() {

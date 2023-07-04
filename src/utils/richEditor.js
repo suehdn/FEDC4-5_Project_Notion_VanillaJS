@@ -128,3 +128,7 @@ export const handleBackspace = ($editor, event) => {
     }, 0);
   }
 };
+
+export const showStyleMenu = ($editor, $styleMenu) => {
+  console.log($editor);
+};
