@@ -168,6 +168,12 @@ button:hover {
   overflow-y: scroll;
 }
 
+.document-preview > code {
+  border-radius: 5px;
+  background-color: #ebebea;
+  color: red;
+}
+
 .sub-document-links {
   width: 100%;
   min-width: 500px;
