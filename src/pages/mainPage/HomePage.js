@@ -12,8 +12,8 @@ export default function HomePage({ $target }) {
     $homePage.innerHTML = `
     <h1 class="home-title">📝${homePageMessages.HOME_TITLE}</h1>
     <ul class="home-list">
-      <li class="home-list__text">✅${homePageMessages.ADD_PAGE_MESSAGE}</li>
-      <li class="home-list__text">✅${homePageMessages.ADD_BUTTON_MESSAGE} ${homePageMessages.DELETE_BUTTON_MESSAGE}</li>
+      <li class="home-list__text">✅${homePageMessages.ADD_PAGE_MESSAGE}</li><br>
+      <li class="home-list__text">✅${homePageMessages.ADD_BUTTON_MESSAGE} ${homePageMessages.DELETE_BUTTON_MESSAGE}</li><br>
       <li class="home-list__text">✅${homePageMessages.BACK_TO_HOME}</li>
     </ul>
     `;
