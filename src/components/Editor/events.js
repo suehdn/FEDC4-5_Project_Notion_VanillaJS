@@ -1,4 +1,11 @@
-import { applyRichContent, showStyleMenu, toggleTextStyleMenu, onBackspace, onEnter } from './richLogics.js';
+import {
+  applyRichContent,
+  applyTextStyle,
+  showStyleMenu,
+  toggleTextStyleMenu,
+  onBackspace,
+  onEnter,
+} from './richLogics.js';
 
 export const handlePreventNewLine = (e) => {
   if (e.key === 'Enter') e.preventDefault();
@@ -39,10 +46,13 @@ export const handleShowStyleMenu = (e, { $menu, $textMenu }) => {
   }, 0);
 };
 
-export const handleStyleAction = (e, { $menu, $textMenu }) => {
+export const handleStyleMenuAction = (e, { $menu, $textMenu }) => {
   const command = e.target.closest('[data-command]')?.dataset.command;
   const role = e.target.closest('[data-role]')?.dataset.role;
+  const color = e.target.closest('[data-color]')?.dataset.color;
+  const backgroundColor = e.target.closest('[data-background-color]')?.dataset.backgroundColor;
 
   if (command) document.execCommand(command, false, null);
   if (role && role === 'toggleTextMenu') toggleTextStyleMenu(e, { $textMenu });
+  if (role && role === 'applyTextStyle') applyTextStyle({ color, backgroundColor });
 };

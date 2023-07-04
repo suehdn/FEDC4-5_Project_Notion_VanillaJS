@@ -50,6 +50,11 @@ export const applyRichContent = ({ $editor, key }) => {
   }
 };
 
+export const applyTextStyle = ({ color, backgroundColor }) => {
+  document.execCommand('foreColor', false, color || 'inherit');
+  document.execCommand('backColor', false, backgroundColor || 'inherit');
+};
+
 export const showStyleMenu = (event, { $menu, $textMenu }) => {
   if (selection.toString().trim().length > 0) {
     const { pageX, pageY } = event;

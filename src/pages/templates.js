@@ -2,6 +2,7 @@ const template = (function () {
   const colorListItem = ({ name, color, backgroundColor }) => `
     <li
       class="main__text-style-menu--list-item"
+      data-role="applyTextStyle"
       data-color="${color}"
       data-background-color="${backgroundColor}"
       style="color: ${color};"

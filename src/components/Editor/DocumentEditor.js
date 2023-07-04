@@ -6,7 +6,7 @@ import {
   handleKeyDown,
   handleCloseStyleMenu,
   handleShowStyleMenu,
-  handleStyleAction,
+  handleStyleMenuAction,
 } from './events.js';
 import './DocumentEditor.css';
 
@@ -57,7 +57,8 @@ export default class DocumentEditor {
     $content.addEventListener('pointerup', (e) => handleShowStyleMenu(e, { $menu, $textMenu }));
 
     $target.addEventListener('input', (e) => handleChangeInput(e, { onChange }));
-    $menu.addEventListener('click', (e) => handleStyleAction(e, { $menu, $textMenu }));
+    $menu.addEventListener('click', (e) => handleStyleMenuAction(e, { $menu, $textMenu }));
+    $textMenu.addEventListener('click', (e) => handleStyleMenuAction(e, { $menu, $textMenu }));
   }
 
   render() {
