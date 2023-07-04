@@ -1,0 +1,59 @@
+body{
+    margin: 0;
+    padding:0px
+}
+
+.app{
+    display: flex;
+}
+
+/* 사이드바 */
+ul,li{ 
+    list-style: none;
+    padding: 0px;
+    margin: 7px 0px 0px 5px;
+}
+
+span{
+    width: 200px;
+    display: block;
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis;
+}
+
+button{
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+    background: none;
+}
+
+.document__page{
+    width: 300px;
+    min-width: 300px;
+    height: 100vh;
+    background-color: rgb(247, 247, 247);
+    overflow-y: scroll;
+}
+
+.document__group{
+    display: flex;
+    justify-content: space-between
+}
+
+.document__group:hover{
+    background-color: rgb(239, 239, 239);
+    cursor: pointer;
+}
+
+
+/* 에디터 */
+.title{
+    font-size: 30px;
+}
+
+.title,.content{
+    border-style: none;
+    outline: none;
+}
