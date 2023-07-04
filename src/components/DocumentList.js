@@ -1,4 +1,6 @@
-export default function DocumentList({ $target, initialState, onCreate, onDelete, onSelect }) {
+import { push } from '../utils/router.js';
+
+export default function DocumentList({ $target, initialState, onCreate, onDelete }) {
   const $documentList = document.createElement('div');
   $target.appendChild($documentList);
 
@@ -26,11 +28,11 @@ export default function DocumentList({ $target, initialState, onCreate, onDelete
                           <button class="create">+</button>
                         </div>
                       </div>
-                      ${document.documents.length > 0 ? renderDocuments(document.documents, depth + 1) : ''}
+                      ${renderDocuments(document.documents, depth + 1)}
                     </li>`
                 )
                 .join('')
-            : '페이지 없음'
+            : ''
         }
       </ul>
     `;
@@ -51,11 +53,11 @@ export default function DocumentList({ $target, initialState, onCreate, onDelete
 
       if (className === 'toggle') {
       } else if (className === 'create') {
-        onCreate(parseInt(id));
+        onCreate(id);
       } else if (className === 'delete') {
-        onDelete(parseInt(id));
+        onDelete(id);
       } else {
-        onSelect(parseInt(id));
+        push(`/documents/${id}`);
       }
     }
   });

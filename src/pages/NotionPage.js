@@ -1,5 +1,6 @@
 import { request } from '../api.js';
 import { getItem, setItem, removeItem } from '../utils/storage.js';
+import { push } from '../utils/router.js';
 import DocumentList from '../components/DocumentList.js';
 import CreateButton from '../components/CreateButton.js';
 import Editor from '../components/Editor.js';
@@ -33,10 +34,7 @@ export default function NotionPage({ $target, initialState }) {
       });
       await fetchDocuments();
 
-      this.setState({
-        ...this.state,
-        documentId: createdDocument.id,
-      });
+      push(`/documents/${createdDocument.id}`);
     },
     onDelete: async (id) => {
       await request(`/documents/${id}`, {
@@ -44,16 +42,7 @@ export default function NotionPage({ $target, initialState }) {
       });
       await fetchDocuments();
 
-      this.setState({
-        ...this.state,
-        documentId: id === this.state.documentId ? this.state.documents[0]?.id ?? null : this.state.documentId,
-      });
-    },
-    onSelect: (id) => {
-      this.setState({
-        ...this.state,
-        documentId: id,
-      });
+      push(`/documents/${id === this.state.documentId ? this.state.documents[0]?.id ?? null : this.state.documentId}`);
     },
   });
 
@@ -69,10 +58,7 @@ export default function NotionPage({ $target, initialState }) {
       });
       await fetchDocuments();
 
-      this.setState({
-        ...this.state,
-        documentId: createdDocument.id,
-      });
+      push(`/documents/${createdDocument.id}`);
     },
   });
 
