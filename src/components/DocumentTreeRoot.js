@@ -1,4 +1,4 @@
-import { getDocuments, postDocument, deleteDocument } from '../api';
+import { postDocument, deleteDocument } from '../api';
 import { RouteService } from '../utils/RouteService';
 import DocumentTree from './DocumentTree';
 
@@ -86,8 +86,10 @@ export default function DocumentTreeRoot({ targetElement, documents }) {
       if (!e.target.closest('.delete-document-btn')) return;
       const router = new RouteService();
       const documentTree = e.target.parentNode.parentNode;
-      await deleteDocument(documentTree.dataset.id);
-      router.start();
+      if (confirm('페이지를 삭제하시겠습니까?')) {
+        await deleteDocument(documentTree.dataset.id);
+        router.start();
+      }
     });
   };
 
