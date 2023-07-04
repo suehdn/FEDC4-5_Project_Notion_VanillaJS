@@ -1,4 +1,4 @@
-import PostList from "./PostList.js";
+import DocumentList from "./navigation/DocumentList.js";
 import { getApi } from "./api.js";
 
 const DUMMY_DATA = [
@@ -29,7 +29,7 @@ const DUMMY_DATA = [
 export default function PostPage({ $target, username }) {
   const $page = document.createElement("div");
 
-  const postList = new PostList({
+  const postList = new DocumentList({
     $target: $target,
     initialState: [],
   });
