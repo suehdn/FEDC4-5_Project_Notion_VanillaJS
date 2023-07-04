@@ -8,7 +8,7 @@ export default function SidebarDocumentTree({ $target, initialState, addDocument
   this.state = initialState;
 
   this.setState = (nextState) => {
-    this.state(nextState);
+    this.state = nextState;
     this.render();
   };
 
@@ -37,7 +37,9 @@ export default function SidebarDocumentTree({ $target, initialState, addDocument
   this.render = () => {
     const documentsTree = drawSidebarDocumentTree(this.state);
     const documentAddButton = `<button class="add-button">+ 페이지 추가하기</button>`;
-    $sidebarDocumentTree.innerHTML = `<div class="tree">${documentsTree}${documentAddButton}</div>`;
+    $sidebarDocumentTree.innerHTML = `
+    <div class="tree">${documentsTree}${documentAddButton}</div>
+    `;
   };
 
   this.render();
