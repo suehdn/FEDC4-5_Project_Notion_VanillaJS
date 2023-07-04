@@ -4,10 +4,8 @@ import {
   handleRichContent,
   handleChangeInput,
   handleKeyDown,
-  handleCloseStyleMenu,
-  handleShowStyleMenu,
-  handleStyleMenuAction,
 } from './events.js';
+import { handleShowStyleMenu, handleCloseStyleMenu } from '../StyleMenu/events.js';
 import './DocumentEditor.css';
 
 export default class DocumentEditor {
@@ -21,15 +19,19 @@ export default class DocumentEditor {
       },
     },
     onChange,
+    onOpenStyleMenu,
+    onCloseStyleMenu,
   }) {
     this.$target = $target;
     this.$title = document.querySelector('.main__title-editor');
     this.$content = document.querySelector('.main__content-editor');
-    this.$menu = document.querySelector('.main__style-menu');
-    this.$textMenu = document.querySelector('.main__text-style-menu');
+    // this.$menu = document.querySelector('.main__style-menu');
+    // this.$textMenu = document.querySelector('.main__text-style-menu');
 
     this.state = initialState;
     this.onChange = onChange;
+    this.onOpenStyleMenu = onOpenStyleMenu;
+    this.onCloseStyleMenu = onCloseStyleMenu;
 
     this.initEvents();
     this.render();
@@ -45,7 +47,7 @@ export default class DocumentEditor {
   }
 
   initEvents() {
-    const { $target, $title, $content, $menu, $textMenu, onChange } = this;
+    const { $target, $title, $content, onChange, onOpenStyleMenu, onCloseStyleMenu } = this;
 
     $title.addEventListener('keydown', (e) => handlePreventNewLine(e));
     $title.addEventListener('keyup', (e) => handleCursorToContent(e, { $content }));
@@ -53,12 +55,16 @@ export default class DocumentEditor {
     $content.addEventListener('compositionend', (e) => handleRichContent(e, { $content }));
     $content.addEventListener('keydown', (e) => handleKeyDown(e, { $content }));
     $content.addEventListener('keyup', (e) => handleRichContent(e, { $content }));
-    $content.addEventListener('pointerdown', (e) => handleCloseStyleMenu(e, { $menu, $textMenu }));
-    $content.addEventListener('pointerup', (e) => handleShowStyleMenu(e, { $menu, $textMenu }));
+
+    $content.addEventListener('pointerdown', (e) => onCloseStyleMenu(e));
+    $content.addEventListener('pointerup', (e) => onOpenStyleMenu(e));
+
+    // $content.addEventListener('pointerdown', (e) => handleCloseStyleMenu(e, { $menu, $textMenu }));
+    // $content.addEventListener('pointerup', (e) => handleShowStyleMenu(e, { $menu, $textMenu }));
 
     $target.addEventListener('input', (e) => handleChangeInput(e, { onChange }));
-    $menu.addEventListener('click', (e) => handleStyleMenuAction(e, { $menu, $textMenu }));
-    $textMenu.addEventListener('click', (e) => handleStyleMenuAction(e, { $menu, $textMenu }));
+    // $menu.addEventListener('click', (e) => handleStyleMenuAction(e, { $menu, $textMenu }));
+    // $textMenu.addEventListener('click', (e) => handleStyleMenuAction(e, { $menu, $textMenu }));
   }
 
   render() {
@@ -67,6 +73,6 @@ export default class DocumentEditor {
 
     this.$title.innerHTML = document.title;
     this.$content.innerHTML = document.content;
-    this.$menu.classList.add('hidden');
+    // this.$menu.classList.add('hidden');
   }
 }

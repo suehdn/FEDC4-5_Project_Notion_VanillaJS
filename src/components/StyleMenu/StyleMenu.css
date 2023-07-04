@@ -1,0 +1,85 @@
+.main__style-menu,
+.main__text-style-menu {
+  width: fit-content;
+  max-height: 30rem;
+  position: absolute;
+  fill: rgba(55, 53, 47, 0.35);
+  color: rgb(55, 53, 47);
+  background-color: white;
+  font-size: 0.9rem;
+  border-radius: 5px;
+  box-shadow: rgba(15, 15, 15, 0.05) 0px 0px 0px 1px, rgba(15, 15, 15, 0.1) 0px 3px 6px,
+    rgba(15, 15, 15, 0.2) 0px 9px 24px;
+  overflow-y: auto;
+  user-select: none;
+  z-index: 10;
+}
+
+.main__style-menu--list {
+  display: flex;
+}
+
+.main__style-menu--list-item {
+  display: flex;
+  gap: 0.5em;
+  align-items: center;
+  padding: 0.5em 0.7em;
+  border-right: 2px solid #f4f4f4;
+  cursor: pointer;
+}
+
+.main__style-menu--list-item:hover {
+  background-color: rgb(239, 239, 239);
+}
+
+.main__style-menu--list-item:first-child {
+  border-radius: 5px 0 0 5px;
+}
+
+.main__style-menu--list-item:last-child {
+  border-radius: 0 5px 5px 0;
+}
+
+.main__text-style-menu--list {
+  display: flex;
+  flex-direction: column;
+  padding: 0.25em;
+}
+
+.main__text-style-menu--list-item {
+  width: 10em;
+  display: flex;
+  align-items: center;
+  padding: 0.2em;
+  gap: 0.5em;
+  cursor: pointer;
+}
+
+.main__text-style-menu--list-item:hover {
+  background-color: rgb(239, 239, 239);
+}
+
+.main__text-style-menu--preview {
+  display: flex;
+  width: 1.5em;
+  height: 1.5em;
+  justify-content: center;
+  align-items: center;
+  font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, 'Apple Color Emoji', Arial,
+    sans-serif, 'Segoe UI Emoji', 'Segoe UI Symbol';
+  font-weight: 600;
+  margin-left: 0.5em;
+  border-radius: 5px;
+  box-shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px inset;
+  text-align: center;
+}
+
+.main__text-style-menu--title {
+  padding: 1em 1em 0 1em;
+  font-size: 0.75rem;
+  color: rgba(55, 53, 47, 0.65);
+}
+
+.main__text-style-menu--word {
+  color: rgb(55, 53, 47);
+}

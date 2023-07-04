@@ -1,12 +1,13 @@
 import { navigate } from '../utils/navigate.js';
 import { addDocument, removeDocument } from '../apis/api.js';
 import { findDocumentRoute } from '../helpers/documentHelper.js';
-import { foreColors, backColors } from '../constants/colors.js';
-import template from './templates.js';
 import Sidebar from '../components/Sidebar/Sidebar.js';
 import Navbar from '../components/Navbar/Navbar.js';
 import DocumentEditor from '../components/Editor/DocumentEditor.js';
+import StyleMenu from '../components/StyleMenu/StyleMenu.js';
 import html from './DocumentPage.html';
+
+const selection = window.getSelection();
 
 export default class DocumentPage {
   constructor({ $target, editorStore, documentStore }) {
@@ -16,15 +17,8 @@ export default class DocumentPage {
     this.editorStore = editorStore;
     this.documentStore = documentStore;
 
-    this.initStyleMenu();
     this.initComponents();
     this.render();
-  }
-
-  initStyleMenu() {
-    const $textMenu = this.$target.querySelector('.main__text-style-menu');
-    $textMenu.innerHTML += template.colorList({ colors: foreColors, title: '색' });
-    $textMenu.innerHTML += template.colorList({ colors: backColors, title: '배경' });
   }
 
   initComponents() {
@@ -80,6 +74,31 @@ export default class DocumentPage {
         this.renderSidebar();
         this.renderNavbar();
       },
+      onOpenStyleMenu: (e) => {
+        setTimeout(() => {
+          if (selection.toString().trim().length > 0) {
+            this.styleMenu.setState({
+              ...this.styleMenu.state,
+              pageX: e.pageX,
+              pageY: e.pageY,
+              isShowMenu: true,
+              isShowTextMenu: false,
+            });
+          }
+        }, 0);
+      },
+      onCloseStyleMenu: (e) => {
+        this.styleMenu.setState({
+          ...this.styleMenu.state,
+          isShowMenu: false,
+          isShowTextMenu: false,
+        });
+      },
+    });
+
+    this.styleMenu = new StyleMenu({
+      $menu: document.querySelector('.main__style-menu'),
+      $textMenu: document.querySelector('.main__text-style-menu'),
     });
   }
 
@@ -110,9 +129,16 @@ export default class DocumentPage {
     navbar.setState({ routes: findDocumentRoute(editorStore.state.documentId, documentStore.state.documents) });
   }
 
+  renderStyleMenu() {
+    const { styleMenu } = this;
+
+    styleMenu.setState({ ...styleMenu.state, isShowMenu: false, isShowTextMenu: false });
+  }
+
   render() {
     this.renderEditor();
     this.renderSidebar();
     this.renderNavbar();
+    this.renderStyleMenu();
   }
 }

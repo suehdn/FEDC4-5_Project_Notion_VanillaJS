@@ -50,33 +50,6 @@ export const applyRichContent = ({ $editor, key }) => {
   }
 };
 
-export const applyTextStyle = ({ color, backgroundColor }) => {
-  document.execCommand('foreColor', false, color || 'inherit');
-  document.execCommand('backColor', false, backgroundColor || 'inherit');
-};
-
-export const showStyleMenu = (event, { $menu, $textMenu }) => {
-  if (selection.toString().trim().length > 0) {
-    const { pageX, pageY } = event;
-    $menu.style.left = `${pageX - 400}px`;
-    $menu.style.top = `${pageY - 30}px`;
-    $textMenu.style.left = `${pageX - 270}px`;
-    $textMenu.style.top = `${pageY + 10}px`;
-    $menu.classList.remove('hidden');
-  } else {
-    $menu.classList.add('hidden');
-    $textMenu.classList.add('hidden');
-  }
-};
-
-export const toggleTextStyleMenu = (event, { $textMenu }) => {
-  if ($textMenu.classList.contains('hidden')) {
-    $textMenu.classList.remove('hidden');
-  } else {
-    $textMenu.classList.add('hidden');
-  }
-};
-
 export const onEnter = (event, { $editor }) => {
   const $parentNode = selection.anchorNode.parentNode;
   const $anchorNode = selection.anchorNode;
