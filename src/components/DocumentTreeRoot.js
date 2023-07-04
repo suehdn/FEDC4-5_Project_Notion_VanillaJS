@@ -84,17 +84,15 @@ export default function DocumentTreeRoot({ targetElement, documents }) {
     targetElement.addEventListener('click', async (e) => {
       if (!e.target.closest('.delete-document-btn')) return;
       const router = new RouteService();
-      const documentTree = e.target.closest('.document-tree');
+      const documentTreeElement = e.target.closest('.document-tree');
       if (confirm('페이지를 삭제하시겠습니까?')) {
         const invisibleTreeSet = new Set(this.state.invisibleTreeSet.values());
-        const tobeDeletedDocument = this.state.documents.find(
-          (document) => document.id === Number(documentTree.dataset.id),
-        );
-        tobeDeletedDocument.documents.forEach((childDocument) => {
-          invisibleTreeSet.delete(childDocument.id);
+        const [_, ...subTreeElements] = documentTreeElement.children;
+        subTreeElements.forEach((subTreeElement) => {
+          invisibleTreeSet.delete(Number(subTreeElement.dataset.id));
         });
         setItem(localStorageKeys.INVISIBLE_TREES, Array.from(invisibleTreeSet));
-        await deleteDocument(tobeDeletedDocument.id);
+        await deleteDocument(documentTreeElement.dataset.id);
         router.start();
       }
     });
