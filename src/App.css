@@ -67,7 +67,8 @@ button:hover {
 }
 
 .document-tree-root {
-  width: 240px;
+  min-width: 240px;
+  width: fit-content;
   flex-grow: 1;
   overflow-y: scroll;
 }
@@ -80,10 +81,16 @@ button:hover {
 }
 
 .document-blob-right {
-  display: none;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  visibility: hidden;
 }
 
 .document-blob {
+  min-width: 100%;
+  width: fit-content;
   padding: 3px 6px;
   border-radius: 5px;
   display: flex;
@@ -91,15 +98,21 @@ button:hover {
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.document-blob-title {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .document-blob:hover {
   background-color: #ebebea;
   .document-blob-right {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
+    visibility: visible;
   }
 }
 
