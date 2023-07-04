@@ -23,7 +23,7 @@ export default function Document({ targetElement, documentData }) {
       }
     }, 500);
 
-    targetElement.addEventListener('keyup', (e) => {
+    targetElement.addEventListener('input', (e) => {
       const [titleElement] = targetElement.children;
       if (e.target.classList.contains('document-title')) {
         targetElement.dispatchEvent(

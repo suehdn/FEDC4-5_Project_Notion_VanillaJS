@@ -18,7 +18,9 @@ export default function EditPage({ targetElement }) {
       const documentTitleElement = documentTreeElement.querySelector('.document-blob-title');
       documentTitleElement.textContent = title;
     });
-    window.addEventListener('asyncEditTitle', () => this.render());
+    window.addEventListener('asyncEditTitle', async () => {
+      this.documentTreeRoot.setState({ ...this.documentTreeRoot.state, documents: await getDocuments() });
+    });
   };
 
   this.render = async () => {
