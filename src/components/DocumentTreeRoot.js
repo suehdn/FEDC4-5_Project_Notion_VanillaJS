@@ -1,5 +1,6 @@
 import { postDocument, deleteDocument } from '../api';
 import { RouteService } from '../utils/RouteService';
+import { toggleSet } from '../utils/toggleSet';
 import DocumentTree from './DocumentTree';
 
 export default function DocumentTreeRoot({ targetElement, documents }) {
@@ -28,21 +29,13 @@ export default function DocumentTreeRoot({ targetElement, documents }) {
       const treeElement = e.target.parentNode.parentNode;
       const foldedTreeId = Number(treeElement.dataset.id);
       const foldedTreeSet = new Set(this.state.foldedTreeSet.values());
-      if (foldedTreeSet.has(foldedTreeId)) {
-        foldedTreeSet.delete(foldedTreeId);
-      } else {
-        foldedTreeSet.add(foldedTreeId);
-      }
+      toggleSet(foldedTreeSet, foldedTreeId);
 
       const invisibleTreeSet = new Set(this.state.invisibleTreeSet.values());
       Array.from(treeElement.children).forEach((node) => {
         if (node.classList.contains('document-blob')) return;
         const invisibleTreeId = Number(node.dataset.id);
-        if (invisibleTreeSet.has(invisibleTreeId)) {
-          invisibleTreeSet.delete(invisibleTreeId);
-        } else {
-          invisibleTreeSet.add(invisibleTreeId);
-        }
+        toggleSet(invisibleTreeSet, invisibleTreeId);
       });
       this.setState({ ...this.state, invisibleTreeSet, foldedTreeSet });
     });
