@@ -1,5 +1,5 @@
 export default function Header({$target}){
-    const $header = document.createElement("div")
-    $header.innerHTML = "노션 만들어보기"
+    const $header = document.createElement("h2")
+    $header.innerHTML = "김다은의 Notion"
     $target.appendChild($header)
 }

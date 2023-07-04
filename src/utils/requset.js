@@ -22,7 +22,7 @@ export const postDocument = async (id)=>{
         return await request("/documents", { 
             method : "POST",
             body : JSON.stringify({
-                title : "제목 없음",
+                title : "",
                 parent : ""
             })
         })
