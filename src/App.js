@@ -9,11 +9,11 @@ export default function App({ $target }) {
 
   // 페이지 및 컴포넌트 초기화
   const $sidebarDocumentArea = document.createElement('div');
-  $sidebarDocumentArea.classList.add('document-sidebar__area');
+  $sidebarDocumentArea.classList.add('sidebar-document__area');
   $target.appendChild($sidebarDocumentArea);
 
   const $editDocumentArea = document.createElement('div');
-  $editDocumentArea.classList.add('document-edit__area');
+  $editDocumentArea.classList.add('edit-document__area');
   $target.appendChild($editDocumentArea);
 
   const sidebarDocumentPage = new SidebarDocumentPage({
