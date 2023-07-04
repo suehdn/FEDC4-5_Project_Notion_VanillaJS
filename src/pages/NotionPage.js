@@ -11,7 +11,6 @@ export default function NotionPage({ $target, initialState }) {
 
   $sidebarContainer.classList.add('sidebar');
   $target.appendChild($sidebarContainer);
-  $target.appendChild($notionContainer);
 
   this.state = initialState;
 
@@ -91,7 +90,10 @@ export default function NotionPage({ $target, initialState }) {
     if (this.state.documentId !== nextState.documentId) {
       documentLocalSaveKey = `temp-document-${nextState.documentId}`;
       this.state = nextState;
+
       await fetchDocument();
+      this.render();
+
       return;
     }
 
@@ -142,6 +144,15 @@ export default function NotionPage({ $target, initialState }) {
         ...this.state,
         document,
       });
+    }
+  };
+
+  this.render = () => {
+    $target.appendChild($notionContainer);
+
+    // 루트 url인 경우 노션 컨테이너 렌더링 X
+    if (this.state.documentId === null) {
+      $target.removeChild($notionContainer);
     }
   };
 
