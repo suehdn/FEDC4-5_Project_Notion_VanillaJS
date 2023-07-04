@@ -1,4 +1,4 @@
-import reservedCharacters from '@consts/html';
+import { reservedCharacters } from '@consts/html';
 
 import { getHTMLEntityRegex, getHTMLTagRegex } from './regex';
 
@@ -14,26 +14,26 @@ export default class HTMLString extends String {
   splitWithTag(tagName) {
     const tags = [];
     const tagRegex = getHTMLTagRegex(tagName);
-    const htmlString = this.valueOf();
 
     let { lastIndex } = tagRegex;
 
-    let match = tagRegex.exec(htmlString);
+    let match = tagRegex.exec(this);
     if (match === null) {
-      tags.push(htmlString);
+      tags.push(this);
       return tags;
     }
 
     while (match) {
       if (lastIndex < match.index) {
-        tags.push(htmlString.substring(lastIndex, match.index));
+        const text = this.substring(lastIndex, match.index);
+        tags.push(new HTMLString(text));
       }
 
       const [, matchText] = match;
-      tags.push(matchText);
+      tags.push(new HTMLString(matchText));
 
       lastIndex = tagRegex.lastIndex;
-      match = tagRegex.exec(htmlString);
+      match = tagRegex.exec(this);
     }
 
     return tags;
