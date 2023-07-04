@@ -1,7 +1,11 @@
 import { listMaker } from "./DocumentListMaker.js";
 
-export default function DocumentList({ $target, initialState, onPostClick }) {
+export default function DocumentList({ $target, initialState, username }) {
   const $documentList = document.createElement("div");
+  const $header = document.createElement("header");
+  $header.innerHTML = `<h3><span style="font-size: 30px;">${username}</span>의 노션 페이지</h3>`;
+
+  $target.appendChild($header);
   $target.appendChild($documentList);
 
   this.state = initialState;

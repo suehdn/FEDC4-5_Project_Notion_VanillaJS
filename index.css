@@ -3,3 +3,28 @@ body {
   height: 100vh;
   background-color: bisque;
 }
+
+header {
+  padding-left: 30px;
+  margin: 30px 20px;
+}
+
+li {
+  font-weight: 600;
+  margin: 15px;
+  /* list-style-type: none; */
+}
+
+.Editor {
+  display: flex;
+  flex-direction: column;
+  width: 700px;
+}
+
+.title {
+  height: 50px;
+}
+
+.content {
+  height: 600px;
+}
