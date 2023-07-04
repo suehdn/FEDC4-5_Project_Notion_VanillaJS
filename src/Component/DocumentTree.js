@@ -17,7 +17,7 @@ export default class DocumentTree extends Component {
       $li.id = `${doc.id}`;
 
       $li.innerHTML = `
-        <a href="/document/${doc.id}">${doc.title}</a>
+        <a href="/documents/${doc.id}">${doc.title}</a>
         <button id="addDocumentButton" data-id="${doc.id}">+</button>
         <button id="deleteDocumentButton" data-id="${doc.id}">삭제</button>
       `;

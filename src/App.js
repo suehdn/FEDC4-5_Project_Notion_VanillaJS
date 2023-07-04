@@ -23,9 +23,14 @@ export default class App extends Component {
             action: "click",
             tag: "a",
             target: "a",
-            callback: ({ event }) => {
+            callback: async ({ event }) => {
               event.preventDefault();
-              history.pushState(null, null, event.target.href);
+              const url = event.target.href;
+              console.log(url);
+              this.editor.state = await request(url, {
+                method: "GET",
+              });
+              history.pushState(null, null, url);
               this.route();
             },
           },
