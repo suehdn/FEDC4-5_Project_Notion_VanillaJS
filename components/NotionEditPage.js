@@ -10,20 +10,23 @@ export default function NotionEditPage({ $target, initialState, onRender }) {
   this.state = initialState;
 
   this.setState = async (nextState) => {
-    const previousState = this.state;
-    this.state = nextState;
-    if (previousState.notionId !== nextState.notionId) {
-      await fetchNotion();
-      return;
-    }
-    this.render();
-    console.log(this.state.notion);
-    editor.setState(
-      this.state.notion || {
-        title: "",
-        content: "",
+    if (nextState === "") {
+      editor.setState(nextState);
+    } else {
+      const previousState = this.state;
+      this.state = nextState;
+      if (previousState.notionId !== nextState.notionId) {
+        await fetchNotion();
+        return;
       }
-    );
+      this.render();
+      editor.setState(
+        this.state.notion || {
+          title: "",
+          content: "",
+        }
+      );
+    }
   };
 
   let timer = null;

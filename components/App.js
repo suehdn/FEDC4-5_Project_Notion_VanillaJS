@@ -50,6 +50,7 @@ export default function App({ $target }) {
 
     if (pathname === "/") {
       notionPage.render();
+      editorPage.setState("");
     } else if (pathname.indexOf("/documents/") === 0) {
       const [, , notionId] = pathname.split("/");
       console.log(notionId);
