@@ -42,6 +42,9 @@ const parse = (string) => {
       if (line.indexOf('### ') === 0) {
         return `<h3>${line.substring(4)}</h3>`;
       }
+      if (line.valueOf() === CARET.SPAN(CARET.ID)) {
+        return `${CARET.SPAN(CARET.ID)}<br>`;
+      }
       if (line.valueOf() === '') {
         return '<br>';
       }
@@ -63,6 +66,8 @@ const stringify = (html) => {
     .map((line) => {
       // div 내부 글자 parsing
       if (line.valueOf() === '<br>') return '';
+      if (line.valueOf() === `${CARET.SPAN(CARET.ID)}<br>`)
+        return CARET.SPAN(CARET.ID);
       // TODO: h1, h2, h3 태그인지 확인
       // TODO: list 태그인지 확인
       return line.replaceHTMLEntities().replaceAll('<br>', '\n');
