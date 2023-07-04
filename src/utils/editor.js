@@ -1,10 +1,14 @@
 import HTMLString from './html';
+import MarkDownString from './markdown';
 
 const parse = (string) => {
   if (!string) return '';
 
-  const html = string
-    .split('\n')
+  const markDownString = new MarkDownString(string);
+
+  const html = markDownString
+    .replaceReservedCharacters()
+    .splitWithNewLine()
     .map((line) => {
       if (line.indexOf('# ') === 0) {
         return `<h1>${line.substring(2)}</h1>`;
@@ -15,7 +19,7 @@ const parse = (string) => {
       if (line.indexOf('### ') === 0) {
         return `<h3>${line.substring(4)}</h3>`;
       }
-      if (line === '') {
+      if (line.valueOf() === '') {
         return '<br>';
       }
       return `${line}`;
@@ -27,21 +31,20 @@ const parse = (string) => {
 };
 
 const stringify = (html) => {
-  const htmlString = new HTMLString(html);
   if (!html) return '';
 
+  const htmlString = new HTMLString(html);
+
   const string = htmlString
-    .replaceHTMLEntities()
     .splitWithTag('div')
     .map((line) => {
       // div 내부 글자 parsing
-      if (line === '<br>') return '';
+      if (line.valueOf() === '<br>') return '';
       // TODO: h1, h2, h3 태그인지 확인
       // TODO: list 태그인지 확인
-      return line.replaceAll('<br>', '\n');
+      return line.replaceHTMLEntities().replaceAll('<br>', '\n');
     })
     .join('\n');
-
   return string;
 };
 
