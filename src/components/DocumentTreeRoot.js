@@ -1,5 +1,7 @@
 import { postDocument, deleteDocument } from '../api';
+import { localStorageKeys } from '../constants/localStorageKeys';
 import { RouteService } from '../utils/RouteService';
+import { getItem, setItem } from '../utils/storage';
 import { toggleSet } from '../utils/toggleSet';
 import DocumentTree from './DocumentTree';
 
@@ -11,8 +13,8 @@ export default function DocumentTreeRoot({ targetElement, documents }) {
   };
 
   this.state = {
-    invisibleTreeSet: new Set(),
-    foldedTreeSet: new Set(),
+    invisibleTreeSet: new Set(getItem(localStorageKeys.INVISIBLE_TREES, [])),
+    foldedTreeSet: new Set(getItem(localStorageKeys.FOLDED_TREES, [])),
     documents,
   };
 
@@ -37,6 +39,8 @@ export default function DocumentTreeRoot({ targetElement, documents }) {
         const invisibleTreeId = Number(node.dataset.id);
         toggleSet(invisibleTreeSet, invisibleTreeId);
       });
+      setItem(localStorageKeys.INVISIBLE_TREES, Array.from(invisibleTreeSet));
+      setItem(localStorageKeys.FOLDED_TREES, Array.from(foldedTreeSet));
       this.setState({ ...this.state, invisibleTreeSet, foldedTreeSet });
     });
 
@@ -57,11 +61,7 @@ export default function DocumentTreeRoot({ targetElement, documents }) {
 
       if (this.state.foldedTreeSet.has(Number(documentTree.dataset.id))) {
         const toggleBtn = documentTree.querySelector('.document-toggle');
-        toggleBtn.dispatchEvent(
-          new Event('click', {
-            bubbles: true,
-          }),
-        );
+        toggleBtn.dispatchEvent(new Event('click', { bubbles: true }));
       }
 
       new DocumentTree({
