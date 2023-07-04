@@ -19,7 +19,18 @@ export default function EditPage({ targetElement }) {
     `;
     const [sideBarElement, selectedDocumentElement] = targetElement.children;
     this.sideBar = new SideBar({ targetElement: sideBarElement, documents });
-    this.selectedDocument = new Document({ targetElement: selectedDocumentElement, documentData });
+    this.selectedDocument = new Document({
+      targetElement: selectedDocumentElement,
+      documentData,
+      handleEditTitle: (documentId, title) => {
+        const documentTreeElement = document.querySelector(`.document-tree[data-id="${documentId}"]`);
+        const documentTitleElement = documentTreeElement.querySelector('.document-blob-title');
+        documentTitleElement.textContent = title;
+      },
+      handleAsyncEditTitle: async () => {
+        this.sideBar.setState({ ...this.sideBar.state, documents: await getDocuments() });
+      },
+    });
   };
 
   this.init();

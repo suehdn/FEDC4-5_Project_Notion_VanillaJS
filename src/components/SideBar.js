@@ -1,4 +1,4 @@
-import { getDocuments, postDocument } from '../api';
+import { postDocument } from '../api';
 import Button from '../components/Button';
 import DocumentTreeRoot from '../components/DocumentTreeRoot';
 import { RouteService } from '../utils/RouteService';
@@ -6,20 +6,16 @@ import { RouteService } from '../utils/RouteService';
 export default function SideBar({ targetElement, documents }) {
   this.init = () => {
     this.targetElement = targetElement;
-    this.setEvent();
     this.render();
   };
 
-  this.setEvent = () => {
-    targetElement.addEventListener('editTitle', (e) => {
-      const { documentId, title } = e.detail;
-      const documentTreeElement = document.querySelector(`.document-tree[data-id="${documentId}"]`);
-      const documentTitleElement = documentTreeElement.querySelector('.document-blob-title');
-      documentTitleElement.textContent = title;
-    });
-    targetElement.addEventListener('asyncEditTitle', async () => {
-      this.documentTreeRoot.setState({ ...this.documentTreeRoot.state, documents: await getDocuments() });
-    });
+  this.state = {
+    documents,
+  };
+
+  this.setState = (nextState) => {
+    this.state = { ...nextState };
+    this.render();
   };
 
   this.render = () => {
@@ -29,7 +25,10 @@ export default function SideBar({ targetElement, documents }) {
     `;
     const [documentTreeRootElement, newRootDocumentBtnElement] = targetElement.children;
 
-    this.documentTreeRoot = new DocumentTreeRoot({ targetElement: documentTreeRootElement, documents });
+    this.documentTreeRoot = new DocumentTreeRoot({
+      targetElement: documentTreeRootElement,
+      documents: this.state.documents,
+    });
     this.newRootDocumentBtn = new Button({
       targetElement: newRootDocumentBtnElement,
       textContent: '새 문서',

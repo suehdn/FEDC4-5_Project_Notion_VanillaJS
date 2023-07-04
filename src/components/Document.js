@@ -2,7 +2,7 @@ import { putDocument } from '../api';
 import debounce from '../utils/debounce';
 import { RouteService } from '../utils/RouteService';
 
-export default function Document({ targetElement, documentData }) {
+export default function Document({ targetElement, documentData, handleEditTitle, handleAsyncEditTitle }) {
   this.init = () => {
     this.targetElement = targetElement;
     this.setEvent();
@@ -10,7 +10,7 @@ export default function Document({ targetElement, documentData }) {
   };
 
   this.setEvent = () => {
-    const debouncedKeyupHandler = debounce(async (e) => {
+    const debouncedInputHandler = debounce(async (e) => {
       const [titleElement, contentElement] = targetElement.children;
 
       await putDocument(documentData.id, {
@@ -19,24 +19,16 @@ export default function Document({ targetElement, documentData }) {
       });
 
       if (e.target.classList.contains('document-title')) {
-        targetElement.dispatchEvent(new CustomEvent('asyncEditTitle', { bubbles: true }));
+        handleAsyncEditTitle();
       }
     }, 500);
 
     targetElement.addEventListener('input', (e) => {
       const [titleElement] = targetElement.children;
       if (e.target.classList.contains('document-title')) {
-        targetElement.dispatchEvent(
-          new CustomEvent('editTitle', {
-            detail: {
-              documentId: documentData.id,
-              title: titleElement.value,
-            },
-            bubbles: true,
-          }),
-        );
+        handleEditTitle(documentData.id, titleElement.value);
       }
-      debouncedKeyupHandler(e);
+      debouncedInputHandler(e);
     });
 
     targetElement.addEventListener('click', (e) => {
