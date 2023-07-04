@@ -53,9 +53,9 @@ export default function DocumentList({ $target, initialState, onCreate, onDelete
 
       if (className === 'toggle') {
       } else if (className === 'create') {
-        onCreate(id);
+        onCreate(parseInt(id));
       } else if (className === 'delete') {
-        onDelete(id);
+        onDelete(parseInt(id));
       } else {
         push(`/documents/${id}`);
       }

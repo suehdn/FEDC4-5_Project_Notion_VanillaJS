@@ -19,10 +19,10 @@ export default function App({ $target }) {
         documentId: null,
       });
     } else if (pathname.indexOf('/documents/') === 0) {
-      const [, , documentId] = pathname.split('/');
+      const [, , id] = pathname.split('/');
       notionPage.setState({
         ...notionPage.state,
-        documentId,
+        documentId: parseInt(id),
       });
     }
   };
