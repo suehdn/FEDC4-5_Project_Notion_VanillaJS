@@ -28,7 +28,6 @@
   word-break: break-all;
   white-space: pre-wrap;
   outline: none;
-  transition: padding ease-out 0.15s;
 }
 
 .main__editor [contenteditable='true']:empty:before {
@@ -50,67 +49,4 @@
   padding-left: 30rem;
   padding-right: 30rem;
   font-size: 1rem;
-}
-
-@media screen and (max-width: 120rem) {
-  .main__editor [contenteditable='true'] {
-    padding-left: 25rem;
-    padding-right: 25rem;
-  }
-}
-
-@media screen and (max-width: 100rem) {
-  .main__editor [contenteditable='true'] {
-    padding-left: 20rem;
-    padding-right: 20rem;
-  }
-}
-
-@media screen and (max-width: 80rem) {
-  .main__editor [contenteditable='true'] {
-    padding-left: 15rem;
-    padding-right: 15rem;
-  }
-}
-
-@media screen and (max-width: 70rem) {
-  .main__editor [contenteditable='true'] {
-    padding-left: 10rem;
-    padding-right: 10rem;
-  }
-}
-
-@media screen and (max-width: 60rem) {
-  .main__editor [contenteditable='true'] {
-    padding-left: 8rem;
-    padding-right: 8rem;
-  }
-}
-
-@media screen and (max-width: 50rem) {
-  .main__editor [contenteditable='true'] {
-    padding-left: 6rem;
-    padding-right: 6rem;
-  }
-}
-
-@media screen and (max-width: 40rem) {
-  .main__editor [contenteditable='true'] {
-    padding-left: 4rem;
-    padding-right: 4rem;
-  }
-}
-
-@media screen and (max-width: 30rem) {
-  .main__editor [contenteditable='true'] {
-    padding-left: 2rem;
-    padding-right: 2rem;
-  }
-}
-
-@media screen and (max-width: 20rem) {
-  .main__editor [contenteditable='true'] {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
 }

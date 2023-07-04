@@ -56,9 +56,11 @@ export default class App {
     });
 
     window.addEventListener('click', (e) => {
-      if (e.target.tagName !== 'A') return;
+      const $link = e.target.closest('a');
+      if (!$link) return;
+      
       e.preventDefault();
-      navigate(e.target.getAttribute('href'));
+      navigate($link.getAttribute('href'));
     });
   }
 

@@ -1,11 +1,13 @@
 import { navigate } from '../utils/navigate.js';
 import { addDocument, removeDocument } from '../apis/api.js';
-import { findDocumentRoute } from '../helpers/documentHelper.js';
+import { findDocumentRoute, findDocument } from '../helpers/documentHelper.js';
 import Sidebar from '../components/Sidebar/Sidebar.js';
 import Navbar from '../components/Navbar/Navbar.js';
 import DocumentEditor from '../components/Editor/DocumentEditor.js';
 import StyleMenu from '../components/StyleMenu/StyleMenu.js';
+import ChildDocumentLinks from '../components/ChildDocumentLinks/ChildDocumentLinks.js';
 import html from './DocumentPage.html';
+import './DocumentPage.css';
 
 const selection = window.getSelection();
 
@@ -100,6 +102,13 @@ export default class DocumentPage {
       $menu: document.querySelector('.style-menu'),
       $textMenu: document.querySelector('.text-style-menu'),
     });
+
+    this.childDocumentLinks = new ChildDocumentLinks({
+      $target: $target.querySelector('.main__child-document-links'),
+      initialState: {
+        documents: findDocument(editorStore.state.documentId, documentStore.state.documents)?.documents || [],
+      },
+    });
   }
 
   renderEditor() {
@@ -135,10 +144,20 @@ export default class DocumentPage {
     styleMenu.setState({ ...styleMenu.state, isShowMenu: false, isShowTextMenu: false });
   }
 
+  renderChildDocumentLinks() {
+    const { childDocumentLinks } = this;
+    const { documentStore, editorStore } = this;
+
+    childDocumentLinks.setState({
+      documents: findDocument(editorStore.state.documentId, documentStore.state.documents)?.documents || [],
+    });
+  }
+
   render() {
     this.renderEditor();
     this.renderSidebar();
     this.renderNavbar();
     this.renderStyleMenu();
+    this.renderChildDocumentLinks();
   }
 }
