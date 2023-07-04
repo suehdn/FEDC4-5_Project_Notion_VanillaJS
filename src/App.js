@@ -1,5 +1,11 @@
 import NotionPage from './pages/NotionPage.js';
 
 export default function App({ $target }) {
-  new NotionPage({ $target });
+  new NotionPage({
+    $target,
+    initialState: {
+      documents: [],
+      documentId: null,
+    },
+  });
 }

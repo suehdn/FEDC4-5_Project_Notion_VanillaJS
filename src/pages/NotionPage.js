@@ -1,61 +1,59 @@
 import { request } from '../api.js';
+import { getItem, setItem, removeItem } from '../utils/storage.js';
 import DocumentList from '../components/DocumentList.js';
 import CreateButton from '../components/CreateButton.js';
+import Editor from '../components/Editor.js';
 
-export default function NotionPage({ $target }) {
+export default function NotionPage({ $target, initialState }) {
   const $sidebarContainer = document.createElement('div');
+  const $notionContainer = document.createElement('div');
+
   $sidebarContainer.classList.add('sidebar');
   $target.appendChild($sidebarContainer);
+  $target.appendChild($notionContainer);
 
-  this.state = {
-    documents: [],
-    selectedDocumentId: null,
-  };
+  this.state = initialState;
+
+  let documentLocalSaveKey = `temp-document-${this.state.documentId}`;
+  let timer = null;
+  const doc = getItem(documentLocalSaveKey, {
+    title: '',
+    content: '',
+  });
 
   const documentList = new DocumentList({
     $target: $sidebarContainer,
     initialState: {
       documents: this.state.documents,
     },
-    onCreate: async (documentId) => {
+    onCreate: async (id) => {
       const createdDocument = await request('/documents', {
         method: 'POST',
-        body: JSON.stringify({ title: '', parent: documentId }),
+        body: JSON.stringify({ title: '', parent: id }),
       });
+      await fetchDocuments();
 
       this.setState({
         ...this.state,
-        selectedDocumentId: createdDocument.id,
-      });
-
-      const documents = await request('/documents');
-      this.setState({
-        ...this.state,
-        documents,
+        documentId: createdDocument.id,
       });
     },
-    onDelete: async (documentId) => {
-      await request(`/documents/${documentId}`, {
+    onDelete: async (id) => {
+      await request(`/documents/${id}`, {
         method: 'DELETE',
       });
+      await fetchDocuments();
 
-      const documents = await request('/documents');
       this.setState({
         ...this.state,
-        documents,
-        selectedDocumentId:
-          documentId === this.state.selectedDocumentId
-            ? documents[0]?.id ?? document.id
-            : this.state.selectedDocumentId,
+        documentId: id === this.state.documentId ? this.state.documents[0]?.id ?? null : this.state.documentId,
       });
     },
-    onSelect: async (documentId) => {
-      if (documentId !== this.state.selectedDocumentId) {
-        this.setState({
-          ...this.state,
-          selectedDocumentId: documentId,
-        });
-      }
+    onSelect: (id) => {
+      this.setState({
+        ...this.state,
+        documentId: id,
+      });
     },
   });
 
@@ -69,31 +67,100 @@ export default function NotionPage({ $target }) {
         method: 'POST',
         body: JSON.stringify({ title: '', parent: null }),
       });
-      const documents = await request('/documents');
+      await fetchDocuments();
 
       this.setState({
         ...this.state,
-        documents,
-        selectedDocumentId: createdDocument.id,
+        documentId: createdDocument.id,
       });
     },
   });
 
-  this.setState = (nextState) => {
+  const editor = new Editor({
+    $target: $notionContainer,
+    initialState: doc,
+    onEditing: (document) => {
+      if (timer !== null) {
+        clearTimeout(timer);
+      }
+      timer = setTimeout(async () => {
+        setItem(documentLocalSaveKey, {
+          ...document,
+          tempSaveDate: new Date(),
+        });
+
+        await request(`/documents/${this.state.documentId}`, {
+          method: 'PUT',
+          body: JSON.stringify(document),
+        });
+        removeItem(documentLocalSaveKey);
+
+        await fetchDocument();
+        await fetchDocuments();
+      }, 2000);
+    },
+  });
+
+  this.setState = async (nextState) => {
+    if (this.state.documentId !== nextState.documentId) {
+      documentLocalSaveKey = `temp-document-${nextState.documentId}`;
+      this.state = nextState;
+      await fetchDocument();
+      return;
+    }
+
     this.state = nextState;
 
     documentList.setState({
       documents: this.state.documents,
     });
+    editor.setState(
+      this.state.document || {
+        title: '',
+        content: '',
+      }
+    );
   };
 
-  const init = async () => {
+  const fetchDocuments = async () => {
     const documents = await request('/documents');
 
     this.setState({
       ...this.state,
       documents,
     });
+  };
+
+  const fetchDocument = async () => {
+    const { documentId } = this.state;
+
+    if (documentId) {
+      const document = await request(`/documents/${documentId}`);
+
+      const tempDocument = getItem(documentLocalSaveKey, {
+        title: '',
+        content: '',
+      });
+
+      if (tempDocument.tempSaveDate && tempDocument.tempSaveDate > document.updatedAt) {
+        if (confirm('저장되지 않은 임시 데이터가 있습니다. 불러올까요?')) {
+          this.setState({
+            ...this.state,
+            document: tempDocument,
+          });
+          return;
+        }
+      }
+
+      this.setState({
+        ...this.state,
+        document,
+      });
+    }
+  };
+
+  const init = async () => {
+    await fetchDocuments();
   };
 
   init();
