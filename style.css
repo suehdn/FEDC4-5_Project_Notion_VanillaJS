@@ -3,6 +3,10 @@
   flex-direction: row;
 }
 
+body {
+  margin: 0;
+}
+
 div.document-list {
   display: flex;
   position: relative;
@@ -10,12 +14,13 @@ div.document-list {
 }
 
 .global-nav {
+  background-color: #fbfbfa;
   display: flex;
   position: relative;
   flex-direction: column;
   height: 100vh;
   width: 240px;
-
+  min-width: 240px;
   overflow: hidden;
 }
 
@@ -27,7 +32,7 @@ div.document-list {
 }
 
 input.editor-title {
-  width: 100%;
+  width: 60%;
   height: 80px;
   margin: 0 10px;
   border: none;
@@ -43,11 +48,55 @@ button {
 
 div.document {
   display: flex;
+  overflow: hidden;
+  overflow-x: hidden;
+  max-width: 240px;
+  padding: 2px 10px 2px 5px;
+  margin: 1px 4;
 }
 
 textarea {
-  width: 100%;
+  display: flex;
+  width: 60%;
   margin: 10px 10px;
   border: none;
   height: 100%;
+}
+
+.document-title {
+  display: flex;
+  width: 55%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  position: relative;
+}
+
+button {
+  background-color: transparent;
+  border: 0;
+  align-self: center;
+}
+
+button.remove-button {
+  position: absolute;
+  right: 10px;
+}
+
+button.add-button {
+  position: absolute;
+  right: 45px;
+}
+
+.outliner > div.list {
+  padding: 0 10px 0 19px;
+  margin: 1px 0;
+}
+
+.editor-page {
+  height: 100%;
+}
+
+.global-nav {
+  overflow-y: scroll;
 }

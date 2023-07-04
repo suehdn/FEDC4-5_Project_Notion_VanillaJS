@@ -2,7 +2,7 @@ const storage = window.localStorage;
 
 export const setItem = (key, value) => {
   try {
-    storage.setItem(key, JSON.stringify(value));
+    storage.setItem(key, value);
   } catch (error) {
     alert(error.message);
   }

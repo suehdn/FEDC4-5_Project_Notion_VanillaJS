@@ -81,11 +81,12 @@ export default function DocumentsPage({
 
   this.render = () => {
     isClicked = getItem("isClicked", null) ?? {};
+    console.log(isClicked);
     this.createDocuments();
   };
 
   //클릭 할 때마다 하위 컴포넌트가 있는지, 많은 내용을 실행하게 되어 비효율적인 코드인지 궁금합니다..!
-  $page.addEventListener("click", (event) => {
+  $page.addEventListener("click", async (event) => {
     const { className } = event.target;
     const $div = event.target.closest(`div[class=outliner]`);
 
@@ -96,17 +97,8 @@ export default function DocumentsPage({
         onRemove(documentId);
         return;
       } else if (className === "add-button") {
-        const children = $div.lastChild.children;
-        console.log(children);
-        if (children) {
-          for (let i = 0; i < children.length; i++) {
-            isClicked[children[i].dataset.documentId] =
-              !isClicked[children[i].dataset.documentId];
-          }
-          setItem("isClicked", JSON.stringify(isClicked));
-          this.createDocuments();
-        }
-        onAdd(documentId);
+        await onAdd(documentId);
+        this.render();
         return;
       } else if (className === "document-view-button") {
         const children = $div.lastChild.children;

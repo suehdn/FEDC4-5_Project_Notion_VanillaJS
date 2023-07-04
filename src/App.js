@@ -2,6 +2,7 @@ import DocumentsPage from "./DocumentsPage.js";
 import EditorPage from "./EditorPage.js";
 import { request } from "./api.js";
 import { initRoute, push } from "./router.js";
+import { getItem, setItem } from "./storage.js";
 
 export default function App({ $target }) {
   const $documentListPage = document.createElement("div");
@@ -50,6 +51,9 @@ export default function App({ $target }) {
         }),
       });
       await fetchDocumentList();
+      const isClicked = getItem("isClicked", null) ?? {};
+      isClicked[`${result.id}`] = true;
+      setItem("isClicked", JSON.stringify(isClicked));
       push(`/documents/${result.id}`);
     },
     onContentView: async (selectedDocumentId) => {
