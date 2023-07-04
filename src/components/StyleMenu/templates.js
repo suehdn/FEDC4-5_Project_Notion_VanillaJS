@@ -1,20 +1,20 @@
 const template = (function () {
   const colorListItem = ({ name, color, backgroundColor }) => `
     <li
-      class="main__text-style-menu--list-item"
+      class="text-style-menu__item"
       data-role="applyTextStyle"
       data-color="${color}"
       data-background-color="${backgroundColor}"
       style="color: ${color};"
     >
-      <span class="main__text-style-menu--preview" style="background-color: ${backgroundColor};">A</span>
-      <span class="main__text-style-menu--word">${name}</span>
+      <span class="text-style-menu__item--preview" style="background-color: ${backgroundColor};">A</span>
+      <span class="text-style-menu__item--word">${name}</span>
     </li>
   `;
 
   const colorList = ({ colors = [], title = '' }) => `
-    <div class="main__text-style-menu--title">${title}</div>
-    <ul class="main__text-style-menu--list">
+    <div class="text-style-menu__title">${title}</div>
+    <ul class="text-style-menu__list">
       ${colors.map(colorListItem).join('')}
     </ul>
   `;

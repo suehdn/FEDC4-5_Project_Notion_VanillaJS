@@ -97,8 +97,8 @@ export default class DocumentPage {
     });
 
     this.styleMenu = new StyleMenu({
-      $menu: document.querySelector('.main__style-menu'),
-      $textMenu: document.querySelector('.main__text-style-menu'),
+      $menu: document.querySelector('.style-menu'),
+      $textMenu: document.querySelector('.text-style-menu'),
     });
   }
 

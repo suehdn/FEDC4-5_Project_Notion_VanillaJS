@@ -5,7 +5,6 @@ import {
   handleChangeInput,
   handleKeyDown,
 } from './events.js';
-import { handleShowStyleMenu, handleCloseStyleMenu } from '../StyleMenu/events.js';
 import './DocumentEditor.css';
 
 export default class DocumentEditor {
@@ -25,8 +24,6 @@ export default class DocumentEditor {
     this.$target = $target;
     this.$title = document.querySelector('.main__title-editor');
     this.$content = document.querySelector('.main__content-editor');
-    // this.$menu = document.querySelector('.main__style-menu');
-    // this.$textMenu = document.querySelector('.main__text-style-menu');
 
     this.state = initialState;
     this.onChange = onChange;
@@ -55,16 +52,10 @@ export default class DocumentEditor {
     $content.addEventListener('compositionend', (e) => handleRichContent(e, { $content }));
     $content.addEventListener('keydown', (e) => handleKeyDown(e, { $content }));
     $content.addEventListener('keyup', (e) => handleRichContent(e, { $content }));
-
     $content.addEventListener('pointerdown', (e) => onCloseStyleMenu(e));
     $content.addEventListener('pointerup', (e) => onOpenStyleMenu(e));
 
-    // $content.addEventListener('pointerdown', (e) => handleCloseStyleMenu(e, { $menu, $textMenu }));
-    // $content.addEventListener('pointerup', (e) => handleShowStyleMenu(e, { $menu, $textMenu }));
-
     $target.addEventListener('input', (e) => handleChangeInput(e, { onChange }));
-    // $menu.addEventListener('click', (e) => handleStyleMenuAction(e, { $menu, $textMenu }));
-    // $textMenu.addEventListener('click', (e) => handleStyleMenuAction(e, { $menu, $textMenu }));
   }
 
   render() {
@@ -73,6 +64,5 @@ export default class DocumentEditor {
 
     this.$title.innerHTML = document.title;
     this.$content.innerHTML = document.content;
-    // this.$menu.classList.add('hidden');
   }
 }
