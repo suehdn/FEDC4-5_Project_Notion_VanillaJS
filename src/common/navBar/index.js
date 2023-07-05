@@ -1,4 +1,5 @@
 import storage from "../../utils/storage"
+import { userName } from "../../config/apiConfig"
 
 export default function NavBar({ $target, loadDocument }) {
   const onClickTitle = () => {
@@ -11,7 +12,7 @@ export default function NavBar({ $target, loadDocument }) {
         <div class='currentUser'>
         `
     $target.querySelector(".title").addEventListener("click", onClickTitle)
-    $target.querySelector(".currentUser").innerHTML = `${storage.getItem("currentUser")}님 환영합니다.`
+    $target.querySelector(".currentUser").innerHTML = `${storage.getItem("currentUser") ?? userName}님 환영합니다.`
   }
 
   this.render()
