@@ -31,8 +31,6 @@ export default function DocumentLists({$target, initialState, onRemove, onCreate
                 onCreate(id)
                 updateStorage.add(id)
             }else if(target.className === "toggle__button"){
-                // const $div = $ul.lastElementChild
-                // $div.className === "hide" ? $div.className = "" : $div.className = "hide"
                 updateStorage.toggle(id)
                 this.render()
             }else{
