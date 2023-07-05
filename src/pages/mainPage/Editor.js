@@ -32,7 +32,6 @@ export default function Editor({
     // validateString(nextState); 이 부분 검사 오류
     this.state = nextState;
     const { title, content } = this.state;
-    // 요기도
     $editor.querySelector('[name=title]').value = title;
     $editor.querySelector('[name=content]').value = content;
   };
@@ -48,7 +47,6 @@ export default function Editor({
 
   this.render();
 
-  // 이 부분 수정
   $editor.querySelector('[name=title]').addEventListener('click', handleTitleInputClick);
   $editor.querySelector('[name=title]').addEventListener('keyup', (e) => {
     const nextState = { ...this.state, title: e.target.value };
