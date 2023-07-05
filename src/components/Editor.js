@@ -5,10 +5,8 @@ export default class Editor {
     this.$target = $target;
     this.state = initialState;
 
-    this.$title = document.createElement("input");
-    this.$title.setAttribute("name", "title");
-    this.$content = document.createElement("textarea");
-    this.$content.setAttribute("name", "content");
+    this.$title = this.$target.querySelector(".title");
+    this.$content = this.$target.querySelector(".content");
 
     this.$target.append(this.$title, this.$content);
 

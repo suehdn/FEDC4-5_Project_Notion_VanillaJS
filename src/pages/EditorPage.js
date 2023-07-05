@@ -2,12 +2,12 @@ import Editor from "../components/Editor.js";
 import { getDocumentContent, updateDocument } from "../utils/api.js";
 import { getItem, removeItem, setItem } from "../utils/storage.js";
 import { debounce } from "../utils/debounce.js";
+import { ACTIVE } from "../constant/constant.js";
 
 export default class EditorPage {
   constructor({ $target, onEdit }) {
     this.$target = $target;
-    this.$page = document.createElement("div");
-    this.isRendered = false;
+    this.$page = this.$target.querySelector(".editor");
     this.editorComponent = new Editor({
       $target: this.$page,
       initialState: { title: "", content: "" },
@@ -26,18 +26,23 @@ export default class EditorPage {
     });
   }
 
-  render = () => {
-    this.$target.appendChild(this.$page);
-    this.isRendered = true;
+  showPage = () => {
+    const classList = this.$page.classList;
+    if (!classList.contains(ACTIVE)) classList.add(ACTIVE);
+  };
+
+  hidePage = () => {
+    const classList = this.$page.classList;
+    if (classList.contains(ACTIVE)) classList.remove(ACTIVE);
   };
 
   setState = async () => {
     const { pathname } = location;
-    if (pathname === "/" && this.isRendered) {
-      this.$target.removeChild(this.$page);
-      this.isRendered = false;
+    if (pathname === "/") {
+      this.hidePage();
       return;
     }
+
     const [_, api, id] = pathname.split("/");
     if (id === undefined) {
       this.editorComponent.setState({ title: "", content: "" });
@@ -50,12 +55,12 @@ export default class EditorPage {
       if (confirm("임시저장된 데이터가 있습니다. 사용하시겠습니까?")) {
         const { title, content } = tempData;
         this.editorComponent.setState({ title, content });
-        this.render();
+        this.showPage();
         return;
       }
     }
 
     this.editorComponent.setState({ title, content });
-    this.render();
+    this.showPage();
   };
 }

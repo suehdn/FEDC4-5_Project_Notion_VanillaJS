@@ -1,0 +1,60 @@
+body {
+  display: flex;
+  flex-direction: column;
+}
+button {
+  background-color: transparent;
+  border-radius: 5px;
+  border-color: transparent;
+  color: lightslategrey;
+  cursor: pointer;
+}
+button:hover {
+  background-color: #dcdcdc;
+}
+header {
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid black;
+  display: flex;
+}
+.header--loading {
+  margin: auto 10px;
+  opacity: 0;
+}
+.header--loading.active {
+  opacity: 1;
+}
+
+.App {
+  display: flex;
+}
+.listPage {
+  overflow: auto;
+  width: 30%;
+  margin: 0;
+}
+.list {
+  overflow: scroll;
+}
+.listPage li {
+  cursor: pointer;
+}
+
+.editorPage {
+  width: 70%;
+  margin: 0;
+}
+
+.editor {
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.editor.active {
+  opacity: 1;
+}
+.content {
+  height: 100%;
+}
