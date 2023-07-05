@@ -1,21 +1,19 @@
 import { getDocument } from '../api';
 import Document from '../components/Document';
 import SideBar from '../components/SideBar';
-import { localStorageKeys } from '../constants/localStorageKeys';
-import { getFreshDocuments } from '../domain/getFreshDocuments';
-import { setItem } from '../utils/storage';
+import { proxiedDocuments } from '../domain/proxiedDocuments';
 import validateComponent from '../utils/validateComponent';
 
 export default function EditPage({ targetElement }) {
   validateComponent(this, EditPage);
-  this.init = async () => {
+  this.init = () => {
     this.targetElement = targetElement;
     this.render();
   };
 
   this.render = async () => {
     const documentId = window.location.pathname.split('/')[2];
-    const [documents, documentData] = await Promise.all([getFreshDocuments(), getDocument(documentId)]);
+    const [documents, documentData] = await Promise.all([proxiedDocuments.documents, getDocument(documentId)]);
     if (!documents || !documentData) return;
 
     targetElement.innerHTML = `
@@ -33,8 +31,9 @@ export default function EditPage({ targetElement }) {
         documentTitleElement.textContent = title;
       },
       handleAsyncEditTitle: async () => {
-        setItem(localStorageKeys.DOCUMENTS_STALE_TIME, 0);
-        this.sideBar.setState({ ...this.sideBar.state, documents: await getFreshDocuments() });
+        proxiedDocuments.staleTime = 0;
+        const documents = await proxiedDocuments.documents;
+        this.sideBar.setState({ ...this.sideBar.state, documents });
       },
     });
   };

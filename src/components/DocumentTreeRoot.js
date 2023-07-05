@@ -1,5 +1,6 @@
 import { postDocument, deleteDocument } from '../api';
 import { localStorageKeys } from '../constants/localStorageKeys';
+import { proxiedDocuments } from '../domain/proxiedDocuments';
 import { RouteService } from '../utils/RouteService';
 import debounce from '../utils/debounce';
 import { getItem, setItem } from '../utils/storage';
@@ -76,7 +77,7 @@ export default function DocumentTreeRoot({ targetElement, documents }) {
         foldedTreeSet: this.state.foldedTreeSet,
       });
 
-      setItem(localStorageKeys.DOCUMENTS_STALE_TIME, 0);
+      proxiedDocuments.staleTime = 0;
       router.push(`/documents/${newDocument.id}`);
     });
 
@@ -95,7 +96,7 @@ export default function DocumentTreeRoot({ targetElement, documents }) {
         });
         setItem(localStorageKeys.FOLDED_TREES, Array.from(foldedTreeSet));
         setItem(localStorageKeys.INVISIBLE_TREES, Array.from(invisibleTreeSet));
-        setItem(localStorageKeys.DOCUMENTS_STALE_TIME, 0);
+        proxiedDocuments.staleTime = 0;
         await deleteDocument(documentTreeElement.dataset.id);
         router.start();
       }
