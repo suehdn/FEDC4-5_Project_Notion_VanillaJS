@@ -5,24 +5,14 @@ import validateComponent from '../utils/validateComponent';
 
 export default function EditPage({ targetElement }) {
   validateComponent(this, EditPage);
-  this.init = async () => {
+  this.init = () => {
     this.targetElement = targetElement;
-    this.state = {
-      documents: await getDocuments(),
-    };
-    this.render();
-  };
-
-  this.state = {};
-  this.setState = (nextState) => {
-    this.state = { ...nextState };
     this.render();
   };
 
   this.render = async () => {
     const documentId = window.location.pathname.split('/')[2];
-    const { documents } = this.state;
-    const documentData = await getDocument(documentId);
+    const [documents, documentData] = await Promise.all([getDocuments(), getDocument(documentId)]);
     if (!documents || !documentData) return;
 
     targetElement.innerHTML = `
@@ -40,8 +30,7 @@ export default function EditPage({ targetElement }) {
         documentTitleElement.textContent = title;
       },
       handleAsyncEditTitle: async () => {
-        const documents = await getDocuments();
-        this.state.documents = documents;
+        this.sideBar.setState({ ...this.sideBar.state, documents: await getDocuments() });
       },
     });
   };
