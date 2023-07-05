@@ -1,5 +1,7 @@
-import { isConstructor, isSidebarState } from "@Utils/validation";
+import { isConstructor, isDrawerState } from "@Utils/validation";
 import "./Sidebar.css";
+import { once } from "@Utils/once";
+import Drawer from "./Drawer";
 
 export default function Sidebar({ $target }) {
   if (!isConstructor(new.target)) {
@@ -7,13 +9,12 @@ export default function Sidebar({ $target }) {
   }
 
   const $sidebar = document.createElement("aside");
-  $sidebar.className = "sidebar";
-  $target.appendChild($sidebar);
+  const $rootDrawer = new Drawer({ $target: $sidebar });
 
   this.state = [];
 
   this.setState = (nextState) => {
-    if (!isSidebarState(nextState)) {
+    if (!isDrawerState(nextState)) {
       return;
     }
 
@@ -22,10 +23,16 @@ export default function Sidebar({ $target }) {
     this.render();
   };
 
+  this.init = once(() => {
+    $sidebar.className = "sidebar";
+    $target.appendChild($sidebar);
+
+    $sidebar.insertAdjacentHTML("afterbegin", `<p>여기는 사이드바!</p>`);
+  });
+
   this.render = () => {
-    $sidebar.innerHTML = `
-      <p>여기는 사이드바!</p>
-    `;
+    this.init();
+    $rootDrawer.setState(this.state);
   };
 
   this.render();

@@ -1,4 +1,4 @@
-import { registerStateSetter } from "@Utils/stateSetters";
+import { patchSidebarState, registerStateSetter } from "@Utils/stateSetters";
 import Document from "./Document";
 import Home from "./Home";
 import router from "../router";
@@ -10,6 +10,7 @@ export default function App({ $target }) {
   // 기본 레이아웃 요소 생성
   const $sidebar = new Sidebar({ $target });
   registerStateSetter($sidebar);
+  patchSidebarState();
 
   const $main = document.createElement("div");
   const $header = new Header({ $target: $main });

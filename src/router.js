@@ -9,7 +9,8 @@ export default function router({ $target }) {
   if (pathname === "/") {
     stateSetters[NAME.HOME]({});
   } else if (pathname.indexOf("/documents/") === 0) {
-    const [, , documentId] = pathname.split("/");
+    const [, , documentIdStr] = pathname.split("/");
+    const documentId = parseInt(documentIdStr);
     stateSetters[NAME.DOCUMENT]({ documentId });
   }
 }

@@ -1,6 +1,6 @@
 import { ERROR, ValidationError } from "./Errors";
 
-function isError(condition, errorObj) {
+function checkError(condition, errorObj) {
   try {
     if (condition) {
       throw errorObj;
@@ -14,28 +14,30 @@ function isError(condition, errorObj) {
 }
 
 export function isConstructor(newTarget) {
-  return isError(!newTarget, new ValidationError(ERROR.NEW_MISSED));
+  return checkError(!newTarget, new ValidationError(ERROR.NEW_MISSED));
 }
 
 export function isObjectState(state) {
-  return isError(
+  return checkError(
     state === null || !(typeof state === "object"),
     new TypeError(ERROR.NONE_OBJECT_STATE)
   );
 }
 
+const documentType = {
+  documentId: "number",
+  title: "string",
+  content: "string",
+};
+
 export function isDocumentState(state) {
   return (
     isObjectState(state) &&
-    isError(
+    checkError(
       (() => {
-        for (const [key, type] of Object.entries({
-          documentId: "number",
-          title: "string",
-          content: "string",
-        })) {
-          if (!state.hasOwnProperty(key)) return true;
-          if (typeof state[key] !== type) return true;
+        for (const [key, val] of Object.entries(state)) {
+          if (!documentType.hasOwnProperty(key)) return true;
+          if (typeof val !== documentType[key]) return true;
         }
         return false;
       })(),
@@ -45,28 +47,38 @@ export function isDocumentState(state) {
 }
 
 export function isArrayState(state) {
-  return isError(!Array.isArray(state), new TypeError(ERROR.NONE_ARRAY_STATE));
+  return checkError(
+    !Array.isArray(state),
+    new TypeError(ERROR.NONE_ARRAY_STATE)
+  );
 }
 
-export function isSidebarState(state) {
+const drawerItemType = {
+  id: "number",
+  title: "string",
+  documents: "object",
+};
+
+export function isDrawerItemState(state) {
+  return checkError(
+    (() => {
+      for (const [key, type] of Object.entries(drawerItemType)) {
+        if (!state.hasOwnProperty(key)) return true;
+        if (typeof state[key] !== type) return true;
+        if (key === "documents" && !Array.isArray(state[key])) return true;
+      }
+      return false;
+    })(),
+    new ValidationError(ERROR.INVALID_DRAWERITEM_STATE)
+  );
+}
+
+export function isDrawerState(state) {
   return (
     isArrayState(state) &&
-    isError(
-      (() => {
-        for (const element of state) {
-          for (const [key, type] of Object.entries({
-            id: "number",
-            title: "string",
-            documents: "object",
-          })) {
-            if (!element.hasOwnProperty(key)) return true;
-            if (typeof element[key] !== type) return true;
-            if (key === document && !Array.isArray(element)) return true;
-          }
-          return false;
-        }
-      })(),
-      new ValidationError(ERROR.INVALID_SIDEBAR_STATE)
+    checkError(
+      !state.reduce((acc, cur) => acc && isDrawerItemState(cur), true),
+      new ValidationError(ERROR.INVALID_DRAWER_STATE)
     )
   );
 }
