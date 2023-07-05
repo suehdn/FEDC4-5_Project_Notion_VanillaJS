@@ -1,13 +1,13 @@
-import { API_END_POINT, USERNAME, errorMessages } from '../constants';
+import { VITE_API_END_POINT, VITE_USERNAME, errorMessages } from '../constants';
 
 // API 요청
 export const request = async (url, options = {}) => {
   try {
-    const res = await fetch(`${API_END_POINT}${url}`, {
+    const res = await fetch(`${VITE_API_END_POINT}${url}`, {
       ...options,
       headers: {
         'Content-Type': 'application/json',
-        'x-username': `${USERNAME}`,
+        'x-username': `${VITE_USERNAME}`,
       },
     });
     if (res.ok) {

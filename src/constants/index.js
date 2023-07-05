@@ -16,8 +16,8 @@ export const homePageMessages = {
 
 export const TEMP_DATA_MESSAGE = '저장되지 않은 임시 데이터가 있습니다 불러올까요?';
 
-export const API_END_POINT = 'https://kdt-frontend.programmers.co.kr';
-export const USERNAME = 'jiyoon';
+export const VITE_API_END_POINT = import.meta.env.VITE_API_END_POINT;
+export const VITE_USERNAME = import.meta.env.VITE_USERNAME;
 
 export const ROUTE_CHANGE_EVENT_NAME = 'route-change';
 

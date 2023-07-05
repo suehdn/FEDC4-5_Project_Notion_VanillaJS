@@ -1,4 +1,4 @@
-import { USERNAME, editDocumentMessages } from '../../constants';
+import { VITE_USERNAME, editDocumentMessages } from '../../constants';
 import { request } from '../../domain/api';
 import { push } from '../../domain/router';
 import { createDocument, deleteDocument } from '../../domain/apiCall';
@@ -16,7 +16,7 @@ export default function SidebarDocumentPage({ $target }) {
   new SidebarHeader({
     $target: $sidebarDocumentPage,
     initialState: {
-      user: `${USERNAME}`,
+      user: `${VITE_USERNAME}`,
     },
   });
 
