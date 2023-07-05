@@ -2,6 +2,7 @@ const storage = (function (storage) {
   const setItem = (key, value) => {
     try {
       storage.setItem(key, value)
+      return storage.getItem(key)
     } catch (error) {
       console.error(error)
     }
@@ -17,7 +18,7 @@ const storage = (function (storage) {
       return defaultValue
     } catch (error) {
       console.error(error)
-      return defaultValue
+      return storage.getItem(key)
     }
   }
 

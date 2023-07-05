@@ -1,9 +1,7 @@
 import Editor from "../../components/editor"
 import DocNext from "../../components/docNext"
 
-import { updateDocument } from "../../api"
-
-import { getDocumentsContent } from "../../api"
+import documentAdapter from "../../api/index"
 
 export default function MainContent({ $target, initialState = {}, renderApp, routeApp }) {
   this.state = initialState
@@ -26,7 +24,7 @@ export default function MainContent({ $target, initialState = {}, renderApp, rou
         timer = setTimeout(async () => {
           clearTimeout(timer)
           const { id } = this.state
-          await updateDocument(id, content)
+          await documentAdapter.updateDocument(id, content)
           $target.querySelector("#is-saved").classList.remove("not-saved")
           $target.querySelector("#is-saved").innerText = "저장됨"
           $target.querySelector("#is-saved").classList.add("saved")
@@ -42,7 +40,7 @@ export default function MainContent({ $target, initialState = {}, renderApp, rou
   }
 
   this.setState = async (nextState) => {
-    this.state = await getDocumentsContent(nextState.id)
+    this.state = await documentAdapter.getDocumentsContent(nextState.id)
 
     this.render()
   }

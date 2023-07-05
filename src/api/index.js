@@ -1,23 +1,22 @@
 import { apiClient } from "../utils/apiClient"
+import storage from "../utils/storage"
 
-async function getDocuments() {
-  return await apiClient("/documents", "GET")
+const documentAdapter = () => {
+  let user = storage.getItem("currentUser")
+  const updateCurrentUser = () => {
+    user = localStorage.getItem("currentUser")
+  }
+
+  return {
+    updateCurrentUser,
+    getDocuments: async () => await apiClient("/documents", "GET", null, user),
+    getDocumentsContent: async (id) => await apiClient(`/documents/${id}`, "GET", null, user),
+    createDocument: async ({ title, parentId }) =>
+      await apiClient("/documents", "POST", { title: title, parent: parentId }, user),
+    updateDocument: async (id, { title, content }) =>
+      await apiClient(`/documents/${id}`, "PUT", { title: title, content: content }, user),
+    deleteDocument: async (id) => await apiClient(`/documents/${id}`, "DELETE", null, user),
+  }
 }
 
-async function getDocumentsContent(id) {
-  return await apiClient(`/documents/${id}`, "GET")
-}
-
-async function createDocument({ title, parentId }) {
-  return await apiClient("/documents", "POST", { title: title, parent: parentId })
-}
-
-async function updateDocument(id, { title, content }) {
-  return await apiClient(`/documents/${id}`, "PUT", { title: title, content: content })
-}
-
-async function deleteDocument(id) {
-  return await apiClient(`/documents/${id}`, "DELETE")
-}
-
-export { getDocuments, getDocumentsContent, createDocument, updateDocument, deleteDocument }
+export default documentAdapter()

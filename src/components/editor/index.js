@@ -1,4 +1,4 @@
-import { deleteDocument } from "../../api"
+import documentAdapter from "../../api/index"
 
 export default function Editor({ $target, initialState = {}, onEditing, renderApp, routeApp }) {
   this.state = initialState
@@ -36,7 +36,7 @@ export default function Editor({ $target, initialState = {}, onEditing, renderAp
   this.render()
 
   $editor.querySelector(".doc-delete-button").addEventListener("click", async () => {
-    await deleteDocument(this.state.id)
+    await documentAdapter.deleteDocument(this.state.id)
     $editor.querySelector(".doc-delete-button").style.display = "none"
     history.replaceState(null, null, "/")
     this.setState({ title: "", content: "" })

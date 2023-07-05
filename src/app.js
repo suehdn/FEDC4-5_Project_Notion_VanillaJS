@@ -21,7 +21,7 @@ export default function App({ $target, initialState = dummyData }) {
   this.render = () => {
     console.log("rendered")
     new NavBar({ $target: $target.querySelector(".nav-bar"), loadDocument: this.route })
-    new SideBar({ $target: $target.querySelector(".side-bar"), loadDocument: this.route })
+    new SideBar({ $target: $target.querySelector(".side-bar"), loadDocument: this.route, renderApp: this.render })
   }
 
   this.route = () => {

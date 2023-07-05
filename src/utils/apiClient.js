@@ -1,12 +1,12 @@
 import { baseUrl, userName } from "../config/apiConfig"
 
-export const apiClient = async (url, method, body) => {
+export const apiClient = async (url, method, body, newUser = userName) => {
   try {
     const reqBody = body ? JSON.stringify(body) : null
     const res = await fetch(`${baseUrl}${url}`, {
       method: method,
       headers: {
-        "x-username": `${userName}`,
+        "x-username": `${newUser}`,
         "Content-Type": "application/json",
       },
       body: reqBody,

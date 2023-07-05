@@ -5,6 +5,7 @@
   --bg-progress: #efefef;
   --text-main: #000000;
   --text-secondary: #9a9995;
+  --text-alert: #ff0000;
 }
 
 @font-face {

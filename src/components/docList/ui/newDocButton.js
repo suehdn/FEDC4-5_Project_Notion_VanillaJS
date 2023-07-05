@@ -1,9 +1,9 @@
 import Button from "../../ui/button"
-import { createDocument } from "../../../api"
+import documentAdapter from "../../../api/index"
 
 export default function newDocButton({ $target, parentId, renderSideBar, loadDocument }) {
   const onClickNewDoc = async () => {
-    const res = await createDocument({ title: "새 문서", parentId: parentId })
+    const res = await documentAdapter.createDocument({ title: "새 문서", parentId: parentId })
     await renderSideBar()
     await loadDocument()
     history.pushState(null, null, `/documents/${res.id}`)

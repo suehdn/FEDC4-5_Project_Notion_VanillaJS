@@ -1,12 +1,14 @@
 import DocList from "../../components/docList"
 import NewParentDocButton from "./section/newParentDocButton"
+import SelectWorkSpaceButton from "./section/selectWorkSpaceButton"
 
-import { getDocuments } from "../../api"
+import documentAdapter from "../../api/index"
 
-export default function SideBar({ $target, loadDocument }) {
+export default function SideBar({ $target, loadDocument, renderApp }) {
   this.render = async () => {
-    const docs = await getDocuments()
+    const docs = await documentAdapter.getDocuments()
     $target.innerHTML = ""
+    new SelectWorkSpaceButton({ $target: $target, renderApp, loadDocument })
     new NewParentDocButton({
       $target: $target,
       renderSideBar: this.render,
