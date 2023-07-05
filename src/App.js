@@ -4,20 +4,22 @@ import HomePage from './pages/HomePage';
 import EditPage from './pages/EditPage';
 
 export default function App({ targetElement }) {
+  const homePage = new HomePage({ targetElement });
+  const editPage = new EditPage({ targetElement });
+  const notFoundPage = new NotFoundPage({ targetElement });
   const router = new RouteService();
-  this.targetElement = targetElement;
   router
     .addRoute({
       match: (pathname) => pathname === '/',
-      page: () => new HomePage({ targetElement }),
+      page: () => homePage.render(),
     })
     .addRoute({
       match: (pathname) => pathname.indexOf('/documents') === 0,
-      page: () => new EditPage({ targetElement }),
+      page: () => editPage.render(),
     })
     .addRoute({
       match: () => true,
-      page: () => new NotFoundPage({ targetElement }),
+      page: () => notFoundPage.render(),
     })
     .start();
 }
