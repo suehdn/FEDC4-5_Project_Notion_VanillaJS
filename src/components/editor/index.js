@@ -48,15 +48,16 @@ export default function Editor({ $target, initialState = {}, onEditing, renderAp
     })
 
     $editor.querySelector(".editable-button").addEventListener("click", () => {
-      $editor.querySelector("input[name=title]").readOnly = false
-      $editor.querySelector("textarea[name=content]").readOnly = false
-
       if ($editor.querySelector(".editable-button").classList.contains("clicked")) {
         $editor.querySelector(".editable-button").classList.remove("clicked")
         $editor.querySelector(".editable-button").innerText = "수정하기"
+        $editor.querySelector("input[name=title]").readOnly = true
+        $editor.querySelector("textarea[name=content]").readOnly = true
       } else {
         $editor.querySelector(".editable-button").classList.add("clicked")
         $editor.querySelector(".editable-button").innerText = "수정완료"
+        $editor.querySelector("input[name=title]").readOnly = false
+        $editor.querySelector("textarea[name=content]").readOnly = false
       }
     })
 
