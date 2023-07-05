@@ -2,7 +2,7 @@ import { isConstructor, isDrawerState } from "@Utils/validation";
 import DrawerItem from "./DrawerItem";
 import { once } from "@Utils/once";
 
-export default function Drawer({ $target }) {
+export default function Drawer({ $target, level }) {
   if (!isConstructor(new.target)) {
     return;
   }
@@ -26,6 +26,7 @@ export default function Drawer({ $target }) {
 
   this.init = once(() => {
     $target.appendChild($drawer);
+    $drawer.style.marginLeft = `${10 * level}px`;
   });
 
   this.render = () => {
@@ -42,6 +43,7 @@ export default function Drawer({ $target }) {
         const $drawerItem = new DrawerItem({
           $target: $drawer,
           $sibling: $currentNode,
+          level: 0,
         });
         $drawerItem.setState({ ...this.state[stateIdx], opened: false });
 

@@ -2,13 +2,13 @@ import { once } from "@Utils/once";
 import { isConstructor, isDrawerItemState } from "@Utils/validation";
 import Drawer from "./Drawer";
 
-export default function DrawerItem({ $target, $sibling }) {
+export default function DrawerItem({ $target, $sibling, level }) {
   if (!isConstructor(new.target)) {
     return;
   }
 
   const $item = document.createElement("div");
-  const $childrenDrawer = new Drawer({ $target: $item });
+  const $childrenDrawer = new Drawer({ $target: $item, level: level + 1 });
 
   this.state = {};
 
