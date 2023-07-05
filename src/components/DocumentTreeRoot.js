@@ -19,7 +19,6 @@ export default function DocumentTreeRoot({ targetElement, documents }) {
     invisibleTreeSet: new Set(getItem(localStorageKeys.INVISIBLE_TREES, [])),
     foldedTreeSet: new Set(getItem(localStorageKeys.FOLDED_TREES, [])),
     scrollPos: getItem(localStorageKeys.DOCUMENT_TREE_SCROLL, 0),
-    documents,
   };
 
   this.setState = (nextState) => {
@@ -77,6 +76,7 @@ export default function DocumentTreeRoot({ targetElement, documents }) {
         foldedTreeSet: this.state.foldedTreeSet,
       });
 
+      setItem(localStorageKeys.DOCUMENTS_STALE_TIME, 0);
       router.push(`/documents/${newDocument.id}`);
     });
 
@@ -95,6 +95,7 @@ export default function DocumentTreeRoot({ targetElement, documents }) {
         });
         setItem(localStorageKeys.FOLDED_TREES, Array.from(foldedTreeSet));
         setItem(localStorageKeys.INVISIBLE_TREES, Array.from(invisibleTreeSet));
+        setItem(localStorageKeys.DOCUMENTS_STALE_TIME, 0);
         await deleteDocument(documentTreeElement.dataset.id);
         router.start();
       }
@@ -113,7 +114,7 @@ export default function DocumentTreeRoot({ targetElement, documents }) {
     targetElement.innerHTML = '';
     new DocumentTree({
       targetElement,
-      childDocuments: this.state.documents,
+      childDocuments: documents,
       invisibleTreeSet: this.state.invisibleTreeSet,
       foldedTreeSet: this.state.foldedTreeSet,
     });

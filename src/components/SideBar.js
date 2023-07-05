@@ -1,7 +1,9 @@
 import { postDocument } from '../api';
 import Button from '../components/Button';
 import DocumentTreeRoot from '../components/DocumentTreeRoot';
+import { localStorageKeys } from '../constants/localStorageKeys';
 import { RouteService } from '../utils/RouteService';
+import { setItem } from '../utils/storage';
 import validateComponent from '../utils/validateComponent';
 
 export default function SideBar({ targetElement, documents }) {
@@ -39,6 +41,7 @@ export default function SideBar({ targetElement, documents }) {
         const router = new RouteService();
         const { id } = await postDocument({ title: '', parent: null });
         this.documentTreeRoot.render();
+        setItem(localStorageKeys.DOCUMENTS_STALE_TIME, 0);
         router.push(`/documents/${id}`);
       },
     });

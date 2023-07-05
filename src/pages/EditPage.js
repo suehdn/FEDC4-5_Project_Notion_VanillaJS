@@ -1,18 +1,21 @@
 import { getDocument, getDocuments } from '../api';
 import Document from '../components/Document';
 import SideBar from '../components/SideBar';
+import { localStorageKeys } from '../constants/localStorageKeys';
+import { getFreshDocuments } from '../domain/getFreshDocuments';
+import { setItem } from '../utils/storage';
 import validateComponent from '../utils/validateComponent';
 
 export default function EditPage({ targetElement }) {
   validateComponent(this, EditPage);
-  this.init = () => {
+  this.init = async () => {
     this.targetElement = targetElement;
     this.render();
   };
 
   this.render = async () => {
     const documentId = window.location.pathname.split('/')[2];
-    const [documents, documentData] = await Promise.all([getDocuments(), getDocument(documentId)]);
+    const [documents, documentData] = await Promise.all([getFreshDocuments(), getDocument(documentId)]);
     if (!documents || !documentData) return;
 
     targetElement.innerHTML = `
@@ -30,6 +33,7 @@ export default function EditPage({ targetElement }) {
         documentTitleElement.textContent = title;
       },
       handleAsyncEditTitle: async () => {
+        setItem(localStorageKeys.DOCUMENTS_STALE_TIME, 0);
         this.sideBar.setState({ ...this.sideBar.state, documents: await getDocuments() });
       },
     });

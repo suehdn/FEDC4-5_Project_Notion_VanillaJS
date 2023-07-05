@@ -2,8 +2,11 @@ import { RouteService } from './utils/RouteService';
 import NotFoundPage from './pages/NotFoundPage';
 import HomePage from './pages/HomePage';
 import EditPage from './pages/EditPage';
+import { setItem } from './utils/storage';
+import { localStorageKeys } from './constants/localStorageKeys';
 
 export default function App({ targetElement }) {
+  setItem(localStorageKeys.DOCUMENTS_STALE_TIME, 0);
   const router = new RouteService();
   router
     .addRoute({
