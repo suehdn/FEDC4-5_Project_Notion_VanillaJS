@@ -44,6 +44,8 @@ export default class NotionEditorContent extends Component {
         if (this.timer !== null) clearTimeout(this.timer);
 
         this.timer = setTimeout(async () => {
+          this.$contentEditor.blur();
+          this.$contentEditor.focus();
           this.handleEdit({ target, callback: onEdit });
         }, 1000);
       }
@@ -57,6 +59,8 @@ export default class NotionEditorContent extends Component {
         if (this.timer !== null) clearTimeout(this.timer);
 
         this.timer = setTimeout(async () => {
+          this.$contentEditor.blur();
+          this.$contentEditor.focus();
           this.handleEdit({ target, callback: onEdit });
         }, 1000);
       }
