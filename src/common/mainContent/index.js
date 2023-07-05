@@ -1,15 +1,12 @@
 import Editor from "../../components/editor"
 import DocNext from "../../components/docNext"
 
-import storage from "../../utils/storage"
-
 import { updateDocument } from "../../api"
 
 import { getDocumentsContent } from "../../api"
 
 export default function MainContent({ $target, initialState = {}, renderApp }) {
   this.state = initialState
-  let postLocalSaveKey = initialState.id ? `post-${initialState.id}` : "post-new"
   let timer = null
 
   this.render = () => {
@@ -18,16 +15,20 @@ export default function MainContent({ $target, initialState = {}, renderApp }) {
       initialState: this.state,
       renderApp,
       onEditing: async (content) => {
+        $target.querySelector("#is-saved").classList.remove("saved")
         $target.querySelector("#is-saved").innerText = "저장되지 않음"
+        $target.querySelector("#is-saved").classList.add("not-saved")
+
         if (timer !== null) {
           clearTimeout(timer)
         }
         timer = setTimeout(async () => {
           clearTimeout(timer)
-          storage.setItem(postLocalSaveKey, content)
           const { id } = this.state
           await updateDocument(id, content)
+          $target.querySelector("#is-saved").classList.remove("not-saved")
           $target.querySelector("#is-saved").innerText = "저장됨"
+          $target.querySelector("#is-saved").classList.add("saved")
           renderApp()
         }, 2000)
       },

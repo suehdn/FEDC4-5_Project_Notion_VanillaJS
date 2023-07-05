@@ -67,6 +67,44 @@ ul.doc-list {
   border: none;
 }
 
+.title-right-container {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
+
+.doc-title:focus {
+  outline: none;
+  border-bottom: 2px solid #000;
+}
+
+.editable-button {
+  width: 100px;
+  border: 1px solid #000;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.editable-button:hover {
+  background-color: #ccc;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.editable-button.clicked {
+  background-color: #ccc;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+#is-saved.saved {
+  color: green;
+}
+
+#is-saved.not-saved {
+  color: red;
+}
+
 .doc-delete-button {
   width: 100px;
   border: 1px solid #000;
@@ -78,11 +116,6 @@ ul.doc-list {
   background-color: #ccc;
   transition: 0.3s;
   cursor: pointer;
-}
-
-.doc-title:focus {
-  outline: none;
-  border-bottom: 2px solid #000;
 }
 
 .doc-text:hover {
