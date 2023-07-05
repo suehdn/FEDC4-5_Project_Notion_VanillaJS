@@ -1,6 +1,7 @@
 import { isConstructor, isDrawerState } from "@Utils/validation";
 import DrawerItem from "./DrawerItem";
 import { once } from "@Utils/once";
+import "./Drawer.css";
 
 export default function Drawer({ $target, level }) {
   if (!isConstructor(new.target)) {
@@ -8,6 +9,8 @@ export default function Drawer({ $target, level }) {
   }
 
   const $drawer = document.createElement("nav");
+
+  this.root = $drawer;
 
   this.state = [];
 
@@ -26,7 +29,8 @@ export default function Drawer({ $target, level }) {
 
   this.init = once(() => {
     $target.appendChild($drawer);
-    $drawer.style.marginLeft = `${10 * level}px`;
+    $drawer.className = "drawer-nav";
+    $drawer.style.paddingLeft = `${10 * level}px`;
   });
 
   this.render = () => {
@@ -45,7 +49,7 @@ export default function Drawer({ $target, level }) {
           $sibling: $currentNode,
           level: 0,
         });
-        $drawerItem.setState({ ...this.state[stateIdx], opened: false });
+        $drawerItem.setState(this.state[stateIdx]);
 
         stateIdx += 1;
       } else {

@@ -1,0 +1,19 @@
+.drawer-item-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.drawer-item-container:hover {
+  background-color: #e1e1e1;
+}
+
+.drawer-item-open-button.opened {
+  rotate: 90deg;
+}
+
+.drawer-item-title {
+  margin: 5px 0 5px 2px;
+  flex: 1 1 0%;
+}

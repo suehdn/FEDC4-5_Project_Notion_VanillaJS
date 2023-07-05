@@ -1,6 +1,7 @@
 import { once } from "@Utils/once";
 import { isConstructor, isDrawerItemState } from "@Utils/validation";
 import Drawer from "./Drawer";
+import "./DrawerItem.css";
 
 export default function DrawerItem({ $target, $sibling, level }) {
   if (!isConstructor(new.target)) {
@@ -8,9 +9,10 @@ export default function DrawerItem({ $target, $sibling, level }) {
   }
 
   const $item = document.createElement("div");
+  const $titleContainer = document.createElement("div");
   const $childrenDrawer = new Drawer({ $target: $item, level: level + 1 });
 
-  this.state = {};
+  this.state = { id: 0, title: "", documents: [] };
 
   this.setState = (nextState) => {
     if (!isDrawerItemState(nextState)) {
@@ -22,13 +24,56 @@ export default function DrawerItem({ $target, $sibling, level }) {
     this.render();
   };
 
+  this.opened = false;
+
+  this.setOpened = (nextOpened) => {
+    this.opened = nextOpened;
+    this.toggleOpen();
+  };
+
+  this.toggleOpen = () => {
+    const $openBtn = $item.querySelector(".drawer-item-open-button");
+    $openBtn.className = `drawer-item-open-button${
+      this.opened ? " opened" : ""
+    }`;
+
+    $childrenDrawer.root.style.display = this.opened ? "block" : "none";
+  };
+
   this.init = once(() => {
     $target.insertBefore($item, $sibling);
+    $item.insertAdjacentElement("afterbegin", $titleContainer);
+
+    $titleContainer.className = "drawer-item-container";
+    $titleContainer.innerHTML = `
+      <button class="drawer-item-open-button" data-action="open">></button>
+      <p class="drawer-item-title" data-action="route">${this.state.title}</p>
+      <div>
+        <button data-action="remove">x</button>
+        <button data-action="append">+</button>
+      </div>
+    `;
+
+    $titleContainer.addEventListener("click", (e) => {
+      const $actionElement = e.target.closest("[data-action]");
+      if (!$actionElement) return;
+
+      const { action } = $actionElement.dataset;
+
+      if (action === "open") {
+        this.setOpened(!this.opened);
+      }
+    });
+
+    this.toggleOpen();
   });
 
   this.render = () => {
     this.init();
-    $item.insertAdjacentHTML("afterbegin", `<p>${this.state.title}</p>`);
+
+    const $title = $item.querySelector(".drawer-item-title");
+    $title.innerText = this.state.title;
+
     $childrenDrawer.setState(this.state.documents);
   };
 }
