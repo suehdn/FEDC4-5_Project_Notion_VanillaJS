@@ -68,14 +68,6 @@ input {
     color: rgba(25, 23, 17, 0.6);
 }
 
-.document-list li {
-    border-bottom: 1px solid #e1e1e2;
-}
-
-.document-item:last-child {
-    border-bottom: none;
-}
-
 .document-list .buttons :hover {
     color: #dededd;
 }
