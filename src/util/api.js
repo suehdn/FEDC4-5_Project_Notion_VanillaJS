@@ -1,15 +1,16 @@
 const API_ENDPOINT = 'https://kdt-frontend.programmers.co.kr/documents';
 
-export const fetchAPI = async (url, options = {}) => {
+export const request = async (url, options = {}) => {
   try {
     const res = await fetch(`${API_ENDPOINT}${url}`, {
+      ...options,
       headers: {
-        ...options,
-        'x-username': 'roto',
+        'Content-Type': 'application/json',
+        'x-username': 'nayeon',
       },
     });
     if (res.ok) {
-      return res.json();
+      return await res.json();
     }
   } catch (err) {
     console.log(err);
