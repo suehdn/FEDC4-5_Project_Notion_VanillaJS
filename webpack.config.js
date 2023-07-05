@@ -60,7 +60,7 @@ module.exports = (_, argv) => {
       ],
     },
     plugins: [
-      new HtmlWebpackPlugin({ template: './public/index.html' }), // 템플릿 HTML의 경로를 지정한다.
+      new HtmlWebpackPlugin({ template: './index.html' }), // 템플릿 HTML의 경로를 지정한다.
     ],
   };
 };
