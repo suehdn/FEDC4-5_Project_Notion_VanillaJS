@@ -13,6 +13,11 @@ export default function App({ $target }) {
   $addNewRootNotion.className = "addNewRootNotion";
   $addNewRootNotion.textContent = "+ 페이지 추가";
 
+  const $toggleBtn = document.createElement("button");
+  $toggleBtn.className = "toggle-btn1";
+  $toggleBtn.textContent = ">>";
+
+  $target.appendChild($toggleBtn);
   $target.appendChild($notionPageContainer);
   $target.appendChild($notionEditPageContainer);
   $notionPageContainer.appendChild($addNewRootNotion);
@@ -38,6 +43,8 @@ export default function App({ $target }) {
       history.replaceState(null, null, "/");
       this.route();
     },
+    $editorPage: $notionEditPageContainer,
+    $toggleBtn,
   });
 
   const editorPage = new NotionEditPage({
@@ -81,5 +88,11 @@ export default function App({ $target }) {
 
   $addNewRootNotion.addEventListener("click", () => {
     fetchAddNotion();
+  });
+
+  $toggleBtn.addEventListener("click", () => {
+    $notionPageContainer.style.transform = "translateX(0)";
+    $notionEditPageContainer.style.marginLeft = "0";
+    $toggleBtn.style.transform = "translateX(-150%)";
   });
 }

@@ -21,12 +21,14 @@ body {
   display: flex;
   flex-direction: column-reverse;
   justify-content: start;
+  transition: transform 1s ease;
 }
 
 .notionEditPageContainer {
   width: 100%;
   flex: 1;
   padding: 20px;
+  transition: margin-left 1s ease;
 }
 
 .notionList ul {
@@ -85,6 +87,7 @@ body {
   border: none;
   border-radius: 5px;
   background-color: #f0f0f0;
+  cursor: pointer;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s, box-shadow 0.3s;
 }
@@ -147,4 +150,19 @@ body {
 
 .editor .content:focus {
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-btn1 {
+  position: absolute;
+  top: 21px;
+  left: 15px;
+  height: 28px;
+  transition: transform 1s ease;
+  transform: translateX(-150%);
+}
+
+.toggle-btn2 {
+  float: right;
+  height: 28px;
+  margin: 6px 0;
 }
