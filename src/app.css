@@ -43,8 +43,6 @@
   padding: 20px 20px 20px 0px;
   overflow-y: scroll;
   float: left;
-
-  transition: 0.3s;
 }
 
 .main-content {
@@ -74,6 +72,7 @@ ul.doc-list {
   font-weight: bold;
   margin-left: 10px;
   border: none;
+  font-family: Pretendard, system-ui, sans-serif;
 }
 
 .title-right-container {
@@ -93,6 +92,7 @@ ul.doc-list {
   border: none;
   border-radius: 4px;
   background-color: transparent;
+  font-family: Pretendard, system-ui, sans-serif;
 }
 
 .editable-button:hover {
@@ -107,6 +107,14 @@ ul.doc-list {
   cursor: pointer;
 }
 
+#is-saved {
+  font-size: 14px;
+  margin-right: 10px;
+  font-family: Pretendard, system-ui, sans-serif;
+
+  transition: 0.3s;
+}
+
 #is-saved.saved {
   color: green;
 }
@@ -119,6 +127,7 @@ ul.doc-list {
   width: fit-content;
   border: none;
   border-radius: 4px;
+  font-family: Pretendard, system-ui, sans-serif;
   background-color: transparent;
 }
 
@@ -154,7 +163,10 @@ ul.doc-list {
 }
 
 .editor > textarea {
+  padding: 20px;
   border: none;
+  resize: none;
+  font-family: Pretendard, system-ui, sans-serif;
 }
 
 .editor > textarea:focus {
@@ -168,11 +180,14 @@ ul.doc-list {
 }
 
 .new-parent-doc-button {
+  font-size: 14px;
+  height: 24px;
   margin-left: 20px;
   background-color: transparent;
   color: var(--text-secondary);
-  border: 1px solid var(--text-secondary);
+  border: none;
   border-radius: 4px;
+  font-family: Pretendard, system-ui, sans-serif;
 }
 
 .new-parent-doc-button:hover {
