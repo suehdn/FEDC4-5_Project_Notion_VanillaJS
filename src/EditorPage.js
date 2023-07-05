@@ -1,29 +1,46 @@
-export default function EditorPage({ $target, initialState, onEditing }) {
-  const $page = document.createElement("div");
+import Editor from "./Editor.js";
+import { request } from "./api.js";
 
-  $target.appendChild($page);
-
-  this.state = initialState;
+export default function EditorPage({ $target }) {
+  this.state = {
+    selectedDocumentId: null,
+    documentContent: {},
+  };
 
   this.setState = (newState) => {
     this.state = newState;
-    $page.querySelector("[name=title]").value = this.state.title;
-    $page.querySelector("[name=content]").value = this.state.content;
+    this.state.selectedDocumentId
+      ? editor.setState(this.state.documentContent)
+      : editor.setState({ content: "", title: "", id: null });
   };
 
-  this.render = () => {
-    $page.innerHTML = `
-    <input class="editor-title" name="title" value="${this.state.title}"/>
-    <textarea name="content">${this.state.content}</textarea>
-    `;
-  };
+  let timer = null;
 
-  this.render();
+  const editor = new Editor({
+    $target,
+    initialState: {
+      title: "",
+      content: "",
+    },
+    onEditing: (documentInfo) => {
+      const { id, title, content } = documentInfo;
 
-  $page.addEventListener("input", (event) => {
-    const name = event.target.getAttribute("name");
+      $target.querySelector(
+        `div[data-document-id="${id}"]`
+      ).children[0].children[0].children[1].textContent = title;
+      if (timer !== null) {
+        clearTimeout(timer);
+      }
 
-    this.setState({ ...this.state, [name]: event.target.value });
-    onEditing(this.state);
+      timer = setTimeout(async () => {
+        await request(`/documents/${id}`, {
+          method: "PUT",
+          body: JSON.stringify({
+            title,
+            content,
+          }),
+        });
+      }, 2000);
+    },
   });
 }

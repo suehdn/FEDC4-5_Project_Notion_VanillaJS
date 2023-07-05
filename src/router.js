@@ -4,7 +4,6 @@ export const initRoute = (onRoute) => {
   window.addEventListener(ROUTE_CHANGE_EVENT_NAME, (event) => {
     const { nextUrl } = event.detail;
 
-    console.log(nextUrl);
     if (nextUrl) {
       history.pushState(null, null, nextUrl);
       onRoute();

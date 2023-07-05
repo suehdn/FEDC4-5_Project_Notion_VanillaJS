@@ -24,6 +24,10 @@ div.document-list {
   overflow: hidden;
 }
 
+button:hover {
+  cursor: pointer;
+}
+
 .editor-page {
   display: flex;
   flex-direction: column;
@@ -65,7 +69,7 @@ textarea {
 
 .document-title {
   display: flex;
-  width: 55%;
+  width: 60%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -83,7 +87,7 @@ button.remove-button {
   right: 10px;
 }
 
-button.add-button {
+.document > button.add-button {
   position: absolute;
   right: 45px;
 }
@@ -97,6 +101,23 @@ button.add-button {
   height: 100%;
 }
 
-.global-nav {
+.global-nav > .list {
   overflow-y: scroll;
+}
+/* 
+.list {
+  height: 100%;
+} */
+
+.root-button {
+  margin: 1px 4px;
+}
+
+.outliner:hover {
+  cursor: pointer;
+  background-color: #eee;
+}
+
+.outliner > button:hover {
+  background-color: #999999;
 }
