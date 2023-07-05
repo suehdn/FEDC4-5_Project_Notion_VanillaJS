@@ -36,6 +36,12 @@ export default class NotionEditorContent extends Component {
   setEvent() {
     const { onEdit } = this.props;
 
+    this.$contentEditor.addEventListener('paste', (e) => {
+      e.preventDefault();
+      const text = e.clipboardData.getData('text/plain');
+      document.execCommand('insertHTML', false, text);
+    });
+
     this.$contentEditor.addEventListener(
       'compositionupdate',
       ({ target, isTrusted }) => {
