@@ -1,5 +1,5 @@
-import { getDocuments } from '../api';
 import SideBar from '../components/SideBar';
+import { getFreshDocuments } from '../domain/getFreshDocuments';
 import validateComponent from '../utils/validateComponent';
 
 export default function HomePage({ targetElement }) {
@@ -10,7 +10,7 @@ export default function HomePage({ targetElement }) {
   };
 
   this.render = async () => {
-    const documents = await getDocuments();
+    const documents = await getFreshDocuments();
     targetElement.innerHTML = `
       <div class="side-bar"></div>
     `;

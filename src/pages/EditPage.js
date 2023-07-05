@@ -1,4 +1,4 @@
-import { getDocument, getDocuments } from '../api';
+import { getDocument } from '../api';
 import Document from '../components/Document';
 import SideBar from '../components/SideBar';
 import { localStorageKeys } from '../constants/localStorageKeys';
@@ -34,7 +34,7 @@ export default function EditPage({ targetElement }) {
       },
       handleAsyncEditTitle: async () => {
         setItem(localStorageKeys.DOCUMENTS_STALE_TIME, 0);
-        this.sideBar.setState({ ...this.sideBar.state, documents: await getDocuments() });
+        this.sideBar.setState({ ...this.sideBar.state, documents: await getFreshDocuments() });
       },
     });
   };
