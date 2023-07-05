@@ -1,6 +1,5 @@
 import { once } from "@Utils/once";
-import { setState } from "@Utils/stateSetters";
-import { isConstructor } from "@Utils/validation";
+import { isConstructor, isDocumentState } from "@Utils/validation";
 
 export default function Document({ $target }) {
   if (!isConstructor(new.target)) {
@@ -15,7 +14,18 @@ export default function Document({ $target }) {
     content: "",
   };
 
-  this.setState = (nextState) => setState(this.state, nextState, this.render);
+  this.setState = (nextState) => {
+    if (!isDocumentState(this.state)) {
+      return;
+    }
+
+    this.state = {
+      ...this.state,
+      ...nextState,
+    };
+
+    this.render();
+  };
 
   this.init = once(() => {
     $document.innerHTML = `

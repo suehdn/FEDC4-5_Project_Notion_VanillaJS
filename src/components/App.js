@@ -9,6 +9,7 @@ import "./App.css";
 export default function App({ $target }) {
   // 기본 레이아웃 요소 생성
   const $sidebar = new Sidebar({ $target });
+  registerStateSetter($sidebar);
 
   const $main = document.createElement("div");
   const $header = new Header({ $target: $main });
@@ -20,11 +21,11 @@ export default function App({ $target }) {
   $target.appendChild($main);
 
   // route 가능한 요소 등록
-  const home = new Home({ $target: $content });
-  registerStateSetter(home);
+  const $home = new Home({ $target: $content });
+  registerStateSetter($home);
 
-  const hotionDocument = new Document({ $target: $content });
-  registerStateSetter(hotionDocument);
+  const $document = new Document({ $target: $content });
+  registerStateSetter($document);
 
   const route = () => router({ $target: $content });
   window.addEventListener("load", route);

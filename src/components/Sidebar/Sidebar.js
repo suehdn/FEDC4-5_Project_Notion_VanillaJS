@@ -1,4 +1,4 @@
-import { isConstructor } from "@Utils/validation";
+import { isConstructor, isSidebarState } from "@Utils/validation";
 import "./Sidebar.css";
 
 export default function Sidebar({ $target }) {
@@ -9,6 +9,18 @@ export default function Sidebar({ $target }) {
   const $sidebar = document.createElement("aside");
   $sidebar.className = "sidebar";
   $target.appendChild($sidebar);
+
+  this.state = [];
+
+  this.setState = (nextState) => {
+    if (!isSidebarState(nextState)) {
+      return;
+    }
+
+    this.state = nextState;
+
+    this.render();
+  };
 
   this.render = () => {
     $sidebar.innerHTML = `
