@@ -1,3 +1,6 @@
+import { push } from '../router.js';
+import { request } from '../util/api.js';
+
 export default function PostEditor({ $target, initialState, onEditing }) {
   const $editor = document.createElement('div');
 
@@ -5,7 +8,8 @@ export default function PostEditor({ $target, initialState, onEditing }) {
 
   $editor.innerHTML = `
         <div name="title" contentEditable="true" style="width : 600px; height: 30px; box-sizing : border-box; border : 1px solid black;"></div>
-        <div name="content" contentEditable="true" style="width : 600px; height : 600px; box-sizing : border-box; padding : 8px; margin-top : 10px; border : 1px solid black;"></div>`;
+        <div name="content" contentEditable="true" style="width : 600px; height : 600px; box-sizing : border-box; padding : 8px; margin-top : 10px; border : 1px solid black;"></div>
+        <button>삭제</button>`;
 
   $target.appendChild($editor);
 
@@ -72,5 +76,17 @@ export default function PostEditor({ $target, initialState, onEditing }) {
     };
 
     this.setState(nextState);
+  });
+
+  $editor.querySelector('button').addEventListener('click', async () => {
+    const { pathname } = window.location;
+    const [, , id] = pathname.split('/');
+
+    if (confirm('해당 게시글을 삭제하시겠습니까?')) {
+      await request(`/${id}`, {
+        method: 'DELETE',
+      });
+      push('/');
+    }
   });
 }
