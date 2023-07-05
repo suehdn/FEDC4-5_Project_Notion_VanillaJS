@@ -5,7 +5,7 @@ import { updateDocument } from "../../api"
 
 import { getDocumentsContent } from "../../api"
 
-export default function MainContent({ $target, initialState = {}, renderApp }) {
+export default function MainContent({ $target, initialState = {}, renderApp, routeApp }) {
   this.state = initialState
   let timer = null
 
@@ -14,6 +14,7 @@ export default function MainContent({ $target, initialState = {}, renderApp }) {
       $target,
       initialState: this.state,
       renderApp,
+      routeApp,
       onEditing: async (content) => {
         $target.querySelector("#is-saved").classList.remove("saved")
         $target.querySelector("#is-saved").innerText = "저장되지 않음"
@@ -30,7 +31,7 @@ export default function MainContent({ $target, initialState = {}, renderApp }) {
           $target.querySelector("#is-saved").innerText = "저장됨"
           $target.querySelector("#is-saved").classList.add("saved")
           renderApp()
-        }, 2000)
+        }, 1000)
       },
     })
 

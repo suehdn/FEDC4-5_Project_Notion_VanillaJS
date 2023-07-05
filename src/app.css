@@ -18,6 +18,15 @@
   color: #000;
 }
 
+.nav-bar > .title {
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.nav-bar > .title:hover {
+  cursor: pointer;
+}
+
 .main-container {
   display: flex;
   flex-direction: row;

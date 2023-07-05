@@ -10,6 +10,7 @@ export default function SideBar({ $target, loadDocument }) {
     new NewParentDocButton({
       $target: $target,
       renderSideBar: this.render,
+      loadDocument,
     })
     new DocList({
       $target: $target,

@@ -19,7 +19,7 @@ export default function DocList({ $target, initialState = [], renderSideBar, loa
       })
       $container.appendChild($text)
       $child.appendChild($container)
-      new newDocButton({ $target: $container, parentId: doc.id, renderSideBar })
+      new newDocButton({ $target: $container, parentId: doc.id, renderSideBar, loadDocument })
 
       if (doc.documents.length) {
         new DocList({ $target: $child, initialState: doc.documents, renderSideBar, loadDocument })
