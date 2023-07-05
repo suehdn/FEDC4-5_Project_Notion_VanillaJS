@@ -1,7 +1,14 @@
 .notion-editor {
   display: flex;
   flex-direction: column;
+  gap: 20px;
+
   width: 100%;
+  max-width: 900px;
   height: 100%;
-  padding: 20px 10px;
+
+  margin: 70px auto 0 auto;
+  padding: 0px 96px;
+
+  transition: 0.5s ease;
 }
