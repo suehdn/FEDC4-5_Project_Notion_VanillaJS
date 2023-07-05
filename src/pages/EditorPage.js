@@ -28,14 +28,15 @@ export default function EditorPage({$target, initialState}){
         initialState :{
             title : "",
             content :""},
-        onEditing : (document)=>{
+        onEditing : (document,isTitle)=>{
             if(timer !== null){
                 clearTimeout(timer)
             }
             timer = setTimeout(async ()=>{
-                const newDocument = await putDocument(document)
-                //타이틀이 다를때만 업데이트 될수있도록 하는 방법 고민해보기!
-                update()
+                await putDocument(document)
+                if(isTitle){
+                    update()
+                }
             }, 800)
         }
     })

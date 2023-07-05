@@ -24,6 +24,7 @@ export default function App({$target}){
         }
     } 
     documentPage.render()
+    this.route()
 
     initRouter(()=>{
         this.route()

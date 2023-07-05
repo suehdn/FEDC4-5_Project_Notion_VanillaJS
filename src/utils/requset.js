@@ -50,12 +50,13 @@ export const fetchEditor = async(documentId)=>{
     }
 }
 
+const findDocument = (lists, documentId) =>{
+    return lists.find(({id,documents})=> id == documentId ? id : findDocument(documents,documentId))
+}
+
 //전체 document를 불러옵니다.
 export const fetchDocumentLists = async() =>{
     const lists = await request("/documents")
     return lists
 }
 
-const findDocument = (lists, documentId) =>{
-    return lists.find(({id,documents})=> id == documentId ? id : findDocument(documents,documentId))
-}

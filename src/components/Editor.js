@@ -25,6 +25,7 @@ export default function Editor({$target, initialState, onEditing}){
     $editor.addEventListener("keyup", (e)=>{ 
         const {target} = e
         const name = target.getAttribute("class")
+        const isTitle = name === "title"
 
         if(this.state[name] !== undefined){
             const nextState = {
@@ -32,7 +33,7 @@ export default function Editor({$target, initialState, onEditing}){
                 [name] : target.value 
             }
             this.setState(nextState)
-            onEditing(this.state)
+            onEditing(this.state,isTitle)
         }
     })
 

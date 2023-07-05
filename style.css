@@ -36,12 +36,28 @@ button{
     height: 100vh;
     background-color: rgb(247, 247, 247);
     overflow-y: scroll;
-    white-space: nowrap 
+    white-space: nowrap;
+    position: relative;
 }
 
-.document__page::-webkit-scrollbar-track{
-    background-color: red
+::-webkit-scrollbar{
+    width: 10px;
 }
+
+::-webkit-scrollbar-track{
+    background-color: rgb(241, 241, 241);
+}
+
+::-webkit-scrollbar-thumb {
+    background: #e0e0e0; /* 스크롤바의 색상 설정 */
+    border-radius: 5px; /* 스크롤바의 둥글기 설정 */
+  }
+  
+
+::-webkit-scrollbar-thumb:hover {
+    background: #aeaeae; 
+  }
+
 
 .document__title{
     display: flex;
@@ -55,6 +71,16 @@ button{
 
 .hide{
     display: none;
+}
+
+.footer{
+    width: 300px;
+    border-top: 1px solid rgb(216, 216, 216);
+    padding: 15px;
+    margin-top: 15px;
+    position: absolute;
+    bottom: 0px;
+
 }
 
 /* 에디터 */
