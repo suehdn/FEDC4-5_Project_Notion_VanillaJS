@@ -1,3 +1,5 @@
+import { DOCUMENT } from '@consts/target';
+
 import Component from '@core/Component';
 
 import NotionEditor from '@components/Editor/NotionEditor';
@@ -20,7 +22,7 @@ export default class NotionDocument extends Component {
 
   initComponent() {
     this.$document = document.createElement('div');
-    this.$document.className = 'notion-document';
+    this.$document.className = DOCUMENT.ROOT;
 
     this.$target.appendChild(this.$document);
   }

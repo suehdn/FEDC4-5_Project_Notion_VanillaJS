@@ -1,3 +1,5 @@
+import { SIDEBAR } from '@consts/target';
+
 import { createDocument } from '@api/document';
 
 import { history } from '@utils/router';
@@ -18,14 +20,14 @@ export default class NotionSidebar extends Component {
 
   initComponent() {
     this.$sidebar = document.createElement('nav');
-    this.$sidebar.className = 'notion-sidebar';
+    this.$sidebar.className = SIDEBAR.ROOT;
 
     this.$target.appendChild(this.$sidebar);
   }
 
   initChildComponents() {
     this.$createButton = new Button(this.$sidebar, {
-      className: 'document-create-button',
+      className: SIDEBAR.CREATE_BUTTON,
       textContent: 'add a document',
       onClick: () => {
         this.handleCreateButtonClick();

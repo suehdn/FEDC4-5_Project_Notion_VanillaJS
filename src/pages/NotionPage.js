@@ -1,3 +1,5 @@
+import { TARGET } from '@consts/target';
+
 import { getDocument, getDocumentList, updateDocument } from '@api/document';
 
 import { setItem } from '@utils/localStorage';
@@ -12,7 +14,7 @@ import './NotionPage.css';
 export default class NotionPage extends Component {
   initComponent() {
     this.$page = document.createElement('div');
-    this.$page.className = 'notion-page';
+    this.$page.className = TARGET.PAGE.NOTION;
     this.$target.appendChild(this.$page);
   }
 

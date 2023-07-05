@@ -2,6 +2,8 @@ import AddIcon from '@public/add.svg';
 import ExpandIcon from '@public/expand.svg';
 import TrashIcon from '@public/trash.svg';
 
+import { SIDEBAR } from '@consts/target';
+
 import Component from '@core/Component';
 
 import './DocumentListItem.css';
@@ -14,15 +16,15 @@ export default class DocumentListItem extends Component {
     this.$documentListItem.dataset.id = documentItem.id;
 
     this.$documentListItem.innerHTML = `
-      <button class="document-list-item-expand-button">
+      <button class="${SIDEBAR.DOCUMENT_LIST_ITEM.EXPAND_BUTTON}">
         <img src="${ExpandIcon}" alt="Image" heigth="12" width="12">
       </button>
-      <a class="document-list-item-title">${documentItem.title}</a>
-      <div class="document-list-button-container">
-        <button class="document-delete-button">
+      <a class="${SIDEBAR.DOCUMENT_LIST_ITEM.TITLE}">${documentItem.title}</a>
+      <div class="${SIDEBAR.DOCUMENT_LIST_ITEM.BUTTON_CONTAINER.ROOT}">
+        <button class="${SIDEBAR.DOCUMENT_LIST_ITEM.BUTTON_CONTAINER.DELETE_BUTTON}">
           <img src="${TrashIcon}" alt="Image" heigth="14" width="14">
         </button>
-        <button class="document-create-inside-button">
+        <button class="${SIDEBAR.DOCUMENT_LIST_ITEM.BUTTON_CONTAINER.CREATE_INSIDE_BUTTON}">
           <img src="${AddIcon}" alt="Image" heigth="14" width="14">
         </button>
       </div>

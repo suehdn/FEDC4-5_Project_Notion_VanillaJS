@@ -1,3 +1,5 @@
+import { SIDEBAR } from '@consts/target';
+
 import { createDocument, deleteDocument } from '@api/document';
 
 import { history } from '@utils/router';
@@ -17,7 +19,7 @@ export default class DocumentList extends Component {
 
   initComponent() {
     this.$documentList = document.createElement('ul');
-    this.$documentList.className = 'document-list';
+    this.$documentList.className = SIDEBAR.DOCUMENT_LIST;
 
     this.$target.appendChild(this.$documentList);
   }
@@ -40,17 +42,27 @@ export default class DocumentList extends Component {
       const { id } = $li.dataset;
 
       const $button = target.closest('button');
+      if (!$button) {
+        history.push(`/documents/${id}`);
+        return;
+      }
       const { className } = $button;
 
-      if (className === 'document-delete-button') {
+      if (
+        className === SIDEBAR.DOCUMENT_LIST_ITEM.BUTTON_CONTAINER.DELETE_BUTTON
+      ) {
         this.hanldeDeleteButtonClick(id);
         return;
       }
 
-      if (className === 'document-create-inside-button') {
+      if (
+        className ===
+        SIDEBAR.DOCUMENT_LIST_ITEM.BUTTON_CONTAINER.CREATE_INSIDE_BUTTON
+      ) {
         this.handleCreateIndsideButtonClick(id);
         return;
       }
+
       history.push(`/documents/${id}`);
     });
   }
