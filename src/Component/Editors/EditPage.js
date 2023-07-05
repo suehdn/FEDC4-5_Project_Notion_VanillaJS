@@ -1,6 +1,6 @@
 import Editor from './Editor.js'
 import { request } from '../../Domain/api.js'
-import { validateNew, validateString } from '../../utils/validation.js'
+import { validateNew } from '../../utils/validation.js'
 
 export default function EditPage({ $target, initialState, update }) {
     validateNew(new.target)
