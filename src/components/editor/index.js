@@ -28,7 +28,7 @@ export default function Editor({ $target, initialState = {}, onEditing, renderAp
     if (!isInitialize) {
       $editor.innerHTML = `
         <div class='doc-nav'>
-          <input type="text" class='doc-title' name="title" value=${this.state.title} />
+          <input type="text" class='doc-title' name="title" value="${this.state.title}" />
           <span id='is-saved'></span>
           <button class='doc-delete-button'>삭제</button>
         </div>
