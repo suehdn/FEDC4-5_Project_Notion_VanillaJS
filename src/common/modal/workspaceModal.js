@@ -1,7 +1,7 @@
 import documentAdapter from "../../api/index"
 import storage from "../../utils/storage"
 import validateUserName from "../../function/validateUserName"
-import { userName } from "../../config/index"
+import { userName } from "../../config/apiConfig"
 
 export default function WorkSpaceModal({ $target, renderApp, loadDocument }) {
   const onClickWorkSpace = (data) => {
