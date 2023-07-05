@@ -34,10 +34,10 @@ export default function MainContent({ $target, initialState = {}, renderApp }) {
       },
     })
 
-    new DocNext({
-      $target,
-      initialState: this.state,
-    })
+    // new DocNext({
+    //   $target,
+    //   initialState: this.state,
+    // })
   }
 
   this.setState = async (nextState) => {
