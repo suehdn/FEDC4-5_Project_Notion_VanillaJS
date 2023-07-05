@@ -4,6 +4,7 @@ export default function Editor({ $target, initialState = {}, onEditing, renderAp
   this.state = initialState
   let isInitialize = false
   const $editor = document.createElement("div")
+
   $editor.className = "editor"
   $target.appendChild($editor)
 
@@ -28,6 +29,7 @@ export default function Editor({ $target, initialState = {}, onEditing, renderAp
       $editor.innerHTML = `
         <div class='doc-nav'>
           <input type="text" class='doc-title' name="title" value=${this.state.title} />
+          <span id='is-saved'></span>
           <button class='doc-delete-button'>삭제</button>
         </div>
         <textarea name="content" style="width:100%; flex:1;">${this.state.content}</textarea>
@@ -48,17 +50,9 @@ export default function Editor({ $target, initialState = {}, onEditing, renderAp
 
   $editor.addEventListener("keyup", (e) => {
     const { target } = e
+    const { name, value } = target
 
-    const name = target.getAttribute("name")
-
-    if (this.state[name] !== undefined) {
-      const nextState = {
-        ...this.state,
-        [name]: target.value,
-      }
-
-      this.setState(nextState)
-      onEditing(nextState)
-    }
+    this.setState({ ...this.state, [name]: value })
+    onEditing({ title: this.state.title, content: this.state.content })
   })
 }
