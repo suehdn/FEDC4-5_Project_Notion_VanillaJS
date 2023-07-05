@@ -7,6 +7,10 @@ export const TARGET = {
 
 export const SIDEBAR = {
   ROOT: 'notion-sidebar',
+  CONTAINER: {
+    BUTTON: 'sidebar-button-container',
+    LIST: 'sidebar-document-list-container',
+  },
   CREATE_BUTTON: 'document-create-button',
   DOCUMENT_LIST: 'document-list',
   DOCUMENT_LIST_ITEM: {

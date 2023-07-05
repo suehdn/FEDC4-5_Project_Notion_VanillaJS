@@ -6,9 +6,9 @@ import { history } from '@utils/router';
 
 import Component from '@core/Component';
 
-import Button from '@components/Button/Button';
 import DocumentList from '@components/DocumentList/DocumentList';
 
+import SidebarCreateButton from './CreateButton/SidebarCreateButton';
 import './NotionSidebar.css';
 
 export default class NotionSidebar extends Component {
@@ -26,13 +26,20 @@ export default class NotionSidebar extends Component {
   }
 
   initChildComponents() {
-    this.$createButton = new Button(this.$sidebar, {
-      className: SIDEBAR.CREATE_BUTTON,
-      textContent: 'add a document',
+    this.$createButton = new SidebarCreateButton(this.$sidebar, {
+      textContent: 'New document',
       onClick: this.handleCreateButtonClick.bind(this),
     });
 
-    this.$documentList = new DocumentList(this.$sidebar);
+    const $listContainer = document.createElement('div');
+    $listContainer.className = SIDEBAR.CONTAINER.LIST;
+    $listContainer.innerHTML = `
+      <p>documents</p>
+    `;
+
+    this.$sidebar.appendChild($listContainer);
+
+    this.$documentList = new DocumentList($listContainer);
   }
 
   async handleCreateButtonClick() {
