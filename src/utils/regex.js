@@ -4,6 +4,9 @@ import { htmlEntities, reservedCharacters } from '@consts/html';
 export const getHTMLTagRegex = (tagName, options = 'g') =>
   new RegExp(`<${tagName}>(.*?)</${tagName}>`, options);
 
+export const getHTMLTagFullMatchRegex = (tagName) =>
+  new RegExp(`^<${tagName}>(.*?)</${tagName}>$`);
+
 export const getHTMLEntityRegex = (options = 'g') =>
   new RegExp(Object.keys(reservedCharacters).join('|'), options);
 

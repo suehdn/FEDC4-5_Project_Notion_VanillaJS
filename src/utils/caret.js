@@ -1,5 +1,7 @@
 import CARET from '@consts/caret';
 
+import { getCaretSpanTagRegex } from './regex';
+
 const savePosition = () => {
   const $caret = document.createElement('span');
   $caret.id = CARET.ID;
@@ -23,9 +25,20 @@ const setPosition = () => {
   range.deleteContents();
 };
 
+const caretSpanTagRegex = getCaretSpanTagRegex();
+
+const getStringWithoutCaret = (string) => string.replace(caretSpanTagRegex, '');
+
+const getCaretPositionInString = (string) => {
+  const pos = caretSpanTagRegex.exec(string);
+  return pos === null ? 0 : pos.index;
+};
+
 const Caret = {
   savePosition,
   setPosition,
+  getStringWithoutCaret,
+  getCaretPositionInString,
 };
 
 export default Caret;

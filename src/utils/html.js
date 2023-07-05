@@ -1,6 +1,12 @@
+import CARET from '@consts/caret';
 import { reservedCharacters } from '@consts/html';
 
-import { getHTMLEntityRegex, getHTMLTagRegex } from './regex';
+import Caret from './caret';
+import {
+  getHTMLEntityRegex,
+  getHTMLTagFullMatchRegex,
+  getHTMLTagRegex,
+} from './regex';
 
 const htmlEntityRegex = getHTMLEntityRegex();
 
@@ -37,5 +43,29 @@ export default class HTMLString extends String {
     }
 
     return tags;
+  }
+
+  isEmptyLine() {
+    return this.valueOf() === '<br>';
+  }
+
+  isEmptyLineWithCaret() {
+    return this.valueOf() === `${CARET.SPAN(CARET.ID)}<br>`;
+  }
+
+  isHeading(level = 1) {
+    if (level < 1 || level > 6) return false;
+    const noneCaretString = new HTMLString(
+      Caret.getStringWithoutCaret(this.valueOf())
+    );
+
+    const headingRegex = getHTMLTagFullMatchRegex(`h${level}`);
+    return headingRegex.exec(noneCaretString.replaceHTMLEntities().valueOf());
+  }
+
+  toMarkDownHeading(level = 1) {
+    const headingRegex = getHTMLTagFullMatchRegex(`h${level}`);
+    const [, heading] = headingRegex.exec(this.replaceHTMLEntities().valueOf());
+    return `${'#'.repeat(level)} ${heading}`;
   }
 }

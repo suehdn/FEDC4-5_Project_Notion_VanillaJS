@@ -3,18 +3,8 @@ import CARET from '@consts/caret';
 import Caret from './caret';
 import HTMLString from './html';
 import MarkDownString from './markdown';
-import { getCaretSpanTagRegex } from './regex';
 
 let caretPosition = 0;
-
-const caretSpanTagRegex = getCaretSpanTagRegex();
-
-const getCaretPositionInString = (string) => {
-  const pos = caretSpanTagRegex.exec(string);
-  return pos === null ? 0 : pos.index;
-};
-
-const removeCaretFromString = (string) => string.replace(caretSpanTagRegex, '');
 
 const parse = (string) => {
   if (!string) return '';
@@ -33,21 +23,14 @@ const parse = (string) => {
   const html = markDownString
     .splitWithNewLine()
     .map((line) => {
-      if (line.indexOf('# ') === 0) {
-        return `<h1>${line.substring(2)}</h1>`;
-      }
-      if (line.indexOf('## ') === 0) {
-        return `<h2>${line.substring(3)}</h2>`;
-      }
-      if (line.indexOf('### ') === 0) {
-        return `<h3>${line.substring(4)}</h3>`;
-      }
-      if (line.valueOf() === CARET.SPAN(CARET.ID)) {
+      if (line.isHeading(1)) return line.toHTMLHeading(1);
+      if (line.isHeading(2)) return line.toHTMLHeading(2);
+      if (line.isHeading(3)) return line.toHTMLHeading(3);
+
+      if (line.valueOf() === CARET.SPAN(CARET.ID))
         return `${CARET.SPAN(CARET.ID)}<br>`;
-      }
-      if (line.valueOf() === '') {
-        return '<br>';
-      }
+      if (line.valueOf() === '') return '<br>';
+
       return `${line}`;
     })
     .map((line) => `<div>${line}</div>`)
@@ -64,18 +47,20 @@ const stringify = (html) => {
   const string = htmlString
     .splitWithTag('div')
     .map((line) => {
-      // div 내부 글자 parsing
-      if (line.valueOf() === '<br>') return '';
-      if (line.valueOf() === `${CARET.SPAN(CARET.ID)}<br>`)
-        return CARET.SPAN(CARET.ID);
-      // TODO: h1, h2, h3 태그인지 확인
+      if (line.isEmptyLine()) return '';
+      if (line.isEmptyLineWithCaret()) return CARET.SPAN(CARET.ID);
+
+      if (line.isHeading(1)) return line.toMarkDownHeading(1);
+      if (line.isHeading(2)) return line.toMarkDownHeading(2);
+      if (line.isHeading(3)) return line.toMarkDownHeading(3);
+
       // TODO: list 태그인지 확인
       return line.replaceHTMLEntities().replaceAll('<br>', '\n');
     })
     .join('\n');
 
-  caretPosition = getCaretPositionInString(string);
-  const stringWithoutCaret = removeCaretFromString(string);
+  caretPosition = Caret.getCaretPositionInString(string);
+  const stringWithoutCaret = Caret.getStringWithoutCaret(string);
 
   return stringWithoutCaret;
 };
