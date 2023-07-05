@@ -21,7 +21,6 @@ export default function DocumentList({ $target, initialState }) {
           `<div id="${id}" class="listItem isNotSelected" style="margin-bottom : 10px;"><button class="arrow">▶️</button>${title}<button class="addDoc">➕</button></div>`
       )
       .join('')}`;
-    console.log('hello im here');
     this.setState({ template, documents });
   };
 
