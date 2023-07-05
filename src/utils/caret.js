@@ -7,12 +7,17 @@ const savePosition = () => {
   const selection = window.getSelection();
   const range = selection.getRangeAt(0);
   range.insertNode($caret);
+
+  const { focusNode } = selection;
+  focusNode.blur();
 };
 
 const setPosition = () => {
   const $caret = document.getElementById(CARET.ID);
 
   if (!$caret) return;
+
+  $caret.focus();
 
   const range = document.createRange();
   range.selectNode($caret);

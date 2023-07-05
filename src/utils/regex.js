@@ -11,3 +11,5 @@ export const getReservedCharacterRegex = (options = 'g') =>
   new RegExp(Object.keys(htmlEntities).join('|'), options);
 
 export const getCaretSpanTagRegex = () => new RegExp(CARET.SPAN(CARET.ID));
+
+export const getKoreanRegex = () => /[\u3131-\uD79D]/;

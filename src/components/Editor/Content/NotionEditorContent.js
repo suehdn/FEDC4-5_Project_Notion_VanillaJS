@@ -1,4 +1,5 @@
 import Editor from '@utils/editor';
+import { getKoreanRegex } from '@utils/regex';
 
 import Component from '@core/Component';
 
@@ -23,22 +24,70 @@ export default class NotionEditorContent extends Component {
     this.$target.appendChild(this.$contentEditor);
   }
 
+  handleEdit({ target, callback }) {
+    Editor.saveCaretPosition();
+
+    const html = target.innerHTML;
+    const string = Editor.stringify(html);
+
+    callback('content', string);
+  }
+
   setEvent() {
     const { onEdit } = this.props;
 
-    this.$contentEditor.addEventListener('input', ({ target }) => {
-      if (this.timer !== null) {
-        clearTimeout(this.timer);
+    this.$contentEditor.addEventListener(
+      'compositionupdate',
+      ({ target, isTrusted }) => {
+        if (isTrusted === false) return;
+
+        if (this.timer !== null) clearTimeout(this.timer);
+
+        this.timer = setTimeout(async () => {
+          this.handleEdit({ target, callback: onEdit });
+        }, 1000);
       }
-      this.timer = setTimeout(async () => {
-        Editor.saveCaretPosition();
+    );
 
-        const html = target.innerHTML;
-        const string = Editor.stringify(html);
+    this.$contentEditor.addEventListener(
+      'compositionend',
+      ({ target, isTrusted }) => {
+        if (isTrusted === false) return;
 
-        onEdit('content', string);
-      }, 1000);
-    });
+        if (this.timer !== null) clearTimeout(this.timer);
+
+        this.timer = setTimeout(async () => {
+          this.handleEdit({ target, callback: onEdit });
+        }, 1000);
+      }
+    );
+
+    this.$contentEditor.addEventListener(
+      'input',
+      ({ target, isTrusted, isComposing, data }) => {
+        if (isTrusted === false) return;
+
+        if (isComposing) return;
+
+        const koreanRegex = getKoreanRegex();
+        const isKorean = koreanRegex.exec(data) !== null;
+
+        if (isKorean) {
+          this.$contentEditor.blur();
+          const { content } = this.state;
+          this.setState({ content });
+          this.$contentEditor.focus();
+
+          return;
+        }
+
+        if (this.timer !== null) clearTimeout(this.timer);
+
+        this.timer = setTimeout(async () => {
+          this.handleEdit({ target, callback: onEdit });
+        }, 1000);
+      }
+    );
   }
 
   render() {
