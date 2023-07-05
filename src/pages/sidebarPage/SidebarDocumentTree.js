@@ -1,3 +1,4 @@
+import { editDocumentMessages } from '../../constants';
 import { push } from '../../domain/router';
 import { validateArray, validateComponent } from '../../utils/validation';
 
@@ -55,8 +56,10 @@ export default function SidebarDocumentTree({ $target, initialState, addDocument
     const id = $li?.dataset.id;
     if (className) {
       if (className === 'delete-button') {
-        deleteDocument(id);
-        return;
+        if (confirm(`${editDocumentMessages.CONFIRM_DELETE_DOCUMENT}`)) {
+          deleteDocument(id);
+          return;
+        }
       } else {
         addDocument(id, className);
         return;

@@ -25,4 +25,5 @@ export const editDocumentMessages = {
   INITIAL_DOCUMENT_TITLE: '제목 없음',
   DOCUMENT_TITLE_PLACEHOLDER: '제목을 입력하세요',
   DOCUMENT_CONTENT_PLACEHOLDER: '내용을 입력하세요',
+  CONFIRM_DELETE_DOCUMENT: '해당 문서를 삭제하시겠습니까?',
 };
