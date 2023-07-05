@@ -15,6 +15,7 @@ module.exports = (_, argv) => {
         '@consts': path.resolve(__dirname, 'src/consts'),
         '@core': path.resolve(__dirname, 'src/core'),
         '@pages': path.resolve(__dirname, 'src/pages'),
+        '@public': path.resolve(__dirname, '/public'),
         '@utils': path.resolve(__dirname, 'src/utils'),
       },
     },
@@ -42,6 +43,10 @@ module.exports = (_, argv) => {
           test: /\.js$/i,
           exclude: /node_modules/,
           use: 'babel-loader',
+        },
+        {
+          test: /\.svg$/i,
+          type: 'asset/resource',
         },
         {
           test: /\.css$/i,

@@ -5,6 +5,7 @@ module.exports = {
   singleQuote: true,
 
   importOrder: [
+    '^@public/(.*)$',
     '^@consts/(.*)$',
     '^@api/(.*)$',
     '^@utils/(.*)$',

@@ -35,10 +35,12 @@ export default class DocumentList extends Component {
   setEvent() {
     this.$documentList.addEventListener('click', ({ target }) => {
       const $li = target.closest('li');
-      if (!$li) return;
 
+      if (!$li) return;
       const { id } = $li.dataset;
-      const { className } = target;
+
+      const $button = target.closest('button');
+      const { className } = $button;
 
       if (className === 'document-delete-button') {
         this.hanldeDeleteButtonClick(id);

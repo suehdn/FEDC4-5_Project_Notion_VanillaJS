@@ -11,6 +11,7 @@ module.exports = {
           '@consts': './src/consts',
           '@core': './src/core',
           '@pages': './src/pages',
+          '@public': './public',
           '@utils': './src/utils',
         },
       },
