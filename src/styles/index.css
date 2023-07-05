@@ -4,6 +4,7 @@
 * {
   font-family: 'Open Sans', sans-serif;
   box-sizing: border-box;
+  color: #4e4e4e;
 }
 
 html,
@@ -17,11 +18,20 @@ ul {
 }
 
 li {
-  padding-bottom: 0.3rem;
+  padding-bottom: 0.5rem;
   cursor: pointer;
   display: inline-block;
   max-width: max-content;
 }
+/* h1 {
+  font-size: 30px;
+}
+h2 {
+  font-size: 25px;
+}
+h3 {
+  font-size: 20px;
+} */
 
 #app {
   display: flex;
@@ -138,9 +148,7 @@ li {
   width: 20px;
   height: 20px;
   cursor: pointer;
-  background-color: #00d26a;
   border-style: none;
-  color: white;
   border-radius: 0.3rem;
   font-size: 15px;
   font-weight: bold;
@@ -155,4 +163,8 @@ li {
   font-size: 14px;
   margin-left: 0.8rem;
   margin-top: 0.5rem;
+  position: fixed;
+  bottom: 10px;
+  left: 100px;
+  transform: translateX(-50%);
 }
