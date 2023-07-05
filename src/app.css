@@ -113,6 +113,18 @@ ul.doc-list {
   padding: 20px;
 }
 
+.new-parent-doc-button {
+  margin-left: 20px;
+  background-color: transparent;
+  border-radius: 4px;
+}
+
+.new-parent-doc-button:hover {
+  background-color: #ccc;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
 .make-document-button {
   border-radius: 4px;
   background: transparent;

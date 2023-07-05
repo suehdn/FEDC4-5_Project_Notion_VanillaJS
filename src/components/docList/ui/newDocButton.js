@@ -3,7 +3,7 @@ import { createDocument } from "../../../api"
 
 export default function newDocButton({ $target, parentId, renderSideBar }) {
   const onClickNewDoc = async () => {
-    await createDocument({ title: "제목", parentId: parentId })
+    await createDocument({ title: "새 문서", parentId: parentId })
     await renderSideBar()
     history.pushState(null, null, `/documents/${parentId}`)
   }
