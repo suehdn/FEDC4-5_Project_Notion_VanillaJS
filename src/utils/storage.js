@@ -4,6 +4,7 @@ export const setItem = (key, value) => {
   const stringifiedValue = JSON.stringify(value);
   storage.setItem(key, stringifiedValue);
 };
+
 export const getItem = (key, defualtValue) => {
   try {
     const storedValue = storage.getItem(key);
@@ -14,4 +15,7 @@ export const getItem = (key, defualtValue) => {
     return defualtValue;
   }
 };
-export const removeItem = (key) => {};
+
+export const removeItem = (key) => {
+  storage.removeItem(key);
+};

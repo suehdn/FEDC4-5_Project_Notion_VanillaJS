@@ -11,21 +11,11 @@ export default class ListPage {
       initialState: [],
       onClickButton: (target) => {
         if (target.tagName === "LI") push(target.dataset.id);
-        // 생성 라우트 처리
-        createDocumentByTarget({
-          target,
-          onSubmit: () => this.render(),
-        });
-
-        deleteDocumentByTarget({
-          target,
-          onClick: () => {
-            this.render();
-          },
-        });
+        createDocumentByButton(target, () => this.render());
+        deleteDocumentByButton(target, () => this.render());
       },
     });
-    // page에서의 render와  setState에 대해 생각해보자, page는 component와 같이 구성해야되는가?
+
     this.render();
   }
 
@@ -35,16 +25,14 @@ export default class ListPage {
   };
 }
 
-//class 수정
-const createDocumentByTarget = ({ target, onSubmit }) => {
-  const { classList } = target;
-  if ((classList.contains("button__add-root") || classList.contains("button__add-document")) && !classList.contains("active")) {
-    const $li = target.closest("li");
+const createDocumentByButton = (button, onSubmit) => {
+  const { classList } = button;
+  if ((classList.contains("list__add-button--root") || classList.contains("list__add-button--document")) && !classList.contains("active")) {
+    const $li = button.closest("li");
     const $form = document.createElement("form");
     const $input = document.createElement("input");
-
     $form.appendChild($input);
-    target.before($form);
+    button.before($form);
     classList.add("active");
     $input.focus();
 
@@ -52,31 +40,35 @@ const createDocumentByTarget = ({ target, onSubmit }) => {
       $form.remove();
       classList.remove("active");
     });
-    // 반복과정 처리
+
     $form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const title = $input.value;
-
-      if ($li) {
-        const { id } = $li.dataset;
-        const { id: newId } = await createDocument(title, id);
-        push(newId);
-      } else {
-        const { id: newId } = await createDocument(title);
-        push(newId);
+      const title = $input.value.trim();
+      if (title === "") {
+        alert("title을 입력해주요");
+        return;
       }
-
+      createAndPush(title, $li);
       onSubmit();
       $input.blur();
     });
   }
 };
 
-const deleteDocumentByTarget = async ({ target, onClick }) => {
-  if (target.classList.contains("button__delete")) {
-    const { pathname } = location;
-    const [_, api, nowId] = pathname.split("/");
-    const $li = target.closest("li");
+const createAndPush = async (title, parent) => {
+  if (parent) {
+    const { id } = parent.dataset;
+    const { id: createdId } = await createDocument(title, id);
+    push(createdId);
+  } else {
+    const { id: createdId } = await createDocument(title);
+    push(createdId);
+  }
+};
+
+const deleteDocumentByButton = async (button, onClick) => {
+  if (button.classList.contains("list__add-button--delete")) {
+    const $li = button.closest("li");
     const { id } = $li.dataset;
     if (id) {
       await deleteDocument(`/${id}`);

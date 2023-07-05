@@ -1,26 +1,45 @@
+import { validateListState } from "../utils/validation.js";
+
 export default class DocumentList {
-  constructor({ $target, initialState }) {
+  constructor({ $target, initialState, onClickButton }) {
     this.state = initialState;
     this.$target = $target;
+    this.$page = $target.querySelector(".list");
+
+    this.$page.addEventListener("click", (e) => {
+      const { target } = e;
+      onClickButton(target);
+    });
 
     this.render();
   }
+
   setState = (nextState) => {
-    this.state = nextState;
+    try {
+      validateListState(nextState);
+      this.state = nextState;
+    } catch (error) {
+      console.log(error);
+      this.state = [];
+    }
     this.render();
   };
 
   render = () => {
     const stateHTML = this.#convertIntoHTML(this.state);
-    this.$target.innerHTML = stateHTML;
+    this.$page.innerHTML = `<button class="list__add-button--root">add RootDocument</button>${stateHTML}`;
+    this.$target.appendChild(this.$page);
   };
 
   #convertIntoHTML = (state) => {
-    return `<ul>
+    return `
+    <ul>
     ${state
       .map(
-        (document) => `<li data-id=${document.id}>${document.title}
-      ${document.documents.length > 0 ? this.#convertIntoHTML(document.documents) : ""}</li>`
+        (doc) => `<li data-id=${doc.id}>${
+          doc.title
+        } <button class="list__add-button--document">+</button><button class="list__add-button--delete">-</button>
+      ${doc.documents.length > 0 ? this.#convertIntoHTML(doc.documents) : ""}</li>`
       )
       .join(" ")}
     </ul>`;

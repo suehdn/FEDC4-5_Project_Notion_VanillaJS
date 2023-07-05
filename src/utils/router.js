@@ -1,13 +1,18 @@
-export const ROUTE_CHANGE_EVENT_NAME = "route-change";
-// 상수화 필요
+import { ROUTE_CHANGE_EVENT_NAME } from "../constant/constant.js";
+
 export const initRouter = (onRoute) => {
+  history.replaceState(null, null, "/");
   window.addEventListener(ROUTE_CHANGE_EVENT_NAME, (e) => {
-    const id = e.detail;
-    history.pushState(null, null, `/documents/${id}`);
+    const url = e.detail;
+    history.pushState(null, null, `${url}`);
     onRoute();
   });
 };
 
-export const push = (id) => {
-  window.dispatchEvent(new CustomEvent(ROUTE_CHANGE_EVENT_NAME, { detail: id }));
+export const push = (id = null) => {
+  if (id !== null) {
+    window.dispatchEvent(new CustomEvent(ROUTE_CHANGE_EVENT_NAME, { detail: `/documents/${id}` }));
+  } else {
+    window.dispatchEvent(new CustomEvent(ROUTE_CHANGE_EVENT_NAME, { detail: `/` }));
+  }
 };
