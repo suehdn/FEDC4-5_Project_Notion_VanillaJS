@@ -9,8 +9,9 @@ import './NotionDocument.css';
 export default class NotionDocument extends Component {
   setup() {
     this.state = {
+      isVisible: false,
       documentData: {
-        id: this.props.getDocumentId(),
+        id: null,
         title: '',
         createdAt: '',
         updatedAt: '',
@@ -45,8 +46,7 @@ export default class NotionDocument extends Component {
   }
 
   render() {
-    const { id: documentId } = this.state.documentData;
-    const isVisible = documentId !== null;
+    const { isVisible } = this.state;
 
     this.$document.style.visibility = isVisible ? 'visible' : 'hidden';
   }

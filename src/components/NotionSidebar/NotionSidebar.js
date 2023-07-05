@@ -29,23 +29,22 @@ export default class NotionSidebar extends Component {
     this.$createButton = new Button(this.$sidebar, {
       className: SIDEBAR.CREATE_BUTTON,
       textContent: 'add a document',
-      onClick: () => {
-        this.handleCreateButtonClick();
-      },
+      onClick: this.handleCreateButtonClick.bind(this),
     });
 
     this.$documentList = new DocumentList(this.$sidebar);
   }
 
-  handleCreateButtonClick = async () => {
+  async handleCreateButtonClick() {
     const newDocument = await createDocument({ title: 'Untitled' });
     history.push(`/documents/${newDocument.id}`);
-  };
+  }
 
   setState(nextState) {
     super.setState(nextState);
 
     const { documentList } = this.state;
+
     this.$documentList.setState({ documentList });
   }
 }

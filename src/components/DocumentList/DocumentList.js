@@ -2,6 +2,7 @@ import { SIDEBAR } from '@consts/target';
 
 import { createDocument, deleteDocument } from '@api/document';
 
+import sidebarStorage from '@utils/localStorage/sidebarStorage';
 import { history } from '@utils/router';
 
 import Component from '@core/Component';
@@ -14,6 +15,7 @@ export default class DocumentList extends Component {
   setup() {
     this.state = {
       documentList: [],
+      expanded: {},
     };
   }
 
@@ -23,6 +25,13 @@ export default class DocumentList extends Component {
 
     this.$target.appendChild(this.$documentList);
   }
+
+  handleExpandButtonClick = (id) => {
+    const { expanded } = this.state;
+    expanded[id] = !expanded[id];
+
+    this.setState({ expanded });
+  };
 
   handleCreateIndsideButtonClick = async (id) => {
     const newDocument = await createDocument({ title: 'Untitled', parent: id });
@@ -48,6 +57,11 @@ export default class DocumentList extends Component {
       }
       const { className } = $button;
 
+      if (className === SIDEBAR.DOCUMENT_LIST_ITEM.EXPAND_BUTTON) {
+        this.handleExpandButtonClick(id);
+        return;
+      }
+
       if (
         className === SIDEBAR.DOCUMENT_LIST_ITEM.BUTTON_CONTAINER.DELETE_BUTTON
       ) {
@@ -67,34 +81,46 @@ export default class DocumentList extends Component {
     });
   }
 
-  createDocumentItem(item, depth = 1) {
-    const $div = document.createElement('div');
+  setState(newState) {
+    const { documentList } = newState;
 
-    new DocumentListItem($div, {
-      documentItem: item,
-      depth,
-    });
-
-    const { documents: childItems } = item;
-
-    if (childItems.length > 0) {
-      const $ul = document.createElement('ul');
-      childItems.forEach((childItem) => {
-        $ul.appendChild(this.createDocumentItem(childItem, depth + 1));
+    if (documentList) {
+      const { expandedState } = sidebarStorage.getSidebarDataItem();
+      documentList.forEach(({ id }) => {
+        expandedState[id] = expandedState[id] ?? false;
       });
-      $div.appendChild($ul);
+
+      this.state = {
+        ...this.state,
+        expanded: expandedState,
+      };
+
+      sidebarStorage.setSidebarDataItem({ expandedState });
     }
 
-    return $div;
+    const { expanded } = newState;
+
+    if (expanded) {
+      sidebarStorage.setSidebarDataItem({ expandedState: expanded });
+    }
+
+    super.setState(newState);
   }
 
   render() {
-    const { documentList } = this.state;
+    const { documentList, expanded } = this.state;
 
     this.$documentList.innerHTML = '';
-    documentList.forEach((document) => {
-      const $documentItem = this.createDocumentItem(document);
-      this.$documentList.appendChild($documentItem);
+    documentList.forEach((doc) => {
+      const $div = document.createElement('div');
+
+      new DocumentListItem($div, {
+        documentItem: doc,
+        parents: [],
+        expanded,
+      });
+
+      this.$documentList.appendChild($div);
     });
   }
 }

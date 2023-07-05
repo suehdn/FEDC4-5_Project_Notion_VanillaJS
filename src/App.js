@@ -15,9 +15,7 @@ export default class App extends Component {
   }
 
   initChildComponents() {
-    this.$notionPage = new NotionPage(this.$target, {
-      getDocumentId: this.getDocumentId.bind(this),
-    });
+    this.$notionPage = new NotionPage(this.$target);
   }
 
   getDocumentId() {
@@ -28,6 +26,7 @@ export default class App extends Component {
   }
 
   route() {
-    this.$notionPage.setState();
+    const documentId = this.getDocumentId();
+    this.$notionPage.setState({ documentId });
   }
 }

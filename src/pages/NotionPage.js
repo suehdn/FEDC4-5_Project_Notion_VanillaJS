@@ -2,7 +2,7 @@ import { TARGET } from '@consts/target';
 
 import { getDocument, getDocumentList, updateDocument } from '@api/document';
 
-import { setItem } from '@utils/localStorage';
+import documentStorage from '@utils/localStorage/documentStorage';
 
 import Component from '@core/Component';
 
@@ -19,50 +19,43 @@ export default class NotionPage extends Component {
   }
 
   initChildComponents() {
-    const { getDocumentId } = this.props;
-    this.$sidebar = new NotionSidebar(this.$page, { getDocumentId });
+    this.$sidebar = new NotionSidebar(this.$page);
     this.$document = new NotionDocument(this.$page, {
-      getDocumentId,
       onEdit: this.onEdit.bind(this),
     });
   }
 
-  get documentId() {
-    const { getDocumentId } = this.props;
-    return getDocumentId();
-  }
-
   async fetchDocumentList() {
-    const { documentId } = this;
+    const { documentId } = this.state;
 
     const documentList = await getDocumentList();
     this.$sidebar.setState({ documentId, documentList });
   }
 
   async fetchDocumentData() {
-    const { documentId } = this;
+    const { documentId } = this.state;
 
     if (documentId === null) {
-      this.$document.setState({ documentData: { id: documentId } });
+      this.$document.setState({
+        isVisible: false,
+        documentData: { id: documentId },
+      });
       return;
     }
 
     const documentData = await getDocument(documentId);
-    this.$document.setState({ documentData });
+    this.$document.setState({ isVisible: true, documentData });
   }
 
   async onEdit(name, document) {
-    setItem(`temp-post-${document.id}`, {
-      ...document,
-      tempSaveDate: new Date(),
-    });
+    documentStorage.setDocumentItem(document);
 
     const updatedDocument = await updateDocument(document.id, document);
     if (name === 'title') {
       this.fetchDocumentList();
     }
 
-    this.$document.setState({ documentData: updatedDocument });
+    this.$document.setState({ isVisible: true, documentData: updatedDocument });
   }
 
   setState(newState) {
