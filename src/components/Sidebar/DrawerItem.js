@@ -2,7 +2,7 @@ import { once } from "@Utils/once";
 import { isConstructor, isDrawerItemState } from "@Utils/validation";
 import Drawer from "./Drawer";
 import "./DrawerItem.css";
-import { postDocument } from "@Utils/apis";
+import { deleteDocument, postDocument } from "@Utils/apis";
 import { patchSidebarState } from "@Utils/stateSetters";
 
 export default function DrawerItem({ $target, $sibling, level }) {
@@ -72,6 +72,11 @@ export default function DrawerItem({ $target, $sibling, level }) {
         if (newDocument) {
           patchSidebarState();
           this.setOpened(true);
+        }
+      } else if (action === "remove") {
+        const result = await deleteDocument({ documentId: this.state.id });
+        if (result) {
+          patchSidebarState();
         }
       }
     });

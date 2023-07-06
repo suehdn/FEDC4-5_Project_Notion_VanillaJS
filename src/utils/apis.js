@@ -39,3 +39,9 @@ export async function postDocument({ title, parent }) {
     }),
   });
 }
+
+export async function deleteDocument({ documentId }) {
+  return await request(`/documents/${documentId}`, {
+    method: "DELETE",
+  });
+}

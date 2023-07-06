@@ -91,11 +91,11 @@ function setRenderingPlan(current, next, plan) {
       plan.push(0);
       ci += 1;
       ni += 1;
-    } else if (cid === next[ni + 1].id) {
+    } else if (ni < next.length - 1 && cid === next[ni + 1].id) {
       // 요소는 하나씩 추가 및 제거된다고 가정
       plan.push(nid);
       ni += 1;
-    } else if (nid === current[ci + 1].id) {
+    } else if (ci < current.length - 1 && nid === current[ci + 1].id) {
       plan.push(-cid);
       ci += 1;
     } else {
