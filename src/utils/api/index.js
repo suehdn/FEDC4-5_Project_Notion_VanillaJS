@@ -1,4 +1,6 @@
-const API_END_POINT = 'https://kdt-frontend.programmers.co.kr';
+import API_ROOT_URL from '@constants/api';
+
+const API_END_POINT = API_ROOT_URL;
 
 const request = async (url, options = {}) => {
   try {
@@ -11,7 +13,7 @@ const request = async (url, options = {}) => {
     }
     throw new Error('API 호출에 실패했습니다.');
   } catch (e) {
-    alert(e.message);
+    console.error(e);
     return null;
   }
 };
