@@ -15,7 +15,7 @@ export default function App({ $target }) {
 
   const $toggleBtn = document.createElement("button");
   $toggleBtn.className = "toggle-btn1";
-  $toggleBtn.textContent = ">>";
+  $toggleBtn.innerHTML = `<i class="fa fa-solid fa-arrow-right" style="color: #000000;"></i>`;
 
   $target.appendChild($toggleBtn);
   $target.appendChild($notionPageContainer);
@@ -93,6 +93,6 @@ export default function App({ $target }) {
   $toggleBtn.addEventListener("click", () => {
     $notionPageContainer.style.transform = "translateX(0)";
     $notionEditPageContainer.style.marginLeft = "0";
-    $toggleBtn.style.transform = "translateX(-150%)";
+    $toggleBtn.style.transform = "translateX(-160%)";
   });
 }

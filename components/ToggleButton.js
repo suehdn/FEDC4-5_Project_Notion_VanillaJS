@@ -1,7 +1,7 @@
 export default function ToggleButton({ $target, onClick }) {
   const $toggleBtn = document.createElement("button");
   $toggleBtn.className = "toggle-btn2";
-  $toggleBtn.textContent = "<<";
+  $toggleBtn.innerHTML = `<i class="fa fa-solid fa-arrow-right fa-rotate-180" style="color: #000000;"></i>`;
 
   $target.appendChild($toggleBtn);
 
