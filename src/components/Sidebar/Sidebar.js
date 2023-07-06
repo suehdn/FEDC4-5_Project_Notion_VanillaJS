@@ -22,7 +22,7 @@ export default function Sidebar({ $target }) {
     }
 
     this.state = nextState;
-    console.log(this.state);
+
     this.render();
   };
 

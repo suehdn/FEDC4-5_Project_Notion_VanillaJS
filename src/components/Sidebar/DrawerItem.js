@@ -71,6 +71,7 @@ export default function DrawerItem({ $target, $sibling, level }) {
         });
         if (newDocument) {
           patchSidebarState();
+          this.setOpened(true);
         }
       }
     });
