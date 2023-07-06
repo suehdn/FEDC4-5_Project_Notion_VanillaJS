@@ -1,7 +1,7 @@
 import { patchSidebarState, registerStateSetter } from "@Utils/stateSetters";
 import Document from "./Document";
 import Home from "./Home";
-import router from "../router";
+import router from "@Utils/router";
 import Header from "./Header/Header";
 import Sidebar from "./Sidebar/Sidebar";
 import "./App.css";
@@ -31,4 +31,5 @@ export default function App({ $target }) {
   const route = () => router({ $target: $content });
   window.addEventListener("load", route);
   window.addEventListener("popstate", route);
+  window.addEventListener("route", route);
 }

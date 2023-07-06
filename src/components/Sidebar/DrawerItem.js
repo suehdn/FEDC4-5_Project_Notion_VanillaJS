@@ -4,6 +4,7 @@ import Drawer from "./Drawer";
 import "./DrawerItem.css";
 import { deleteDocument, postDocument } from "@Utils/apis";
 import { patchSidebarState } from "@Utils/stateSetters";
+import { routeToDocument } from "@Utils/router";
 
 export default function DrawerItem({ $target, $sibling, level }) {
   if (!isConstructor(new.target)) {
@@ -78,6 +79,8 @@ export default function DrawerItem({ $target, $sibling, level }) {
         if (result) {
           patchSidebarState();
         }
+      } else if (action === "route") {
+        routeToDocument(this.state.id);
       }
     });
 

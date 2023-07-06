@@ -14,3 +14,8 @@ export default function router({ $target }) {
     stateSetters[NAME.DOCUMENT]({ documentId });
   }
 }
+
+export function routeToDocument(documentId) {
+  history.pushState(null, null, `/documents/${documentId}`);
+  window.dispatchEvent(new CustomEvent("route"));
+}
