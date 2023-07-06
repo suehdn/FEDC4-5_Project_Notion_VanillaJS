@@ -2,7 +2,7 @@ import { putDocument } from '../../api';
 import { convertMarkdownToHTML } from '../../utils/convertMarkdownToHTML';
 import debounce from '../../utils/debounce';
 import validateComponent from '../../utils/validateComponent';
-import Button from '../Button';
+import Button from '../ui/Button';
 import SubDocumentLinks from './SubDocumentLinks';
 
 export default function Document({ targetElement, documentData, handleEditTitle, handleAsyncEditTitle }) {

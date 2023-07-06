@@ -1,5 +1,5 @@
 import { postDocument } from '../../api';
-import Button from '../../components/Button';
+import Button from '../../components/ui/Button';
 import DocumentTreeRoot from './DocumentTreeRoot';
 import { proxiedDocuments } from '../../domain/proxiedDocuments';
 import { RouteService } from '../../utils/RouteService';
@@ -29,17 +29,16 @@ export default function SideBar({ targetElement, documents }) {
     `;
     const [, documentTreeRootElement, newRootDocumentBtnElement] = targetElement.children;
 
-    this.documentTreeRoot = new DocumentTreeRoot({
+    new DocumentTreeRoot({
       targetElement: documentTreeRootElement,
       documents: this.state.documents,
     });
-    this.newRootDocumentBtn = new Button({
+    new Button({
       targetElement: newRootDocumentBtnElement,
       textContent: '새 문서',
       onClick: async () => {
         const router = new RouteService();
         const { id } = await postDocument({ title: '', parent: null });
-        this.documentTreeRoot.render();
         proxiedDocuments.staleTime = 0;
         router.push(`/documents/${id}`);
       },

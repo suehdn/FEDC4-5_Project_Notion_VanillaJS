@@ -1,4 +1,4 @@
-import validateComponent from '../utils/validateComponent';
+import validateComponent from '../../utils/validateComponent';
 
 export default function Button({ targetElement, textContent, onClick }) {
   validateComponent(this, Button);

@@ -1,3 +1,5 @@
+@import './SubDocumentLinks';
+
 .selected-document {
   flex-grow: 1;
   display: flex;
@@ -26,9 +28,9 @@
   color: #d9d9d9;
 }
 
-.preview-btn {
+/* .preview-btn {
   margin-right: 40px;
-}
+} */
 
 .document-content {
   all: unset;
@@ -46,6 +48,7 @@
   max-width: 1000px;
   margin: 20px 20px 0 20px;
   flex-grow: 1;
+  height: 300px;
   overflow-y: scroll;
 }
 
@@ -53,14 +56,4 @@
   border-radius: 5px;
   background-color: #ebebea;
   color: red;
-}
-
-.sub-document-links {
-  width: 100%;
-  min-width: 500px;
-  max-width: 1000px;
-}
-
-.sub-document-link-btn {
-  margin-left: 0;
 }
