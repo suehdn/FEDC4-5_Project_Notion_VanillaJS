@@ -2,6 +2,8 @@ import { isConstructor, isDrawerState } from "@Utils/validation";
 import "./Sidebar.css";
 import { once } from "@Utils/once";
 import Drawer from "./Drawer";
+import { postDocument } from "@Utils/apis";
+import { patchSidebarState } from "@Utils/stateSetters";
 
 export default function Sidebar({ $target }) {
   if (!isConstructor(new.target)) {
@@ -9,6 +11,7 @@ export default function Sidebar({ $target }) {
   }
 
   const $sidebar = document.createElement("aside");
+  const $addBtn = document.createElement("button");
   const $rootDrawer = new Drawer({ $target: $sidebar, level: 0 });
 
   this.state = [];
@@ -19,7 +22,7 @@ export default function Sidebar({ $target }) {
     }
 
     this.state = nextState;
-
+    console.log(this.state);
     this.render();
   };
 
@@ -27,7 +30,19 @@ export default function Sidebar({ $target }) {
     $sidebar.className = "sidebar";
     $target.appendChild($sidebar);
 
+    $addBtn.innerText = "새 페이지";
+    $sidebar.insertAdjacentElement("afterbegin", $addBtn);
     $sidebar.insertAdjacentHTML("afterbegin", `<p>여기는 사이드바!</p>`);
+
+    $addBtn.addEventListener("click", async (e) => {
+      const newDocument = await postDocument({
+        title: "제목없음",
+        parent: null,
+      });
+      if (newDocument) {
+        patchSidebarState();
+      }
+    });
   });
 
   this.render = () => {

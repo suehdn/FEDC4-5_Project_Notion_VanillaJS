@@ -65,7 +65,7 @@ export default function DrawerItem({ $target, $sibling, level }) {
       if (action === "open") {
         this.setOpened(!this.opened);
       } else if (action === "append") {
-        const newDocument = postDocument({
+        const newDocument = await postDocument({
           title: "제목없음",
           parent: this.state.id,
         });
