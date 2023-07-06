@@ -1,8 +1,9 @@
-import { putDocument } from '../api';
-import { convertMarkdownToHTML } from '../utils/convertMarkdownToHTML';
-import debounce from '../utils/debounce';
-import { RouteService } from '../utils/RouteService';
-import validateComponent from '../utils/validateComponent';
+import { putDocument } from '../../api';
+import { convertMarkdownToHTML } from '../../utils/convertMarkdownToHTML';
+import debounce from '../../utils/debounce';
+import validateComponent from '../../utils/validateComponent';
+import Button from '../Button';
+import SubDocumentLinks from './SubDocumentLinks';
 
 export default function Document({ targetElement, documentData, handleEditTitle, handleAsyncEditTitle }) {
   validateComponent(this, Document);
@@ -48,17 +49,6 @@ export default function Document({ targetElement, documentData, handleEditTitle,
       }
       debouncedInputHandler(e);
     });
-
-    targetElement.addEventListener('click', (e) => {
-      if (!e.target.closest('.sub-document-links > button')) return;
-      const router = new RouteService();
-      router.push(`/documents/${e.target.dataset.id}`);
-    });
-
-    targetElement.addEventListener('click', (e) => {
-      if (!e.target.closest('.preview-btn')) return;
-      this.setState({ ...this.state, preview: !this.state.preview });
-    });
   };
 
   this.render = () => {
@@ -67,7 +57,7 @@ export default function Document({ targetElement, documentData, handleEditTitle,
     targetElement.innerHTML = `
       <div class="document-header">
         <input class="document-title" type="text" placeholder="제목 없음"/>
-        <button class="preview-btn">${preview ? '편집하기' : '미리보기'}</button>
+        <button class="preview-btn"></button>
       </div>
       <textarea class="document-content"></textarea>
       <div class="document-preview"></div>
@@ -75,19 +65,19 @@ export default function Document({ targetElement, documentData, handleEditTitle,
     `;
     const [documentHeaderElement, documentContentElement, documentPreviewElement, subDocumentLinksElement] =
       targetElement.children;
-    const [documentTitleElement] = documentHeaderElement.children;
+    const [documentTitleElement, previewBtnElement] = documentHeaderElement.children;
 
     documentTitleElement.value = title;
     documentContentElement.value = content;
     documentPreviewElement.innerHTML = convertMarkdownToHTML(content);
 
-    documents.forEach(({ id, title }) => {
-      const buttonElement = document.createElement('button');
-      buttonElement.classList.add('sub-document-link-btn');
-      buttonElement.setAttribute('data-id', id);
-      buttonElement.textContent = title === '' ? '제목없음' : title;
-      subDocumentLinksElement.appendChild(buttonElement);
+    new Button({
+      targetElement: previewBtnElement,
+      textContent: preview ? '편집하기' : '미리보기',
+      onClick: () => this.setState({ ...this.state, preview: !this.state.preview }),
     });
+
+    new SubDocumentLinks({ targetElement: subDocumentLinksElement, subDocuments: documents });
 
     if (this.state.preview) {
       documentContentElement.style.display = 'none';
