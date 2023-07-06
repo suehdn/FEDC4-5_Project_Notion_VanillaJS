@@ -1,7 +1,4 @@
-@import './styles/Button';
-@import './styles/SideBar/index';
-@import './styles/Document';
-@import './styles/NotFoundPage';
+@import './styles/index';
 
 * {
   box-sizing: border-box;

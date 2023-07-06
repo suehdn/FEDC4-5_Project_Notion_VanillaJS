@@ -13,6 +13,7 @@ export default function HomePage({ targetElement }) {
     const documents = await proxiedDocuments.documents;
     targetElement.innerHTML = `
       <div class="side-bar"></div>
+      <div class="home-page-content">문서를 선택하세요</div>
     `;
     const [sideBarElement] = targetElement.children;
     this.sideBar = new SideBar({ targetElement: sideBarElement, documents });
