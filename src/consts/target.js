@@ -14,6 +14,7 @@ export const SIDEBAR = {
   CREATE_BUTTON: 'document-create-button',
   DOCUMENT_LIST: 'document-list',
   DOCUMENT_LIST_ITEM: {
+    ROOT: 'document-list-item',
     TITLE: 'document-list-item-title',
     EXPAND_BUTTON: 'document-list-item-expand-button',
     BUTTON_CONTAINER: {

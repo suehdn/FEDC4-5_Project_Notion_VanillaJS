@@ -14,6 +14,7 @@ import './NotionSidebar.css';
 export default class NotionSidebar extends Component {
   setup() {
     this.state = {
+      documentId: null,
       documentList: [],
     };
   }
@@ -50,8 +51,8 @@ export default class NotionSidebar extends Component {
   setState(nextState) {
     super.setState(nextState);
 
-    const { documentList } = this.state;
+    const { documentId, documentList } = this.state;
 
-    this.$documentList.setState({ documentList });
+    this.$documentList.setState({ documentId, documentList });
   }
 }

@@ -11,9 +11,15 @@ import './DocumentListItem.css';
 
 export default class DocumentListItem extends Component {
   initComponent() {
-    const { documentItem, parents, expanded } = this.props;
+    const { documentItem, parents, selectedId, expanded } = this.props;
 
     this.$documentListItem = document.createElement('li');
+    this.$documentListItem.className = SIDEBAR.DOCUMENT_LIST_ITEM.ROOT;
+
+    if (Number(documentItem.id) === Number(selectedId)) {
+      this.$documentListItem.setAttribute('selected', 'true');
+    }
+
     this.$documentListItem.dataset.id = documentItem.id;
 
     this.$documentListItem.innerHTML = `
@@ -41,12 +47,13 @@ export default class DocumentListItem extends Component {
     this.$target.appendChild(this.$documentListItem);
   }
 
-  createDocumentItem(item, parents, expanded) {
+  createDocumentItem(item, parents, selectedId, expanded) {
     const $div = document.createElement('div');
 
     new DocumentListItem($div, {
       documentItem: item,
       parents,
+      selectedId,
       expanded,
     });
 
@@ -54,7 +61,7 @@ export default class DocumentListItem extends Component {
   }
 
   render() {
-    const { documentItem, parents, expanded } = this.props;
+    const { documentItem, parents, selectedId, expanded } = this.props;
     const { id, documents: childItems } = documentItem;
 
     const newParents = [...parents, id];
@@ -64,6 +71,7 @@ export default class DocumentListItem extends Component {
         const $documentItem = this.createDocumentItem(
           document,
           newParents,
+          selectedId,
           expanded
         );
         this.$target.appendChild($documentItem);

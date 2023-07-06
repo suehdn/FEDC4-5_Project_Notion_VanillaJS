@@ -14,6 +14,7 @@ import './DocumentList.css';
 export default class DocumentList extends Component {
   setup() {
     this.state = {
+      documentId: null,
       documentList: [],
       expanded: {},
     };
@@ -108,7 +109,7 @@ export default class DocumentList extends Component {
   }
 
   render() {
-    const { documentList, expanded } = this.state;
+    const { documentId, documentList, expanded } = this.state;
 
     this.$documentList.innerHTML = '';
     documentList.forEach((doc) => {
@@ -117,6 +118,7 @@ export default class DocumentList extends Component {
       new DocumentListItem($div, {
         documentItem: doc,
         parents: [],
+        selectedId: documentId,
         expanded,
       });
 
