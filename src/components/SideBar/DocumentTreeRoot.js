@@ -1,11 +1,11 @@
-import { postDocument, deleteDocument } from '../api';
-import { localStorageKeys } from '../constants/localStorageKeys';
-import { proxiedDocuments } from '../domain/proxiedDocuments';
-import { RouteService } from '../utils/RouteService';
-import debounce from '../utils/debounce';
-import { getItem, setItem } from '../utils/storage';
-import { toggleSet } from '../utils/toggleSet';
-import validateComponent from '../utils/validateComponent';
+import { postDocument, deleteDocument } from '../../api';
+import { localStorageKeys } from '../../constants/localStorageKeys';
+import { proxiedDocuments } from '../../domain/proxiedDocuments';
+import { RouteService } from '../../utils/RouteService';
+import debounce from '../../utils/debounce';
+import { getItem, setItem } from '../../utils/storage';
+import { toggleSet } from '../../utils/toggleSet';
+import validateComponent from '../../utils/validateComponent';
 import DocumentTree from './DocumentTree';
 
 export default function DocumentTreeRoot({ targetElement, documents }) {
