@@ -17,15 +17,19 @@ export default function TextEditor({ $target, initialState, onEditing }) {
       ...this.state,
       ...nextState,
     };
+    // console.log(this.state);
     this.render();
   };
 
   this.render = () => {
-    const { status, res } = this.state;
-
+    const { title, content, res, status } = this.state;
+    console.log(title, content, res, this.state);
     if (!status && res) {
       $titleEditor.value = res.title;
-      $textEditor.value = res.content ? res.content : '';
+      $textEditor.value = res.content;
+    } else {
+      $titleEditor.value = title;
+      $textEditor.value = content;
     }
   };
 
