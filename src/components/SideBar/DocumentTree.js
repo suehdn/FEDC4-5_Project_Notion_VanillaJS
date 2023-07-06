@@ -12,9 +12,7 @@ export default function DocumentTree({ targetElement, childDocuments, invisibleT
       ${childDocuments
         .map(({ id, title }) => {
           return `
-            <div class="document-tree" data-id="${id}" 
-              style="margin-left: ${15}px; display: ${invisibleTreeSet.has(id) ? 'none' : 'block'}"
-            >
+            <div class="document-tree ${invisibleTreeSet.has(id) ? 'invisible-tree' : ''}" data-id="${id}">
               <div class="document-blob">
                 <div class="document-blob-left">
                   <span class="document-toggle document-blob-btn">

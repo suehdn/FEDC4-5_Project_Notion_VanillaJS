@@ -1,3 +1,11 @@
+.document-tree {
+  margin-left: 15px;
+}
+
+.invisible-tree {
+  display: none;
+}
+
 .document-blob-left {
   display: flex;
   flex-direction: row;
