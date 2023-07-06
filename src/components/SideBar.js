@@ -27,7 +27,7 @@ export default function SideBar({ targetElement, documents }) {
       <div class="document-tree-root"></div>
       <button class="new-root-document-btn"></button>
     `;
-    const [_, documentTreeRootElement, newRootDocumentBtnElement] = targetElement.children;
+    const [, documentTreeRootElement, newRootDocumentBtnElement] = targetElement.children;
 
     this.documentTreeRoot = new DocumentTreeRoot({
       targetElement: documentTreeRootElement,

@@ -6,9 +6,9 @@ export function convertMarkdownToHTML(markdownText) {
     { pattern: /(\*|_)(.*?)\1/g, replacement: '<em>$2</em>' },
     { pattern: /`(.*?)`/g, replacement: '<code>$1</code>' },
     { pattern: /\[(.*?)\]\((.*?)\)/g, replacement: '<a href="$2">$1</a>' },
-    { pattern: /(\#\#\# )(.*)\n/g, replacement: '<h3>$2</h3>' },
-    { pattern: /(\#\# )(.*)\n/g, replacement: '<h2>$2</h2>' },
-    { pattern: /(\# )(.*)\n/g, replacement: '<h1>$2</h1>' },
+    { pattern: /(### )(.*)/g, replacement: '<h3>$2</h3>' },
+    { pattern: /(## )(.*)/g, replacement: '<h2>$2</h2>' },
+    { pattern: /(# )(.*)/g, replacement: '<h1>$2</h1>' },
     { pattern: /\n\n/g, replacement: '<br/>' },
   ];
 

@@ -89,7 +89,7 @@ export default function DocumentTreeRoot({ targetElement, documents }) {
       if (confirm('페이지를 삭제하시겠습니까?')) {
         const foldedTreeSet = new Set(this.state.foldedTreeSet.values());
         const invisibleTreeSet = new Set(this.state.invisibleTreeSet.values());
-        const [_, ...subTreeElements] = documentTreeElement.children;
+        const [, ...subTreeElements] = documentTreeElement.children;
         foldedTreeSet.delete(Number(documentTreeElement.dataset.id));
         subTreeElements.forEach((subTreeElement) => {
           invisibleTreeSet.delete(Number(subTreeElement.dataset.id));
