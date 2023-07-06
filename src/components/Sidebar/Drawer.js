@@ -11,6 +11,7 @@ export default function Drawer({ $target, level }) {
   const $drawer = document.createElement("nav");
 
   this.root = $drawer;
+  this.children = [];
 
   this.state = [];
 
@@ -41,6 +42,8 @@ export default function Drawer({ $target, level }) {
 
     this.renderingPlan.forEach((plan) => {
       if (plan === 0) {
+        this.children[stateIdx].setState(this.state[stateIdx]);
+
         $currentNode = $currentNode.nextSibling;
         stateIdx += 1;
       } else if (plan > 0) {
@@ -50,12 +53,15 @@ export default function Drawer({ $target, level }) {
           level: 0,
         });
         $drawerItem.setState(this.state[stateIdx]);
+        this.children.splice(stateIdx, 0, $drawerItem);
 
         stateIdx += 1;
       } else {
         const $tempNextNode = $currentNode?.nextSibling;
         $drawer.removeChild($currentNode);
         $currentNode = $tempNextNode;
+
+        this.children.splice(stateIdx, 1);
       }
     });
   };
@@ -67,8 +73,10 @@ export default function Drawer({ $target, level }) {
  * 음수: 제거
  */
 function setRenderingPlan(current, next, plan) {
+  plan.splice(0);
   let ci = 0,
     ni = 0;
+
   while (ci < current.length || ni < next.length) {
     const cid = current[ci]?.id;
     const nid = next[ni]?.id;

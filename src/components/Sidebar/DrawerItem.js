@@ -2,6 +2,8 @@ import { once } from "@Utils/once";
 import { isConstructor, isDrawerItemState } from "@Utils/validation";
 import Drawer from "./Drawer";
 import "./DrawerItem.css";
+import { postDocument } from "@Utils/apis";
+import { patchSidebarState } from "@Utils/stateSetters";
 
 export default function DrawerItem({ $target, $sibling, level }) {
   if (!isConstructor(new.target)) {
@@ -54,7 +56,7 @@ export default function DrawerItem({ $target, $sibling, level }) {
       </div>
     `;
 
-    $titleContainer.addEventListener("click", (e) => {
+    $titleContainer.addEventListener("click", async (e) => {
       const $actionElement = e.target.closest("[data-action]");
       if (!$actionElement) return;
 
@@ -62,6 +64,14 @@ export default function DrawerItem({ $target, $sibling, level }) {
 
       if (action === "open") {
         this.setOpened(!this.opened);
+      } else if (action === "append") {
+        const newDocument = postDocument({
+          title: "제목없음",
+          parent: this.state.id,
+        });
+        if (newDocument) {
+          patchSidebarState();
+        }
       }
     });
 

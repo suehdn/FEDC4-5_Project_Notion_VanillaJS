@@ -29,3 +29,13 @@ async function request(url, options = {}) {
 export async function getRootDocuments() {
   return await request("/documents");
 }
+
+export async function postDocument({ title, parent }) {
+  return await request("/documents", {
+    method: "POST",
+    body: JSON.stringify({
+      title,
+      parent,
+    }),
+  });
+}
